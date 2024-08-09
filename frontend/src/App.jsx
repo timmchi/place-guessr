@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <Button onClick={playVsGame}>Play vs another player</Button>
-      <Button onClick={playSingleGame}>Play vs another player</Button>
+      <Button onClick={playSingleGame}>Play single game</Button>
       {gameType === "VS" && <VsGame />}
     </>
   );

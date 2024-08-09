@@ -56,15 +56,22 @@ const Round = ({
       )}
       {isEnded && !winner && <Button onClick={startRound}>Next round</Button>}
       {isEnded && (
-        <RoundEndScreen
-          players={players}
-          player1hp={player1HP}
-          player2hp={player2HP}
-          removePlayer1hp={() => removeHp(player1HP, setPlayer1HP, players[1])}
-          removePlayer2hp={() => removeHp(player2HP, setPlayer2HP, players[1])}
-          resetPlayer1hp={() => resetHp(setPlayer1HP)}
-          resetPlayer2hp={() => resetHp(setPlayer2HP)}
-        />
+        <>
+          <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
+          <RoundEndScreen
+            players={players}
+            player1hp={player1HP}
+            player2hp={player2HP}
+            removePlayer1hp={() =>
+              removeHp(player1HP, setPlayer1HP, players[1])
+            }
+            removePlayer2hp={() =>
+              removeHp(player2HP, setPlayer2HP, players[0])
+            }
+            resetPlayer1hp={() => resetHp(setPlayer1HP)}
+            resetPlayer2hp={() => resetHp(setPlayer2HP)}
+          />
+        </>
       )}
     </div>
   );
