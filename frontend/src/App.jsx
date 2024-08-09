@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Player from "./components/Player";
+import Round from "./components/Round";
 
 const players = [
   { id: 1, name: "Kariz" },
@@ -7,12 +7,17 @@ const players = [
 ];
 
 function App() {
+  const [round, setRound] = useState(1);
+
+  const handleNextRound = () => setRound(round + 1);
+
   return (
     <>
-      <div className="flex">
-        <Player player={players[0]} />
-        <Player player={players[1]} />
-      </div>
+      <Round
+        players={players}
+        round={round}
+        handleNextRound={handleNextRound}
+      />
     </>
   );
 }
