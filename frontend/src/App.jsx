@@ -1,23 +1,19 @@
 import { useState } from "react";
-import Round from "./components/Round";
-
-const players = [
-  { id: 1, name: "Kariz" },
-  { id: 2, name: "Sheldon" },
-];
+import VsGame from "./components/VsGame";
+import { Button } from "@material-tailwind/react";
 
 function App() {
-  const [round, setRound] = useState(1);
+  const [gameType, setGameType] = useState(null);
 
-  const handleNextRound = () => setRound(round + 1);
+  const playVsGame = () => setGameType("VS");
+
+  const playSingleGame = () => setGameType("SINGLE");
 
   return (
     <>
-      <Round
-        players={players}
-        round={round}
-        handleNextRound={handleNextRound}
-      />
+      <Button onClick={playVsGame}>Play vs another player</Button>
+      <Button onClick={playSingleGame}>Play vs another player</Button>
+      {gameType === "VS" && <VsGame />}
     </>
   );
 }
