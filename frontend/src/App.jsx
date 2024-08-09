@@ -12,8 +12,10 @@ function App() {
 
   return (
     <>
-      <Button onClick={playVsGame}>Play vs another player</Button>
-      <Button onClick={playSingleGame}>Play single game</Button>
+      <div className="flex p-2 gap-4">
+        <Button onClick={playVsGame}>Play vs another player</Button>
+        <Button onClick={playSingleGame}>Play single game</Button>
+      </div>
       {gameType === "VS" && <VsGame />}
       {gameType === "SINGLE" && <SingleGame />}
     </>
