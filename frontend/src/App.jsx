@@ -6,8 +6,10 @@ function App() {
 
   return (
     <>
-      <Player />
-      <Player />
+      <div className="flex">
+        <Player />
+        <Player />
+      </div>
     </>
   );
 }
