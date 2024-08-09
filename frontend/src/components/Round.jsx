@@ -36,6 +36,7 @@ const Round = ({
   const resetGame = () => {
     setPlayer1HP(5000);
     setPlayer2HP(5000);
+    setIsEnded(false);
     handleRoundChange(1);
     handleReset();
   };

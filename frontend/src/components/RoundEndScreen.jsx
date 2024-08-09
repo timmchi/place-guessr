@@ -17,6 +17,7 @@ const RoundEndScreen = ({
         healthPoints={player1hp}
         removeHp={removePlayer1hp}
         resetHp={resetPlayer1hp}
+        gameType="vs"
       />
       <Player
         key="player2"
@@ -24,6 +25,7 @@ const RoundEndScreen = ({
         healthPoints={player2hp}
         removeHp={removePlayer2hp}
         resetHp={resetPlayer2hp}
+        gameType="vs"
       />
     </div>
   );
