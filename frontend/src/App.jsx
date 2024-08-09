@@ -1,14 +1,17 @@
 import { useState } from "react";
 import Player from "./components/Player";
 
-function App() {
-  const [count, setCount] = useState(0);
+const players = [
+  { id: 1, name: "Kariz" },
+  { id: 2, name: "Sheldon" },
+];
 
+function App() {
   return (
     <>
       <div className="flex">
-        <Player />
-        <Player />
+        <Player player={players[0]} />
+        <Player player={players[1]} />
       </div>
     </>
   );

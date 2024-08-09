@@ -3,7 +3,7 @@ import { Button } from "@material-tailwind/react";
 import HealthBar from "./HealthBar";
 import Avatar from "./Avatar";
 
-const Player = () => {
+const Player = ({ player }) => {
   const [healthPoints, setHealthPoints] = useState(5000);
 
   const removeHp = () => {
@@ -14,12 +14,14 @@ const Player = () => {
   const resetHp = () => setHealthPoints(5000);
 
   return (
-    <div className="flex flex-col items-center container mx-auto">
+    <div className="flex flex-col items-center container mx-auto p-2">
       <Avatar />
-      <h1 className="text-2xl font-bold ">Player name</h1>
+      <h1 className="text-2xl font-bold ">{player.name}</h1>
       <HealthBar healthPoints={healthPoints} />
-      <Button onClick={removeHp}>-1000</Button>
-      <Button onClick={resetHp}>Reset</Button>
+      <div className="flex gap-2 pt-2">
+        <Button onClick={removeHp}>-1000</Button>
+        <Button onClick={resetHp}>Reset</Button>
+      </div>
     </div>
   );
 };
