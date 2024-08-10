@@ -11,7 +11,7 @@ const getRandomLocation = async (apiType) => {
       const { nearest } = response.data;
       const { latt, longt } = nearest;
 
-      const place = { lat: latt, lng: longt };
+      const place = { lat: Number(latt), lng: Number(longt) };
 
       return place;
     }
