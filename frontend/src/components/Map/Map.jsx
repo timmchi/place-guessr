@@ -11,16 +11,6 @@ const Map = () => {
 
   console.log(data);
 
-  const fetchGeolist = () => {
-    setApiType("geolist");
-    refetch();
-  };
-
-  const fetchGeonames = () => {
-    setApiType("geonames");
-    refetch();
-  };
-
   return (
     <div>
       <h1>Map</h1>
@@ -28,11 +18,14 @@ const Map = () => {
         lat: {data?.lat}, lng: {data?.lng}
       </p>
       <div className="flex">
-        <Button variant="outlined" onClick={fetchGeolist}>
-          Fetch with geolist
+        <Button variant="outlined" onClick={() => setApiType("geolist")}>
+          set to geolist
         </Button>
-        <Button variant="outlined" onClick={fetchGeonames}>
-          Fetch with geonames
+        <Button variant="outlined" onClick={() => setApiType("geonames")}>
+          set to geonames
+        </Button>
+        <Button variant="outlined" onClick={refetch}>
+          Fetch location
         </Button>
       </div>
     </div>
