@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Button } from "@material-tailwind/react";
+import { useMap } from "@vis.gl/react-google-maps";
 import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
-import { useMap } from "@vis.gl/react-google-maps";
 
 const LocationFetcher = () => {
   const [apiType, setApiType] = useState(null);
   const [location, setLocation] = useState({ lat: 45, lng: 45 });
-
   const map = useMap();
 
   const { isLoading, data, refetch } = useRandomLocation(apiType);
@@ -18,7 +17,7 @@ const LocationFetcher = () => {
     refetch();
     if (data) {
       setLocation({ lat: data.lat, lng: data.lng });
-      map.setCenter(location);
+      map.setCenter({ lat: data.lat, lng: data.lng });
     }
   };
 
