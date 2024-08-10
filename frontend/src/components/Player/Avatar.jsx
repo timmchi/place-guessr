@@ -1,4 +1,4 @@
-import avatar from "../../test/vavatar.jpg";
+import avatar from "../../../test/vavatar.jpg";
 
 const Avatar = ({ imgLink = avatar, playerName }) => {
   return (

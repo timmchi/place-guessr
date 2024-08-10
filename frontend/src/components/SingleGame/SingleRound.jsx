@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Player from "./Player";
+import Player from "../Player/Player";
 import { Button } from "@material-tailwind/react";
 
 const SingleRound = ({ player, round, handleRoundChange }) => {

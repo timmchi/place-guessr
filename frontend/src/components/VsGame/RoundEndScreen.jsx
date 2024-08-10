@@ -1,4 +1,4 @@
-import Player from "./Player";
+import Player from "../Player/Player";
 
 const RoundEndScreen = ({
   players,

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import VsGame from "./components/VsGame";
-import SingleGame from "./components/SingleGame";
+import VsGame from "./components/VsGame/VsGame";
+import SingleGame from "./components/SingleGame/SingleGame";
 import { Button } from "@material-tailwind/react";
 
 function App() {
