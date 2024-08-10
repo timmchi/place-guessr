@@ -8,8 +8,21 @@ const port = 3000;
 
 const apiURL = "https://api.3geonames.org/?randomland";
 
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
 app.get("/geolist", (req, res) => {
   try {
@@ -18,7 +31,12 @@ app.get("/geolist", (req, res) => {
       const [lat, lng] = line.split(" ").map(Number);
       return { lat, lng };
     });
-    res.json(textByLine);
+
+    const randomIndex = Math.trunc(Math.random() * textByLine.length + 1);
+
+    const randomPlace = textByLine[randomIndex];
+
+    res.json(randomPlace);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -27,7 +45,8 @@ app.get("/geolist", (req, res) => {
 
 app.get("/proxy", async (req, res) => {
   try {
-    const { region } = req.body;
+    // const { region } = req.body;
+    const region = "FR";
     const response = await axios.get(`${apiURL}=${region}&json=1`);
     res.json(response.data);
   } catch (error) {
@@ -35,6 +54,8 @@ app.get("/proxy", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+app.use(unknownEndpoint);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
