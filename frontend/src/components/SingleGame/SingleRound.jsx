@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Player from "../Player/Player";
 import { Button } from "@material-tailwind/react";
+import LocationFetcher from "../Map/LocationFetcher";
 
 const SingleRound = ({ player, round, handleRoundChange }) => {
   const [score, setScore] = useState(0);
@@ -26,6 +27,7 @@ const SingleRound = ({ player, round, handleRoundChange }) => {
       {!isEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round}</h1>
+          <LocationFetcher />
           <Button onClick={endRound}>End round</Button>
         </>
       )}

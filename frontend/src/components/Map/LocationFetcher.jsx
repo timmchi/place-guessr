@@ -8,7 +8,9 @@ const LocationFetcher = () => {
   const [apiType, setApiType] = useState(null);
   const [location, setLocation] = useState({ lat: 45, lng: 45 });
   //   const [distance, setDistance] = useState(0);
-  const map = useMap();
+
+  // uncomment if checking whether the map loc is same as pano, otherwise no need
+  //   const map = useMap();
 
   const { isLoading, data, refetch } = useRandomLocation(apiType);
 
@@ -18,7 +20,8 @@ const LocationFetcher = () => {
     refetch();
     if (data) {
       setLocation({ lat: data.lat, lng: data.lng });
-      map.setCenter({ lat: data.lat, lng: data.lng });
+      // uncomment if checking whether the map loc is same as pano, otherwise no need
+      //   map.setCenter({ lat: data.lat, lng: data.lng });
     }
   };
 

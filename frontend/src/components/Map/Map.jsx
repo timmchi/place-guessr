@@ -16,8 +16,8 @@ const MapElement = ({
       className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:scale-125 hover:left-16 active:scale-125 hover:opacity-100"
     >
       <Map
-        defaultZoom={7}
-        defaultCenter={location}
+        defaultZoom={2}
+        defaultCenter={{ lat: 0, lng: 0 }}
         disableDefaultUI={true}
         clickableIcons={false}
         onClick={placeGuessMarker}

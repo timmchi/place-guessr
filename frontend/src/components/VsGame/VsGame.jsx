@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Round from "./Round";
+import RoomsList from "../Rooms/RoomsList";
 import { Button } from "@material-tailwind/react";
 
 const players = [
