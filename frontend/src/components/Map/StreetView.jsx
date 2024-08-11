@@ -1,17 +1,26 @@
 import { Map, useMap, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import useStreetView from "../../hooks/useStreetView";
-import { GoogleMap, StreetViewPanorama } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  StreetViewPanorama,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import { Button } from "@material-tailwind/react";
+import { Polyline } from "./Polyline";
+import { haversine_distance } from "../../utils/scoreUtils";
 
 const MAP_ID = import.meta.env.VITE_MAP_ID;
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const StreetView = ({ location }) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
+  const [distance, setDistance] = useState(0);
   //   const map = useMap();
+  const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
   const containerStyle = {
     height: "100vh",
@@ -45,6 +54,8 @@ const StreetView = ({ location }) => {
     });
   }, [location, streetViewService]);
 
+  if (!isLoaded) return null;
+
   //   console.log("panoPosition outside", panoPosition);
 
   const placeGuessMarker = (e) => {
@@ -56,15 +67,21 @@ const StreetView = ({ location }) => {
   const submitGuess = () => {
     console.log("submitting answer, ending round...");
     setAnswerLocation(panoPosition);
-    setTimeout(() => {
-      setGuessLocation(null);
-    }, 3000);
+    // setTimeout(() => {
+    //   setGuessLocation(null);
+    //   setAnswerLocation(null);
+    // }, 3000);
+    console.log("guess location", guessLocation);
+    console.log("answer location", answerLocation);
+    setDistance(Math.trunc(haversine_distance(guessLocation, answerLocation)));
   };
 
   return (
     <div className="border-2 border-black m-4 p-2">
       <h2>Street view</h2>
-      {/* {panoPosition && ( */}
+      <p className="text-2xl font-bold text-indigo-400">
+        Distance: {distance} km
+      </p>
       <div className="relative">
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -104,6 +121,9 @@ const StreetView = ({ location }) => {
               <AdvancedMarker position={guessLocation} draggable={true} />
             )}
             {answerLocation && <AdvancedMarker position={answerLocation} />}
+            {answerLocation && (
+              <Polyline path={[guessLocation, answerLocation]} />
+            )}
           </Map>
           <Button
             color="green"
@@ -111,7 +131,7 @@ const StreetView = ({ location }) => {
             onClick={submitGuess}
             disabled={guessLocation ? false : true}
           >
-            Submit Guess
+            {guessLocation ? "Submit Guess" : "Make a Guess"}
           </Button>
         </div>
       </div>

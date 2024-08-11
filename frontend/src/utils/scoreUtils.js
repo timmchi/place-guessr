@@ -1,9 +1,10 @@
 export const haversine_distance = (mk1, mk2) => {
   var R = 6371.071; // Radius of the Earth in km
-  var rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
-  var rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
+  // Convert degrees to radians
+  var rlat1 = mk1.lat * (Math.PI / 180);
+  var rlat2 = mk2.lat * (Math.PI / 180);
   var difflat = rlat2 - rlat1; // Radian difference (latitudes)
-  var difflon = (mk2.position.lng() - mk1.position.lng()) * (Math.PI / 180); // Radian difference (longitudes)
+  var difflon = (mk2.lng - mk1.lng) * (Math.PI / 180); // Radian difference (longitudes)
 
   var d =
     2 *
