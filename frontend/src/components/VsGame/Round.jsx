@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import RoundEndScreen from "./RoundEndScreen";
+import LocationFetcher from "../Map/LocationFetcher";
 
 const Round = ({
   players,
@@ -53,6 +54,7 @@ const Round = ({
         <>
           <h1 className="text-4xl font-bold">Round {round}</h1>
           <Button onClick={endRound}>End round</Button>
+          <LocationFetcher />
         </>
       )}
       {isEnded && !winner && <Button onClick={startRound}>Next round</Button>}
