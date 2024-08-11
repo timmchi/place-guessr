@@ -95,10 +95,14 @@ const StreetView = ({ location }) => {
             defaultZoom={7}
             defaultCenter={location}
             disableDefaultUI={true}
+            clickableIcons={false}
             onClick={placeGuessMarker}
+            reuseMaps={true}
             mapId={MAP_ID}
           >
-            {guessLocation && <AdvancedMarker position={guessLocation} />}
+            {guessLocation && (
+              <AdvancedMarker position={guessLocation} draggable={true} />
+            )}
             {answerLocation && <AdvancedMarker position={answerLocation} />}
           </Map>
           <Button
