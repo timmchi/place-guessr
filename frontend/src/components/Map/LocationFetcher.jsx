@@ -7,6 +7,7 @@ import useRandomLocation from "../../hooks/useRandomLocation";
 const LocationFetcher = () => {
   const [apiType, setApiType] = useState(null);
   const [location, setLocation] = useState({ lat: 45, lng: 45 });
+  //   const [distance, setDistance] = useState(0);
   const map = useMap();
 
   const { isLoading, data, refetch } = useRandomLocation(apiType);
@@ -20,6 +21,10 @@ const LocationFetcher = () => {
       map.setCenter({ lat: data.lat, lng: data.lng });
     }
   };
+
+  //   const handleGuess = (d) => {
+  //     setDistance(d);
+  //   };
 
   return (
     <div>
@@ -38,7 +43,13 @@ const LocationFetcher = () => {
           Fetch location
         </Button>
       </div>
-      {location && <StreetView location={location} />}
+      {location && (
+        <StreetView
+          location={location}
+          //   distance={distance}
+          //   handleGuess={handleGuess}
+        />
+      )}
     </div>
   );
 };

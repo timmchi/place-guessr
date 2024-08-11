@@ -1,4 +1,3 @@
-import { Map, useMap, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import useStreetView from "../../hooks/useStreetView";
 import {
@@ -6,11 +5,9 @@ import {
   StreetViewPanorama,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { Button } from "@material-tailwind/react";
-import { Polyline } from "./Polyline";
 import { haversine_distance } from "../../utils/scoreUtils";
+import MapElement from "./Map";
 
-const MAP_ID = import.meta.env.VITE_MAP_ID;
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const StreetView = ({ location }) => {
@@ -19,7 +16,7 @@ const StreetView = ({ location }) => {
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
   const [distance, setDistance] = useState(0);
-  //   const map = useMap();
+
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
   const containerStyle = {
@@ -32,10 +29,6 @@ const StreetView = ({ location }) => {
   useEffect(() => {
     if (!location || !streetViewService) return;
 
-    console.log("location in effect", location);
-
-    // map.setCenter(location);
-
     const streetViewRequest = {
       location: location,
       radius: 50000,
@@ -45,7 +38,7 @@ const StreetView = ({ location }) => {
       if (status === "OK" && data && data.location && data.location.latLng) {
         const panoLoc = data.location.latLng.toJSON();
 
-        console.log("panoLoc", panoLoc);
+        // console.log("panoLoc", panoLoc);
         setPanoPosition(panoLoc);
         // console.log("panoPosition", panoPosition);
       } else {
@@ -53,6 +46,10 @@ const StreetView = ({ location }) => {
       }
     });
   }, [location, streetViewService]);
+
+  useEffect(() => {
+    if (answerLocation && guessLocation) calculateDistance();
+  }, [answerLocation]);
 
   if (!isLoaded) return null;
 
@@ -67,13 +64,19 @@ const StreetView = ({ location }) => {
   const submitGuess = () => {
     console.log("submitting answer, ending round...");
     setAnswerLocation(panoPosition);
-    // setTimeout(() => {
-    //   setGuessLocation(null);
-    //   setAnswerLocation(null);
-    // }, 3000);
-    console.log("guess location", guessLocation);
-    console.log("answer location", answerLocation);
-    setDistance(Math.trunc(haversine_distance(guessLocation, answerLocation)));
+    console.log("guess location in submit guess", guessLocation);
+    console.log("answer location in submit guess", answerLocation);
+    setTimeout(() => {
+      setGuessLocation(null);
+      setAnswerLocation(null);
+    }, 5000);
+  };
+
+  const calculateDistance = () => {
+    const distanceResult = Math.trunc(
+      haversine_distance(guessLocation, answerLocation)
+    );
+    setDistance(distanceResult);
   };
 
   return (
@@ -104,38 +107,13 @@ const StreetView = ({ location }) => {
             }}
           />
         </GoogleMap>
-        <div
-          style={{ transition: "all 0.5s" }}
-          className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:scale-125 hover:left-16 active:scale-125 hover:opacity-100"
-        >
-          <Map
-            defaultZoom={7}
-            defaultCenter={location}
-            disableDefaultUI={true}
-            clickableIcons={false}
-            onClick={placeGuessMarker}
-            reuseMaps={true}
-            mapId={MAP_ID}
-          >
-            {guessLocation && (
-              <AdvancedMarker position={guessLocation} draggable={true} />
-            )}
-            {answerLocation && <AdvancedMarker position={answerLocation} />}
-            {answerLocation && (
-              <Polyline path={[guessLocation, answerLocation]} />
-            )}
-          </Map>
-          <Button
-            color="green"
-            className="rounded-full mt-2 w-full"
-            onClick={submitGuess}
-            disabled={guessLocation ? false : true}
-          >
-            {guessLocation ? "Submit Guess" : "Make a Guess"}
-          </Button>
-        </div>
+        <MapElement
+          placeGuessMarker={placeGuessMarker}
+          guessLocation={guessLocation}
+          answerLocation={answerLocation}
+          submitGuess={submitGuess}
+        />
       </div>
-      {/* )} */}
     </div>
   );
 };
