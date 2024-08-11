@@ -5,7 +5,7 @@ import LocationFetcher from "./components/Map/LocationFetcher";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Button } from "@material-tailwind/react";
 
-const API_KEY = "";
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
   const [gameType, setGameType] = useState(null);

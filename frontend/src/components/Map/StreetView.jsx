@@ -1,8 +1,10 @@
-import { Map, useMap, Marker } from "@vis.gl/react-google-maps";
+import { Map, useMap, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import useStreetView from "../../hooks/useStreetView";
 import { GoogleMap, StreetViewPanorama } from "@react-google-maps/api";
 import { Button } from "@material-tailwind/react";
+
+const MAP_ID = import.meta.env.VITE_MAP_ID;
 
 const StreetView = ({ location }) => {
   const streetViewService = useStreetView();
@@ -94,9 +96,10 @@ const StreetView = ({ location }) => {
             defaultCenter={location}
             disableDefaultUI={true}
             onClick={placeGuessMarker}
+            mapId={MAP_ID}
           >
-            {guessLocation && <Marker position={guessLocation} />}
-            {answerLocation && <Marker position={answerLocation} />}
+            {guessLocation && <AdvancedMarker position={guessLocation} />}
+            {answerLocation && <AdvancedMarker position={answerLocation} />}
           </Map>
           <Button
             color="green"
