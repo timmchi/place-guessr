@@ -16,6 +16,7 @@ const Room = ({ room, type, chosen }) => {
         ) : (
           <SingleGame
             roomMapType={room.region === "random" ? "world" : "country"}
+            region={room.region !== "random" && room.region}
           />
         ))}
     </div>

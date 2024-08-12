@@ -3,10 +3,10 @@ import axios from "axios";
 const geonamesApiUrl = "http://localhost:3000/proxy";
 const geolistApiUrl = "http://localhost:3000/geolist";
 
-const getRandomLocation = async (apiType) => {
+const getRandomLocation = async (apiType, region) => {
   try {
     if (apiType === "geonames") {
-      const response = await axios.get(geonamesApiUrl);
+      const response = await axios.get(`${geonamesApiUrl}/${region}`);
 
       const { nearest } = response.data;
       const { latt, longt } = nearest;

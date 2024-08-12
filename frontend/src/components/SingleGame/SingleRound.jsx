@@ -4,7 +4,13 @@ import { Button } from "@material-tailwind/react";
 import { calculateScore } from "../../utils/scoreUtils";
 import LocationFetcher from "../Map/LocationFetcher";
 
-const SingleRound = ({ player, round, handleRoundChange, roomMapType }) => {
+const SingleRound = ({
+  player,
+  round,
+  handleRoundChange,
+  roomMapType,
+  region,
+}) => {
   const [score, setScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
   const [fetchNewLocation, setFetchNewLocation] = useState(null);
@@ -41,6 +47,7 @@ const SingleRound = ({ player, round, handleRoundChange, roomMapType }) => {
             roomMapType={roomMapType}
             onRoundEnd={endRound}
             setRefetch={setFetchNewLocation}
+            region={region}
             // isEnded={isEnded}
           />
         </>

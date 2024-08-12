@@ -43,10 +43,10 @@ app.get("/geolist", (req, res) => {
   }
 });
 
-app.get("/proxy", async (req, res) => {
+app.get("/proxy/:region", async (req, res) => {
   try {
-    // const { region } = req.body;
-    const region = "FR";
+    const { region } = req.params;
+    // const region = "FR";
     const response = await axios.get(`${apiURL}=${region}&json=1`);
     res.json(response.data);
   } catch (error) {
