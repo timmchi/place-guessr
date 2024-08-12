@@ -10,7 +10,7 @@ import MapElement from "./Map";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const StreetView = ({ location }) => {
+const StreetView = ({ location, calculateScore }) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
@@ -47,9 +47,14 @@ const StreetView = ({ location }) => {
     });
   }, [location, streetViewService]);
 
+  // i think these 2 effects will need to be refactored... you might not need an effect
   useEffect(() => {
     if (answerLocation && guessLocation) calculateDistance();
   }, [answerLocation]);
+
+  useEffect(() => {
+    if (distance) calculateScore(distance);
+  }, [distance]);
 
   if (!isLoaded) return null;
 

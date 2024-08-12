@@ -1,3 +1,4 @@
+// calculating distance between guess marker and answer marker
 export const haversine_distance = (mk1, mk2) => {
   var R = 6371.071; // Radius of the Earth in km
   // Convert degrees to radians
@@ -20,3 +21,23 @@ export const haversine_distance = (mk1, mk2) => {
     );
   return d;
 };
+
+// Score based on distance https://www.reddit.com/r/geoguessr/comments/zqwgnr/comment/j12rjkq/
+// score = 5000 * e ^ ( -10 * distance / mapsize )
+// 14916.862 KM mapsize, world map
+// 2.71828 e
+export const calculateScore = (distance) => {
+  const score = 5000 * 2.71828 ** ((-10 * distance) / 14916.862);
+
+  return score;
+};
+
+// console.log("5000 km score", calculateScore(5000)); 175.08718187455935
+
+// console.log("1000 km score", calculateScore(1000)); 2557.5661421777627
+
+// console.log("500 km score", calculateScore(500)); 3576.007649724594
+
+// console.log("100 km score", calculateScore(100)); 4675.797466421211
+
+// console.log("0 km score", calculateScore(0)); 5000

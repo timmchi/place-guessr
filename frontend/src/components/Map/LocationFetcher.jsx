@@ -4,7 +4,7 @@ import { useMap } from "@vis.gl/react-google-maps";
 import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
-const LocationFetcher = () => {
+const LocationFetcher = ({ calculateScore }) => {
   const [apiType, setApiType] = useState(null);
   const [location, setLocation] = useState({ lat: 45, lng: 45 });
   //   const [distance, setDistance] = useState(0);
@@ -49,6 +49,7 @@ const LocationFetcher = () => {
       {location && (
         <StreetView
           location={location}
+          calculateScore={calculateScore}
           //   distance={distance}
           //   handleGuess={handleGuess}
         />

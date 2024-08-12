@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Player from "../Player/Player";
 import { Button } from "@material-tailwind/react";
+import { calculateScore } from "../../utils/scoreUtils";
 import LocationFetcher from "../Map/LocationFetcher";
 
 const SingleRound = ({ player, round, handleRoundChange }) => {
@@ -21,13 +22,19 @@ const SingleRound = ({ player, round, handleRoundChange }) => {
     handleRoundChange(1);
   };
 
+  const calculateGameScore = (distance) => {
+    const calculatedScore = calculateScore(distance);
+    const newScore = score + calculatedScore;
+    setScore(newScore);
+  };
+
   return (
     <div>
       <Button onClick={resetGame}>Reset game</Button>
       {!isEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round}</h1>
-          <LocationFetcher />
+          <LocationFetcher calculateScore={calculateGameScore} />
           <Button onClick={endRound}>End round</Button>
         </>
       )}

@@ -17,7 +17,7 @@ const Player = ({
       <h1 className="text-2xl font-bold ">{player.name}</h1>
       {gameType === "single" && (
         <>
-          <div className="text-2xl font-bold">Score {score}</div>
+          <div className="text-2xl font-bold">Score {Math.trunc(score)}</div>
         </>
       )}
       {gameType === "vs" && (
