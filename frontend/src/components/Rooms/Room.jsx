@@ -8,7 +8,16 @@ const Room = ({ room, type, chosen }) => {
     <div className="border-2 border-black text-xl">
       <p>{room.title}</p>
       <p>{room.region}</p>
-      {chosen && (type === "VS" ? <VsGame /> : <SingleGame />)}
+      {chosen &&
+        (type === "VS" ? (
+          <VsGame
+            roomMapType={room.region === "random" ? "world" : "country"}
+          />
+        ) : (
+          <SingleGame
+            roomMapType={room.region === "random" ? "world" : "country"}
+          />
+        ))}
     </div>
   );
 };

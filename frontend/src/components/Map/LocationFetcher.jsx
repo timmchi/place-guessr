@@ -4,10 +4,12 @@ import { useMap } from "@vis.gl/react-google-maps";
 import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
-const LocationFetcher = ({ calculateScore }) => {
-  const [apiType, setApiType] = useState(null);
+const LocationFetcher = ({ calculateScore, roomMapType }) => {
+  // geolist backend api is suited more to the entire world map, as it is random points across the world, while geonames can be limited to a specific country, hence why it is used with the 'country' roomMapType
+  const [apiType, setApiType] = useState(
+    roomMapType === "world" ? "geolist" : "geonames"
+  );
   const [location, setLocation] = useState({ lat: 45, lng: 45 });
-  //   const [distance, setDistance] = useState(0);
 
   // uncomment if checking whether the map loc is same as pano, otherwise no need
   //   const map = useMap();
@@ -24,10 +26,6 @@ const LocationFetcher = ({ calculateScore }) => {
       //   map.setCenter({ lat: data.lat, lng: data.lng });
     }
   };
-
-  //   const handleGuess = (d) => {
-  //     setDistance(d);
-  //   };
 
   return (
     <div>
