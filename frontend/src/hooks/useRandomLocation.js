@@ -5,7 +5,7 @@ const useRandomLocation = (apiType) => {
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["location", apiType],
     queryFn: async () => await mapsService.getRandomLocation(apiType),
-    enabled: false,
+    // enabled: false,
     staleTime: Infinity,
   });
 

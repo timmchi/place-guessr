@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useStreetView from "../../hooks/useStreetView";
 import {
   GoogleMap,
@@ -16,6 +16,9 @@ const StreetView = ({ location, calculateScore }) => {
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
   const [distance, setDistance] = useState(0);
+
+  const mapRef = useRef(null);
+  const streetViewRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
@@ -56,6 +59,15 @@ const StreetView = ({ location, calculateScore }) => {
     if (distance) calculateScore(distance);
   }, [distance]);
 
+  // unmount cleanup
+  useEffect(() => {
+    return () => {
+      if (mapRef.current) mapRef.current = null;
+
+      if (streetViewRef.current) streetViewRef.current = null;
+    };
+  }, []);
+
   if (!isLoaded) return null;
 
   //   console.log("panoPosition outside", panoPosition);
@@ -95,6 +107,8 @@ const StreetView = ({ location, calculateScore }) => {
           mapContainerStyle={containerStyle}
           center={panoPosition}
           zoom={10}
+          onLoad={(map) => (mapRef.current = map)}
+          onUnmount={() => (mapRef.current = null)}
         >
           <StreetViewPanorama
             mapContainerStyle={containerStyle}
@@ -110,6 +124,8 @@ const StreetView = ({ location, calculateScore }) => {
               enableCloseButton: false,
               zoomControl: false,
             }}
+            onLoad={(streetView) => (streetViewRef.current = streetView)}
+            onUnmount={() => (streetViewRef.current = null)}
           />
         </GoogleMap>
         <MapElement

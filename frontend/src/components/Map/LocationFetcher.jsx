@@ -38,12 +38,7 @@ const LocationFetcher = ({ calculateScore, roomMapType }) => {
         </Button>
       </div>
       {location && (
-        <StreetView
-          location={location}
-          calculateScore={calculateScore}
-          //   distance={distance}
-          //   handleGuess={handleGuess}
-        />
+        <StreetView location={location} calculateScore={calculateScore} />
       )}
     </div>
   );
