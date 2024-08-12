@@ -1,12 +1,25 @@
+import { useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
-const LocationFetcher = ({ calculateScore, roomMapType }) => {
+const LocationFetcher = ({
+  calculateScore,
+  roomMapType,
+  onRoundEnd,
+  setRefetch,
+}) => {
   // geolist backend api is suited more to the entire world map, as it is random points across the world, while geonames can be limited to a specific country, hence why it is used with the 'country' roomMapType
   const { isLoading, data, refetch } = useRandomLocation(
     roomMapType === "world" ? "geolist" : "geonames"
   );
+
+  // I dont like this, need to find a way to make fetching new street view on round start better
+  useEffect(() => {
+    if (setRefetch) {
+      setRefetch(() => refetch);
+    }
+  }, [refetch, setRefetch]);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -29,6 +42,7 @@ const LocationFetcher = ({ calculateScore, roomMapType }) => {
         <StreetView
           location={{ lat: data.lat, lng: data.lng }}
           calculateScore={calculateScore}
+          onRoundEnd={onRoundEnd}
         />
       )}
     </div>

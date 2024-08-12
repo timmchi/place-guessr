@@ -7,10 +7,11 @@ import {
 } from "@react-google-maps/api";
 import { haversine_distance } from "../../utils/scoreUtils";
 import MapElement from "./Map";
+import { Button } from "@material-tailwind/react";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const StreetView = ({ location, calculateScore }) => {
+const StreetView = ({ location, calculateScore, onRoundEnd }) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
@@ -52,12 +53,6 @@ const StreetView = ({ location, calculateScore }) => {
     });
   }, [location, streetViewService]);
 
-  // i think these 2 effects will need to be refactored... you might not need an effect
-
-  //   useEffect(() => {
-  //     if (distance) calculateScore(distance);
-  //   }, [distance]);
-
   // unmount cleanup
   useEffect(() => {
     return () => {
@@ -91,19 +86,23 @@ const StreetView = ({ location, calculateScore }) => {
     console.log("answer location in submit guess", updatedAnswerLocation);
 
     calculateScore(distanceResult);
+  };
 
-    setTimeout(() => {
-      setGuessLocation(null);
-      setAnswerLocation(null);
-    }, 5000);
+  const handleEndRound = () => {
+    onRoundEnd();
+    setGuessLocation(null);
+    setAnswerLocation(null);
   };
 
   return (
     <div className="border-2 border-black m-4 p-2">
       <h2>Street view</h2>
-      <p className="text-2xl font-bold text-indigo-400">
-        Distance: {distance} km
-      </p>
+      {distance && (
+        <p className="text-2xl font-bold text-indigo-400">
+          Distance: {distance} km
+        </p>
+      )}
+      <Button onClick={handleEndRound}>End round</Button>
       <div className="relative">
         <GoogleMap
           mapContainerStyle={containerStyle}

@@ -7,6 +7,7 @@ import LocationFetcher from "../Map/LocationFetcher";
 const SingleRound = ({ player, round, handleRoundChange, roomMapType }) => {
   const [score, setScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
+  const [fetchNewLocation, setFetchNewLocation] = useState(null);
 
   const endRound = () => {
     setIsEnded(true);
@@ -15,6 +16,7 @@ const SingleRound = ({ player, round, handleRoundChange, roomMapType }) => {
 
   const startRound = () => {
     setIsEnded(false);
+    if (fetchNewLocation) fetchNewLocation();
   };
 
   const resetGame = () => {
@@ -37,8 +39,10 @@ const SingleRound = ({ player, round, handleRoundChange, roomMapType }) => {
           <LocationFetcher
             calculateScore={calculateGameScore}
             roomMapType={roomMapType}
+            onRoundEnd={endRound}
+            setRefetch={setFetchNewLocation}
+            // isEnded={isEnded}
           />
-          <Button onClick={endRound}>End round</Button>
         </>
       )}
       {isEnded && (
