@@ -27,8 +27,6 @@ const StreetView = ({ location, calculateScore }) => {
     width: "100vw",
   };
 
-  //   console.log("location in streetview", location);
-
   useEffect(() => {
     if (!location || !streetViewService) return;
 

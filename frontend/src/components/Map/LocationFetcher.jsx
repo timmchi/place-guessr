@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import { useMap } from "@vis.gl/react-google-maps";
 import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
 const LocationFetcher = ({ calculateScore, roomMapType }) => {
-  const [location, setLocation] = useState({ lat: 45, lng: 45 });
+  const [location, setLocation] = useState(null);
 
   // uncomment if checking whether the map loc is same as pano, otherwise no need
   //   const map = useMap();
@@ -15,15 +15,18 @@ const LocationFetcher = ({ calculateScore, roomMapType }) => {
     roomMapType === "world" ? "geolist" : "geonames"
   );
 
+  useEffect(() => {
+    if (data) {
+      setLocation({ lat: data.lat, lng: data.lng });
+      //   uncomment if checking whether the map loc is same as pano, otherwise no need
+      //   map.setCenter({ lat: data.lat, lng: data.lng });
+    }
+  }, [data]);
+
   if (isLoading) return <div>Loading...</div>;
 
   const fetchLocation = () => {
     refetch();
-    if (data) {
-      setLocation({ lat: data.lat, lng: data.lng });
-      // uncomment if checking whether the map loc is same as pano, otherwise no need
-      //   map.setCenter({ lat: data.lat, lng: data.lng });
-    }
   };
 
   return (
