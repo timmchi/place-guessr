@@ -5,8 +5,6 @@ import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
 const LocationFetcher = ({ calculateScore, roomMapType }) => {
-  const [location, setLocation] = useState(null);
-
   // uncomment if checking whether the map loc is same as pano, otherwise no need
   //   const map = useMap();
 
@@ -14,14 +12,6 @@ const LocationFetcher = ({ calculateScore, roomMapType }) => {
   const { isLoading, data, refetch } = useRandomLocation(
     roomMapType === "world" ? "geolist" : "geonames"
   );
-
-  useEffect(() => {
-    if (data) {
-      setLocation({ lat: data.lat, lng: data.lng });
-      //   uncomment if checking whether the map loc is same as pano, otherwise no need
-      //   map.setCenter({ lat: data.lat, lng: data.lng });
-    }
-  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -40,8 +30,11 @@ const LocationFetcher = ({ calculateScore, roomMapType }) => {
           Fetch location
         </Button>
       </div>
-      {location && (
-        <StreetView location={location} calculateScore={calculateScore} />
+      {data && (
+        <StreetView
+          location={{ lat: data.lat, lng: data.lng }}
+          calculateScore={calculateScore}
+        />
       )}
     </div>
   );
