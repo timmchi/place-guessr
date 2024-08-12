@@ -15,7 +15,11 @@ const StreetView = ({ location, calculateScore }) => {
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
-  const [distance, setDistance] = useState(0);
+
+  let distance;
+
+  if (answerLocation && guessLocation)
+    distance = Math.trunc(haversine_distance(guessLocation, answerLocation));
 
   const mapRef = useRef(null);
   const streetViewRef = useRef(null);
@@ -49,13 +53,10 @@ const StreetView = ({ location, calculateScore }) => {
   }, [location, streetViewService]);
 
   // i think these 2 effects will need to be refactored... you might not need an effect
-  useEffect(() => {
-    if (answerLocation && guessLocation) calculateDistance();
-  }, [answerLocation]);
 
-  useEffect(() => {
-    if (distance) calculateScore(distance);
-  }, [distance]);
+  //   useEffect(() => {
+  //     if (distance) calculateScore(distance);
+  //   }, [distance]);
 
   // unmount cleanup
   useEffect(() => {
@@ -78,20 +79,23 @@ const StreetView = ({ location, calculateScore }) => {
 
   const submitGuess = () => {
     console.log("submitting answer, ending round...");
-    setAnswerLocation(panoPosition);
+    const updatedAnswerLocation = panoPosition;
+
+    setAnswerLocation(updatedAnswerLocation);
+
+    const distanceResult = Math.trunc(
+      haversine_distance(guessLocation, updatedAnswerLocation)
+    );
+
     console.log("guess location in submit guess", guessLocation);
-    console.log("answer location in submit guess", answerLocation);
+    console.log("answer location in submit guess", updatedAnswerLocation);
+
+    calculateScore(distanceResult);
+
     setTimeout(() => {
       setGuessLocation(null);
       setAnswerLocation(null);
     }, 5000);
-  };
-
-  const calculateDistance = () => {
-    const distanceResult = Math.trunc(
-      haversine_distance(guessLocation, answerLocation)
-    );
-    setDistance(distanceResult);
   };
 
   return (
