@@ -29,7 +29,7 @@ const StreetView = ({ location, calculateScore, onRoundEnd }) => {
 
   const containerStyle = {
     height: "100vh",
-    width: "99.1vw",
+    width: "100vw",
   };
 
   useEffect(() => {

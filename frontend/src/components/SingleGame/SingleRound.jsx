@@ -57,10 +57,16 @@ const SingleRound = ({
               lat: {data?.lat}, lng: {data?.lng}
             </p>
             <div className="flex gap-2">
-              <Button variant="outlined" onClick={fetchLocation}>
+              <Button
+                onClick={fetchLocation}
+                className="bg-green-800 hover:bg-green-900"
+              >
                 Fetch location
               </Button>
-              <Button onClick={resetGame} className="bg-red-900">
+              <Button
+                onClick={resetGame}
+                className="bg-red-800 hover:bg-red-900"
+              >
                 Reset game
               </Button>
             </div>
