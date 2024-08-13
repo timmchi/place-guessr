@@ -13,7 +13,7 @@ const MapElement = ({
   return (
     <div
       style={{ transition: "all 0.5s" }}
-      className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:scale-125 hover:left-16 active:scale-125 hover:opacity-100"
+      className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:h-[27rem] hover:w-[36rem] active:h-[27rem] active:w-[36rem] hover:opacity-100 active:opacity-100"
     >
       <Map
         defaultZoom={2}
@@ -42,7 +42,7 @@ const MapElement = ({
         onClick={submitGuess}
         disabled={guessLocation ? false : true}
       >
-        {guessLocation ? "Submit Guess" : "Make a Guess"}
+        {guessLocation ? "Submit Guess" : "Place your pin on the map"}
       </Button>
     </div>
   );

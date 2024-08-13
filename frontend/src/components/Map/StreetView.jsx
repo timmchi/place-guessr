@@ -29,7 +29,7 @@ const StreetView = ({ location, calculateScore, onRoundEnd }) => {
 
   const containerStyle = {
     height: "100vh",
-    width: "100vw",
+    width: "99.1vw",
   };
 
   useEffect(() => {
@@ -95,15 +95,21 @@ const StreetView = ({ location, calculateScore, onRoundEnd }) => {
   };
 
   return (
-    <div className="border-2 border-black m-4 p-2">
-      <h2>Street view</h2>
-      {distance && (
-        <p className="text-2xl font-bold text-indigo-400">
-          Distance: {distance} km
-        </p>
-      )}
-      <Button onClick={handleEndRound}>End round</Button>
+    <div className="">
       <div className="relative">
+        <div className="absolute z-10 top-1/2 right-2">
+          {distance && (
+            <p className="text-2xl font-bold text-indigo-400">
+              Distance: {distance} km
+            </p>
+          )}
+          <Button
+            className="bg-indigo-400 hover:bg-indigo-600"
+            onClick={handleEndRound}
+          >
+            Next round
+          </Button>
+        </div>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={panoPosition}
@@ -124,6 +130,7 @@ const StreetView = ({ location, calculateScore, onRoundEnd }) => {
               addressControl: false,
               enableCloseButton: false,
               zoomControl: false,
+              fullscreenControl: false,
             }}
             onLoad={(streetView) => (streetViewRef.current = streetView)}
             onUnmount={() => (streetViewRef.current = null)}

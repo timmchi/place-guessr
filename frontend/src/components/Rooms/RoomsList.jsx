@@ -32,13 +32,17 @@ const RoomsList = ({ type }) => {
   }
 
   return (
-    <div>
+    <div className="relative">
       <Room
         room={rooms.find((room) => room.id === chosenRoom)}
         type={type}
         chosen={true}
       />
-      <Button variant="outlined" onClick={() => setChosenRoom(null)}>
+      <Button
+        variant="outlined"
+        onClick={() => setChosenRoom(null)}
+        className="absolute z-10 top-28 right-5"
+      >
         Back to room selection
       </Button>
     </div>

@@ -12,10 +12,12 @@ const SingleGame = ({ roomMapType, region }) => {
   const handleRoundChange = (round) => setRound(round);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-indigo-400">
-        Playing a SINGLE game
-      </h1>
+    <div className="relative">
+      <div className="absolute z-10 right-5">
+        <h1 className="text-2xl font-bold text-indigo-600">
+          Playing a SINGLE game
+        </h1>
+      </div>
       <SingleRound
         player={players[0]}
         round={round}

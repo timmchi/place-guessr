@@ -2,7 +2,6 @@ import { useState } from "react";
 import Player from "../Player/Player";
 import { Button } from "@material-tailwind/react";
 import { calculateScore } from "../../utils/scoreUtils";
-import LocationFetcher from "../Map/LocationFetcher";
 import StreetView from "../Map/StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
@@ -50,17 +49,21 @@ const SingleRound = ({
 
   return (
     <div>
-      <Button onClick={resetGame}>Reset game</Button>
       {!isEnded && (
         <>
-          <h1 className="text-4xl font-bold">Round {round}</h1>
-          <p>
-            lat: {data?.lat}, lng: {data?.lng}
-          </p>
-          <div className="flex">
-            <Button variant="outlined" onClick={fetchLocation}>
-              Fetch location
-            </Button>
+          <div className="absolute z-10">
+            <h1 className="text-4xl font-bold">Round {round}</h1>
+            <p>
+              lat: {data?.lat}, lng: {data?.lng}
+            </p>
+            <div className="flex gap-2">
+              <Button variant="outlined" onClick={fetchLocation}>
+                Fetch location
+              </Button>
+              <Button onClick={resetGame} className="bg-red-900">
+                Reset game
+              </Button>
+            </div>
           </div>
           {data && (
             <StreetView
