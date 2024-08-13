@@ -3,6 +3,8 @@ import Player from "../Player/Player";
 import { Button } from "@material-tailwind/react";
 import { calculateScore } from "../../utils/scoreUtils";
 import LocationFetcher from "../Map/LocationFetcher";
+import StreetView from "../Map/StreetView";
+import useRandomLocation from "../../hooks/useRandomLocation";
 
 const SingleRound = ({
   player,
@@ -13,7 +15,17 @@ const SingleRound = ({
 }) => {
   const [score, setScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
-  const [fetchNewLocation, setFetchNewLocation] = useState(null);
+
+  const { isLoading, data, refetch } = useRandomLocation(
+    roomMapType === "world" ? "geolist" : "geonames",
+    region && region
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  const fetchLocation = () => {
+    refetch();
+  };
 
   const endRound = () => {
     setIsEnded(true);
@@ -22,7 +34,7 @@ const SingleRound = ({
 
   const startRound = () => {
     setIsEnded(false);
-    if (fetchNewLocation) fetchNewLocation();
+    refetch();
   };
 
   const resetGame = () => {
@@ -42,14 +54,21 @@ const SingleRound = ({
       {!isEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round}</h1>
-          <LocationFetcher
-            calculateScore={calculateGameScore}
-            roomMapType={roomMapType}
-            onRoundEnd={endRound}
-            setRefetch={setFetchNewLocation}
-            region={region}
-            // isEnded={isEnded}
-          />
+          <p>
+            lat: {data?.lat}, lng: {data?.lng}
+          </p>
+          <div className="flex">
+            <Button variant="outlined" onClick={fetchLocation}>
+              Fetch location
+            </Button>
+          </div>
+          {data && (
+            <StreetView
+              location={{ lat: data.lat, lng: data.lng }}
+              calculateScore={calculateGameScore}
+              onRoundEnd={endRound}
+            />
+          )}
         </>
       )}
       {isEnded && (
