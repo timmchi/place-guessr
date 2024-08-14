@@ -12,9 +12,15 @@ const Player = ({
   score,
 }) => {
   return (
-    <div className="flex flex-col items-center container mx-auto p-2">
+    <div
+      className={`flex ${
+        gameType === "vs" ? "flex-col" : "gap-4"
+      } items-center container mx-auto p-2`}
+    >
+      {gameType === "vs" && (
+        <h1 className="text-2xl font-bold ">{player.name}</h1>
+      )}
       <Avatar />
-      <h1 className="text-2xl font-bold ">{player.name}</h1>
       {gameType === "single" && (
         <>
           <div className="text-2xl font-bold">Score {Math.trunc(score)}</div>

@@ -11,7 +11,7 @@ import { Button } from "@material-tailwind/react";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const StreetView = ({ location, calculateScore, onRoundEnd }) => {
+const StreetView = ({ location, calculateScore, onRoundEnd, isEnded }) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
@@ -90,8 +90,8 @@ const StreetView = ({ location, calculateScore, onRoundEnd }) => {
 
   const handleEndRound = () => {
     onRoundEnd();
-    setGuessLocation(null);
-    setAnswerLocation(null);
+    // setGuessLocation(null);
+    // setAnswerLocation(null);
   };
 
   return (
@@ -141,6 +141,7 @@ const StreetView = ({ location, calculateScore, onRoundEnd }) => {
           guessLocation={guessLocation}
           answerLocation={answerLocation}
           submitGuess={submitGuess}
+          isEnded={isEnded}
         />
       </div>
     </div>

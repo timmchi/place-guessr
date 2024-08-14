@@ -9,7 +9,32 @@ const MapElement = ({
   guessLocation,
   answerLocation,
   submitGuess,
+  isEnded,
 }) => {
+  if (isEnded) {
+    return (
+      <div
+        style={{ transition: "all 0.5s" }}
+        className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 pb-36"
+      >
+        <Map
+          defaultZoom={2}
+          defaultCenter={{ lat: 0, lng: 0 }}
+          disableDefaultUI={true}
+          clickableIcons={false}
+          reuseMaps={true}
+          mapId={MAP_ID}
+        >
+          <AdvancedMarker position={guessLocation} title="Your guess" />
+
+          <AdvancedMarker position={answerLocation} title="Correct location" />
+
+          <Polyline path={[guessLocation, answerLocation]} />
+        </Map>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{ transition: "all 0.5s" }}

@@ -49,45 +49,51 @@ const SingleRound = ({
 
   return (
     <div>
-      {!isEnded && (
-        <>
-          <div className="absolute z-10">
-            <h1 className="text-4xl font-bold">Round {round}</h1>
-            <p>
-              lat: {data?.lat}, lng: {data?.lng}
-            </p>
-            <div className="flex gap-2">
-              <Button
-                onClick={fetchLocation}
-                className="bg-green-800 hover:bg-green-900"
-              >
-                Fetch location
-              </Button>
-              <Button
-                onClick={resetGame}
-                className="bg-red-800 hover:bg-red-900"
-              >
-                Reset game
-              </Button>
+      {/* {!isEnded && ( */}
+      <>
+        <div className="absolute z-20">
+          <h1 className="text-4xl font-bold">Round {round}</h1>
+          <p>
+            lat: {data?.lat}, lng: {data?.lng}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              onClick={fetchLocation}
+              className="bg-green-800 hover:bg-green-900"
+            >
+              Fetch location
+            </Button>
+            <Button onClick={resetGame} className="bg-red-800 hover:bg-red-900">
+              Reset game
+            </Button>
+          </div>
+        </div>
+        {data && (
+          <StreetView
+            location={{ lat: data.lat, lng: data.lng }}
+            calculateScore={calculateGameScore}
+            onRoundEnd={endRound}
+            isEnded={isEnded}
+          />
+        )}
+        {isEnded && (
+          <div className="absolute z-20 bottom-0 w-full">
+            <div className="flex">
+              <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
+              <Player player={player} gameType="single" score={score} />
+              <Button onClick={startRound}>Start next round</Button>
             </div>
           </div>
-          {data && (
-            <StreetView
-              location={{ lat: data.lat, lng: data.lng }}
-              calculateScore={calculateGameScore}
-              onRoundEnd={endRound}
-              isEnded={isEnded}
-            />
-          )}
-        </>
-      )}
-      {isEnded && (
+        )}
+      </>
+      {/* )} */}
+      {/* {isEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
           <Player player={player} gameType="single" score={score} />
           <Button onClick={startRound}>Next round</Button>
         </>
-      )}
+      )} */}
     </div>
   );
 };
