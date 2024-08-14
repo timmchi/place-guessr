@@ -13,8 +13,8 @@ const RoomCard = ({ room }) => {
 
   return (
     <Card
-      shadow={false}
-      className="relative grid h-[30rem] w-full max-w-[20rem] items-end justify-center overflow-hidden text-center"
+      style={{ transition: "all 0.5s" }}
+      className="relative grid h-[30rem] w-full max-w-[20rem] items-end justify-center overflow-hidden text-center hover:scale-105"
     >
       <CardHeader
         floated={false}
@@ -37,7 +37,7 @@ const RoomCard = ({ room }) => {
           size="xl"
           variant="circular"
           alt={`flag of ${room.region !== "random" ? room.title : "the world"}`}
-          className="border-2 border-white"
+          className="border-2 border-indigo-700"
           src={room.flag}
         />
         <Button

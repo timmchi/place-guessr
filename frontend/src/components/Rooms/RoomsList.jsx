@@ -6,7 +6,7 @@ const RoomsList = ({ type, rooms }) => {
   if (!type) return <div>Please choose game type first</div>;
 
   return (
-    <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 container mx-auto">
+    <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 container mx-auto my-4">
       {rooms.map((room) => (
         <li key={room.id}>
           <div>
