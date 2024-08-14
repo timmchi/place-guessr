@@ -111,7 +111,7 @@ const StreetView = ({
     <div className="">
       <div className="relative">
         {distance && (
-          <div className="absolute z-20 text-white-200 bottom-0 left-[43.5rem] pb-8 font-bold flex items-center gap-4">
+          <div className="absolute z-20 text-white-200 bottom-0 left-[47rem] pb-8 font-bold flex items-center gap-4">
             <div>
               <p className="text-4xl">{distance} km</p>
               <p className="text-sm">from location</p>

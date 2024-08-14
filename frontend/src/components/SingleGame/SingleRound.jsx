@@ -51,7 +51,8 @@ const SingleRound = ({
     <div>
       {/* {!isEnded && ( */}
       <>
-        <div className="absolute z-20">
+        {/* uncomment this if u want to check the coordinates fetched by useRandomLocation */}
+        {/* <div className="absolute z-20">
           <h1 className="text-4xl font-bold">Round {round}</h1>
           <p>
             lat: {data?.lat}, lng: {data?.lng}
@@ -67,7 +68,7 @@ const SingleRound = ({
               Reset game
             </Button>
           </div>
-        </div>
+        </div> */}
         {data && (
           <StreetView
             location={{ lat: data.lat, lng: data.lng }}
@@ -78,12 +79,17 @@ const SingleRound = ({
           />
         )}
         {isEnded && (
-          <div className="absolute z-20 bottom-0 left-[66.5rem]">
+          <div className="absolute z-20 bottom-0 left-[70rem]">
             <div className="flex pb-8 items-center">
               {/* <h1 className="text-4xl font-bold pt-2 pr-4">
                 Round {round - 1} results
               </h1> */}
-              <Player player={player} gameType="single" score={score} />
+              <Player
+                player={player}
+                gameType="single"
+                score={score}
+                round={round - 1}
+              />
               {/* <Button
                 onClick={startRound}
                 className="bg-green-700 rounded-full text-lg"

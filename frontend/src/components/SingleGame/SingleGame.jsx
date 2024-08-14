@@ -13,11 +13,11 @@ const SingleGame = ({ roomMapType, region }) => {
 
   return (
     <div className="relative">
-      <div className="absolute z-10 right-5">
+      {/* <div className="absolute z-10 right-5">
         <h1 className="text-2xl font-bold text-indigo-600">
           Playing a SINGLE game
         </h1>
-      </div>
+      </div> */}
       <SingleRound
         player={players[0]}
         round={round}
