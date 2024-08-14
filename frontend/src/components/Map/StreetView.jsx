@@ -11,7 +11,13 @@ import { Button } from "@material-tailwind/react";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const StreetView = ({ location, calculateScore, onRoundEnd, isEnded }) => {
+const StreetView = ({
+  location,
+  calculateScore,
+  onRoundEnd,
+  onRoundStart,
+  isEnded,
+}) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
@@ -86,6 +92,7 @@ const StreetView = ({ location, calculateScore, onRoundEnd, isEnded }) => {
     console.log("answer location in submit guess", updatedAnswerLocation);
 
     calculateScore(distanceResult);
+    onRoundEnd();
   };
 
   const handleEndRound = () => {
@@ -94,15 +101,30 @@ const StreetView = ({ location, calculateScore, onRoundEnd, isEnded }) => {
     // setAnswerLocation(null);
   };
 
+  const handleStartRound = () => {
+    onRoundStart();
+    setGuessLocation(null);
+    setAnswerLocation(null);
+  };
+
   return (
     <div className="">
       <div className="relative">
-        <div className="absolute z-10 top-1/2 right-2">
-          {distance && (
-            <p className="text-2xl font-bold text-indigo-400">
-              Distance: {distance} km
-            </p>
-          )}
+        {distance && (
+          <div className="absolute z-20 text-white-200 bottom-0 left-[43.5rem] pb-8 font-bold flex items-center gap-4">
+            <div>
+              <p className="text-4xl">{distance} km</p>
+              <p className="text-sm">from location</p>
+            </div>
+            <Button
+              className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
+              onClick={handleStartRound}
+            >
+              Start Next Round
+            </Button>
+          </div>
+        )}
+        <div className="absolute top-1/2 right-2">
           <Button
             className="bg-indigo-400 hover:bg-indigo-600"
             onClick={handleEndRound}

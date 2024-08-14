@@ -73,15 +73,23 @@ const SingleRound = ({
             location={{ lat: data.lat, lng: data.lng }}
             calculateScore={calculateGameScore}
             onRoundEnd={endRound}
+            onRoundStart={startRound}
             isEnded={isEnded}
           />
         )}
         {isEnded && (
-          <div className="absolute z-20 bottom-0 w-full">
-            <div className="flex">
-              <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
+          <div className="absolute z-20 bottom-0 left-[66.5rem]">
+            <div className="flex pb-8 items-center">
+              {/* <h1 className="text-4xl font-bold pt-2 pr-4">
+                Round {round - 1} results
+              </h1> */}
               <Player player={player} gameType="single" score={score} />
-              <Button onClick={startRound}>Start next round</Button>
+              {/* <Button
+                onClick={startRound}
+                className="bg-green-700 rounded-full text-lg"
+              >
+                Start next round
+              </Button> */}
             </div>
           </div>
         )}
