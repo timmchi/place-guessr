@@ -10,16 +10,17 @@ const Room = ({ type, room }) => {
 
   if (!room) return <div>This room does not exist</div>;
 
+  const goBackToRoomList = () => {
+    console.log("navigating back to room list...");
+    navigate("/rooms");
+  };
+
   return (
-    <div className="relative text-2xl font-bold text-green-900">
-      <div className="absolute z-10 right-5 top-10">
+    <div className="relative text-2xl font-bold text-white">
+      <div className="absolute z-20 right-5 top-10 bg-indigo-800">
         <p>{room.title}</p>
         <p>{room.region}</p>
-        <Button
-          variant="outlined"
-          onClick={() => navigate("/rooms")}
-          className="absolute z-10 top-28 right-5"
-        >
+        <Button onClick={goBackToRoomList} className="bg-green-600">
           Back to room selection
         </Button>
       </div>

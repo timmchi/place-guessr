@@ -5,7 +5,6 @@ export const rooms = [
     id: 3,
     region: "FR",
     title: "France",
-    emoji: "🇫🇷",
   },
   { id: 4, region: "UK", title: "United Kingdom" },
   { id: 5, region: "US", title: "United States of America" },

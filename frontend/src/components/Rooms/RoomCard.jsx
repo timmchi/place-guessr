@@ -8,7 +8,6 @@ const RoomCard = ({ room }) => {
     <div className="border-2 border-black">
       <p>{room.title}</p>
       <p>{room.region}</p>
-      {room.emoji && room.emoji}
       <Button onClick={() => navigate(`/rooms/${room.region}`)}>
         Select room
       </Button>
