@@ -76,6 +76,7 @@ const SingleRound = ({
               location={{ lat: data.lat, lng: data.lng }}
               calculateScore={calculateGameScore}
               onRoundEnd={endRound}
+              isEnded={isEnded}
             />
           )}
         </>
