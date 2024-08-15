@@ -1,12 +1,26 @@
 const express = require("express");
 const axios = require("axios");
 const { readFileSync } = require("fs");
+const { createServer } = require("node:http");
+const { Server } = require("socket.io");
 
 const app = express();
 const cors = require("cors");
+const server = createServer(app);
+const io = new Server(server);
 const port = 3000;
 
 const apiURL = "https://api.3geonames.org/?randomland";
+
+io.on("connection", (socket) => {
+  console.log("user connected");
+
+  socket.emit("hello world");
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -57,6 +71,6 @@ app.get("/proxy/:region", async (req, res) => {
 
 app.use(unknownEndpoint);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

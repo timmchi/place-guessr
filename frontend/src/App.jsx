@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
@@ -10,7 +11,28 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
   const [gameType, setGameType] = useState(null);
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onConnect = () => {
+      console.log("connected");
+      setIsConnected(true);
+    };
+
+    const onDisconnect = () => {
+      console.log("disconnected");
+      setIsConnected(false);
+    };
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, []);
 
   const regionMatch = useMatch("/rooms/:region");
   const room = regionMatch
