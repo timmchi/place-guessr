@@ -26,7 +26,7 @@ const Player = ({
         <>
           <div className="text-xl font-bold">
             <p className="text-yellow-700 text-4xl">{Math.trunc(score)}</p>
-            <p className="text-sm">out of {5000 * round} points</p>
+            <p className="text-sm">out of 5000 points</p>
           </div>
         </>
       )}

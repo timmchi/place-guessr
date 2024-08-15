@@ -14,7 +14,8 @@ const SingleRound = ({
   region,
   roomTitle,
 }) => {
-  const [score, setScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+  const [roundScore, setRoundScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
 
   const { isLoading, data, refetch } = useRandomLocation(
@@ -45,8 +46,9 @@ const SingleRound = ({
 
   const calculateGameScore = (distance) => {
     const calculatedScore = calculateScore(distance);
-    const newScore = score + calculatedScore;
-    setScore(newScore);
+    const newTotalScore = totalScore + calculatedScore;
+    setRoundScore(calculatedScore);
+    setTotalScore(newTotalScore);
   };
 
   return (
@@ -81,20 +83,21 @@ const SingleRound = ({
               isEnded={isEnded}
             />
             {!isEnded && (
-              <RoomNameWithScore name={roomTitle} round={round} score={score} />
+              <RoomNameWithScore
+                name={roomTitle}
+                round={round}
+                score={totalScore}
+              />
             )}
           </>
         )}
         {isEnded && (
-          <div className="absolute z-20 bottom-0 left-[65rem]">
+          <div className="absolute z-20 bottom-0 left-[66rem]">
             <div className="flex pb-8 items-center">
-              {/* <h1 className="text-4xl font-bold pt-2 pr-4">
-                Round {round - 1} results
-              </h1> */}
               <Player
                 player={player}
                 gameType="single"
-                score={score}
+                score={roundScore}
                 round={round - 1}
               />
               {/* <Button
