@@ -7,7 +7,11 @@ const { Server } = require("socket.io");
 const app = express();
 const cors = require("cors");
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
 const port = 3000;
 
 const apiURL = "https://api.3geonames.org/?randomland";
@@ -15,7 +19,7 @@ const apiURL = "https://api.3geonames.org/?randomland";
 io.on("connection", (socket) => {
   console.log("user connected");
 
-  socket.emit("hello world");
+  socket.emit("hello");
 
   socket.on("disconnect", () => {
     console.log("user disconnected");

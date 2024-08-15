@@ -25,12 +25,18 @@ function App() {
       setIsConnected(false);
     };
 
+    const onHello = () => {
+      console.log("hello wrld");
+    };
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
+    socket.on("hello", onHello);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
+      socket.off("hello", onHello);
     };
   }, []);
 
