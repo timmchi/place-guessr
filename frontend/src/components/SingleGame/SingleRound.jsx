@@ -3,6 +3,7 @@ import Player from "../Player/Player";
 import { Button } from "@material-tailwind/react";
 import { calculateScore } from "../../utils/scoreUtils";
 import StreetView from "../Map/StreetView";
+import RoomNameWithScore from "../RoomNameWithScore";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
 const SingleRound = ({
@@ -11,6 +12,7 @@ const SingleRound = ({
   handleRoundChange,
   roomMapType,
   region,
+  roomTitle,
 }) => {
   const [score, setScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
@@ -70,16 +72,21 @@ const SingleRound = ({
           </div>
         </div> */}
         {data && (
-          <StreetView
-            location={{ lat: data.lat, lng: data.lng }}
-            calculateScore={calculateGameScore}
-            onRoundEnd={endRound}
-            onRoundStart={startRound}
-            isEnded={isEnded}
-          />
+          <>
+            <StreetView
+              location={{ lat: data.lat, lng: data.lng }}
+              calculateScore={calculateGameScore}
+              onRoundEnd={endRound}
+              onRoundStart={startRound}
+              isEnded={isEnded}
+            />
+            {!isEnded && (
+              <RoomNameWithScore name={roomTitle} round={round} score={score} />
+            )}
+          </>
         )}
         {isEnded && (
-          <div className="absolute z-20 bottom-0 left-[70rem]">
+          <div className="absolute z-20 bottom-0 left-[65rem]">
             <div className="flex pb-8 items-center">
               {/* <h1 className="text-4xl font-bold pt-2 pr-4">
                 Round {round - 1} results

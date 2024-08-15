@@ -6,7 +6,7 @@ const players = [
   { id: 2, name: "Sheldon" },
 ];
 
-const SingleGame = ({ roomMapType, region }) => {
+const SingleGame = ({ roomMapType, region, roomTitle }) => {
   const [round, setRound] = useState(1);
 
   const handleRoundChange = (round) => setRound(round);
@@ -24,6 +24,7 @@ const SingleGame = ({ roomMapType, region }) => {
         handleRoundChange={handleRoundChange}
         roomMapType={roomMapType}
         region={region}
+        roomTitle={roomTitle}
       />
     </div>
   );

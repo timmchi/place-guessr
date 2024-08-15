@@ -17,19 +17,26 @@ const Room = ({ type, room }) => {
 
   return (
     <div className="relative text-2xl font-bold text-white">
-      <div className="absolute z-20 right-5 top-10 bg-indigo-800">
-        <p>{room.title}</p>
-        <p>{room.region}</p>
-        <Button onClick={goBackToRoomList} className="bg-green-600">
+      <div className="absolute z-20 right-5 top-36">
+        {/* <p>{room.title}</p>
+        <p>{room.region}</p> */}
+        <Button
+          onClick={goBackToRoomList}
+          className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
+        >
           Back to room selection
         </Button>
       </div>
       {type === "VS" ? (
-        <VsGame roomMapType={room.region === "random" ? "world" : "country"} />
+        <VsGame
+          roomMapType={room.region === "random" ? "world" : "country"}
+          roomTitle={room.title}
+        />
       ) : (
         <SingleGame
           roomMapType={room.region === "random" ? "world" : "country"}
           region={room.region !== "random" && room.region}
+          roomTitle={room.title}
         />
       )}
     </div>
