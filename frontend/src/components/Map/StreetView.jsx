@@ -43,7 +43,7 @@ const StreetView = ({
 
     const streetViewRequest = {
       location: location,
-      radius: 5000,
+      radius: 10000,
     };
 
     streetViewService.getPanorama(streetViewRequest, (data, status) => {
