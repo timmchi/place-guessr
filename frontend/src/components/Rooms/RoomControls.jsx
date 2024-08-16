@@ -38,11 +38,14 @@ const RoomControls = ({ room }) => {
   }
 
   return (
-    <RoomLobby
-      room={room}
-      gameStarted={gameStarted}
-      handleGameStart={() => setGameStarted(true)}
-    />
+    <>
+      <RoomLobby
+        room={room}
+        gameStarted={gameStarted}
+        handleGameStart={() => setGameStarted(true)}
+        handleGoingBack={() => setCreateOrJoinRoom(false)}
+      />
+    </>
   );
 };
 

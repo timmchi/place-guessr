@@ -1,17 +1,63 @@
-import { Button } from "@material-tailwind/react";
+import { Button, Typography, Avatar } from "@material-tailwind/react";
 import VsGame from "../VsGame/VsGame";
+import PlayerInLobby from "../Player/PlayerInLobby";
+import avatar from "../../../test/vavatar.jpg";
 
-const RoomLobby = ({ room, gameStarted, handleGameStart }) => {
+const players = [
+  { id: 1, name: "Kariz", avatar: avatar },
+  { id: 2, name: "Sheldon", avatar: avatar },
+];
+
+const RoomLobby = ({ room, gameStarted, handleGameStart, handleGoingBack }) => {
   if (!gameStarted) {
     return (
-      <div>
-        <div>
-          <h2>Users</h2>
+      <div className="bg-indigo-400 w-[50%] mx-auto rounded-lg shadow-md my-12">
+        <div className="flex gap-4 justify-center pt-12">
+          <Typography variant="h1" className="text-center pt-2">
+            {room.title}
+          </Typography>
+          <Avatar
+            size="xl"
+            variant="circular"
+            alt={`flag of ${
+              room.region !== "random" ? room.title : "the world"
+            }`}
+            className="border-2 border-indigo-700"
+            src={room.flag}
+          />
         </div>
-        <div>
-          <h3>Code</h3>
+        <div className="py-24 text-center">
+          <Typography variant="h2" className="text-yellow-600">
+            Code
+          </Typography>
+          <Typography variant="h5">
+            Send this code to the person you want to play with
+          </Typography>
         </div>
-        <Button onClick={handleGameStart}>Start the game</Button>
+        <div className="flex flex-col justify-center text-center">
+          <Typography variant="h3">Joined users</Typography>
+          <ul className="flex gap-4 justify-center mt-8">
+            {players.map((player) => (
+              <li key={player.id}>
+                <PlayerInLobby player={player} />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex gap-4 justify-center py-8">
+          <Button
+            onClick={handleGameStart}
+            className="bg-green-700 hover:bg-green-800"
+          >
+            Start the game
+          </Button>
+          <Button
+            onClick={handleGoingBack}
+            className="bg-deep-purple-300 hover:bg-deep-purple-400"
+          >
+            Go back
+          </Button>
+        </div>
       </div>
     );
   }
