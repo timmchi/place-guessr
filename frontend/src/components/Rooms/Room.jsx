@@ -34,7 +34,7 @@ const Room = ({ type, room }) => {
         //   roomMapType={room.region === "random" ? "world" : "country"}
         //   roomTitle={room.title}
         // />
-        <RoomControls />
+        <RoomControls room={room} />
       ) : (
         <SingleGame
           roomMapType={room.region === "random" ? "world" : "country"}
