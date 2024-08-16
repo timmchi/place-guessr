@@ -9,7 +9,7 @@ const RoomControls = ({ room }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [roomCode, setRoomCode] = useState("");
 
-  const joinRoom = (e, roomCode) => {
+  const joinRoom = (e) => {
     e.preventDefault();
     console.log("joining roooooom....");
     socket.emit("join room", socket.id, roomCode);
