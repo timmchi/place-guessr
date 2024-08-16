@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Typography, Avatar } from "@material-tailwind/react";
 import VsGame from "../VsGame/VsGame";
 import PlayerInLobby from "../Player/PlayerInLobby";
@@ -8,7 +9,13 @@ const players = [
   { id: 2, name: "Sheldon", avatar: avatar },
 ];
 
-const RoomLobby = ({ room, gameStarted, handleGameStart, handleGoingBack }) => {
+const RoomLobby = ({
+  room,
+  gameStarted,
+  handleGameStart,
+  handleGoingBack,
+  roomCode,
+}) => {
   if (!gameStarted) {
     return (
       <div className="bg-indigo-400 w-[50%] mx-auto rounded-lg shadow-md my-12">
@@ -28,7 +35,7 @@ const RoomLobby = ({ room, gameStarted, handleGameStart, handleGoingBack }) => {
         </div>
         <div className="py-20 text-center">
           <Typography variant="h1" className="text-yellow-600 pb-8">
-            Code
+            {roomCode}
           </Typography>
           <Typography variant="h5">
             Send this code to the person you want to play with

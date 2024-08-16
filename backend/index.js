@@ -32,6 +32,12 @@ io.on("connection", (socket) => {
     io.emit("submit answer", player, answer, socket.id);
   });
 
+  socket.on("join room", (player, roomId) => {
+    console.log(`${player} joining ${roomId}`);
+    socket.join(roomId);
+    io.to(roomId).emit("room joined", socket.id, roomId);
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
 

@@ -1,19 +1,26 @@
 import { useState } from "react";
 import { Button, Input } from "@material-tailwind/react";
+import { socket } from "../../sockets/socket";
+import { generateRoomCode } from "../../utils/socketUtils";
 import RoomLobby from "./RoomLobby";
 
 const RoomControls = ({ room }) => {
   const [createOrJoinRoom, setCreateOrJoinRoom] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [roomCode, setRoomCode] = useState("");
 
-  const joinRoom = (e) => {
+  const joinRoom = (e, roomCode) => {
     e.preventDefault();
     console.log("joining roooooom....");
+    socket.emit("join room", socket.id, roomCode);
     setCreateOrJoinRoom(true);
   };
 
   const createRoom = () => {
     console.log("creating a room");
+    const generatedRoomCode = generateRoomCode();
+    setRoomCode(generatedRoomCode);
+    socket.emit("join room", socket.id, generatedRoomCode);
     setCreateOrJoinRoom(true);
   };
 
@@ -27,7 +34,11 @@ const RoomControls = ({ room }) => {
         </div>
         <div className="p-4 basis-1/2 flex flex-col justify-center h-full">
           <form onSubmit={joinRoom}>
-            <Input placeholder="Room code" />
+            <Input
+              placeholder="Room code"
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value)}
+            />
             <Button className="w-full mt-2" type="submit">
               Join a room
             </Button>
@@ -41,6 +52,7 @@ const RoomControls = ({ room }) => {
     <>
       <RoomLobby
         room={room}
+        roomCode={roomCode}
         gameStarted={gameStarted}
         handleGameStart={() => setGameStarted(true)}
         handleGoingBack={() => setCreateOrJoinRoom(false)}

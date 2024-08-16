@@ -34,6 +34,10 @@ function App() {
       console.log(player, answer, playerId);
     };
 
+    const onJoiningRoom = (player, roomId) => {
+      console.log(`${player} joined ${roomId}`);
+    };
+
     const onUsers = (value) => console.log("users", value);
 
     socket.on("connect", onConnect);
@@ -41,6 +45,7 @@ function App() {
     socket.on("hello", onHello);
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
+    socket.on("room joined", onJoiningRoom);
 
     return () => {
       socket.off("connect", onConnect);
@@ -48,6 +53,7 @@ function App() {
       socket.off("hello", onHello);
       socket.off("users", onUsers);
       socket.off("submit answer", onAnswer);
+      socket.off("room joined", onJoiningRoom);
     };
   }, []);
 
