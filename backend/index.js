@@ -16,13 +16,30 @@ const port = 3000;
 
 const apiURL = "https://api.3geonames.org/?randomland";
 
+const users = [];
+
 io.on("connection", (socket) => {
   console.log("user connected");
 
+  users.push({ id: socket.id });
+
   socket.emit("hello");
+
+  io.emit("users", users);
+
+  socket.on("submit answer", (player, answer) => {
+    console.log(player, answer);
+    io.emit("submit answer", player, answer, socket.id);
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
+
+    users.splice(
+      users.findIndex((u) => u.id === socket.id),
+      1
+    );
+    io.emit("users", users);
   });
 });
 

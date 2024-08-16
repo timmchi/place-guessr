@@ -1,5 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import SocketConnectionManager from "./SocketConnectionManager";
+import AnswerEmitterTest from "./AnswerEmitterTest";
 
 const Home = ({ playSingleGame, playVsGame }) => {
   return (
@@ -7,6 +8,7 @@ const Home = ({ playSingleGame, playVsGame }) => {
       <Button onClick={playVsGame}>Play vs another player</Button>
       <Button onClick={playSingleGame}>Play single game</Button>
       <SocketConnectionManager />
+      <AnswerEmitterTest />
     </div>
   );
 };

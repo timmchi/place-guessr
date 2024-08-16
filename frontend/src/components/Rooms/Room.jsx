@@ -1,5 +1,6 @@
 import SingleGame from "../SingleGame/SingleGame";
 import VsGame from "../VsGame/VsGame";
+import RoomControls from "./RoomControls";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,11 +28,13 @@ const Room = ({ type, room }) => {
           Back to room selection
         </Button>
       </div>
+      {/* {type === "VS" && <RoomControls />} */}
       {type === "VS" ? (
-        <VsGame
-          roomMapType={room.region === "random" ? "world" : "country"}
-          roomTitle={room.title}
-        />
+        // <VsGame
+        //   roomMapType={room.region === "random" ? "world" : "country"}
+        //   roomTitle={room.title}
+        // />
+        <RoomControls />
       ) : (
         <SingleGame
           roomMapType={room.region === "random" ? "world" : "country"}

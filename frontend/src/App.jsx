@@ -12,6 +12,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 function App() {
   const [gameType, setGameType] = useState(null);
   const [isConnected, setIsConnected] = useState(socket.connected);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,14 +30,24 @@ function App() {
       console.log("hello wrld");
     };
 
+    const onAnswer = (player, answer, playerId) => {
+      console.log(player, answer, playerId);
+    };
+
+    const onUsers = (value) => console.log("users", value);
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("hello", onHello);
+    socket.on("users", onUsers);
+    socket.on("submit answer", onAnswer);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
       socket.off("hello", onHello);
+      socket.off("users", onUsers);
+      socket.off("submit answer", onAnswer);
     };
   }, []);
 
