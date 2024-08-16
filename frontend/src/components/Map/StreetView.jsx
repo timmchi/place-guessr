@@ -10,6 +10,7 @@ import MapElement from "./Map";
 import { Button } from "@material-tailwind/react";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const MAX_RADIUS = 15000;
 
 const StreetView = ({
   location,
@@ -41,22 +42,35 @@ const StreetView = ({
   useEffect(() => {
     if (!location || !streetViewService) return;
 
-    const streetViewRequest = {
-      location: location,
-      radius: 7000,
+    const getStreetView = (radius) => {
+      const streetViewRequest = {
+        location: location,
+        radius: radius,
+      };
+
+      streetViewService.getPanorama(streetViewRequest, (data, status) => {
+        if (status === "OK" && data && data.location && data.location.latLng) {
+          const panoLoc = data.location.latLng.toJSON();
+
+          // console.log("panoLoc", panoLoc);
+          setPanoPosition(panoLoc);
+          // console.log("panoPosition", panoPosition);
+        } else {
+          if (radius < MAX_RADIUS) {
+            console.log(
+              `No street view found for radius ${radius}. Trying again with radius ${
+                radius + 1000
+              }`
+            );
+            getStreetView(radius + 1000);
+          } else {
+            console.log("No street view found within maximum radius");
+          }
+        }
+      });
     };
 
-    streetViewService.getPanorama(streetViewRequest, (data, status) => {
-      if (status === "OK" && data && data.location && data.location.latLng) {
-        const panoLoc = data.location.latLng.toJSON();
-
-        // console.log("panoLoc", panoLoc);
-        setPanoPosition(panoLoc);
-        // console.log("panoPosition", panoPosition);
-      } else {
-        console.log("No street view for this location");
-      }
-    });
+    getStreetView(5000);
   }, [location, streetViewService]);
 
   // unmount cleanup

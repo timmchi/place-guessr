@@ -2,7 +2,7 @@ import { Avatar } from "@material-tailwind/react";
 
 const PlayerInLobby = ({ player }) => {
   return (
-    <div className="border border-gray-400 p-4 rounded-lg flex gap-4 items-center bg-indigo-300">
+    <div className="border border-gray-400 p-4 rounded-lg flex gap-4 items-center bg-indigo-300 shadow-md">
       <Avatar
         src={player.avatar}
         alt="your guess location"

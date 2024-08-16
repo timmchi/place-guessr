@@ -26,8 +26,8 @@ const RoomLobby = ({ room, gameStarted, handleGameStart, handleGoingBack }) => {
             src={room.flag}
           />
         </div>
-        <div className="py-24 text-center">
-          <Typography variant="h2" className="text-yellow-600">
+        <div className="py-20 text-center">
+          <Typography variant="h1" className="text-yellow-600 pb-8">
             Code
           </Typography>
           <Typography variant="h5">
@@ -39,6 +39,7 @@ const RoomLobby = ({ room, gameStarted, handleGameStart, handleGoingBack }) => {
           <ul className="flex gap-4 justify-center mt-8">
             {players.map((player) => (
               <li key={player.id}>
+                {/* maybe make this clickable so that it opens users profile? is there a point?.. */}
                 <PlayerInLobby player={player} />
               </li>
             ))}
