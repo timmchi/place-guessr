@@ -25,7 +25,7 @@ const RoomControls = ({ room, vsGameStarted }) => {
   };
 
   const handleEndGame = () => {
-    () => setCreateOrJoinRoom(false);
+    setCreateOrJoinRoom(false);
     socket.emit("end game", roomCode);
   };
 

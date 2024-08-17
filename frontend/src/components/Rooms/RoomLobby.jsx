@@ -79,6 +79,7 @@ const RoomLobby = ({
     <VsGame
       roomMapType={room.region === "random" ? "world" : "country"}
       roomTitle={room.title}
+      region={room.region}
     />
   );
 };

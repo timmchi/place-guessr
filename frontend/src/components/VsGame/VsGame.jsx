@@ -1,14 +1,12 @@
 import { useState } from "react";
 import Round from "./Round";
-import RoomsList from "../Rooms/RoomsList";
-import { Button } from "@material-tailwind/react";
 
 const players = [
   { id: 1, name: "Kariz" },
   { id: 2, name: "Sheldon" },
 ];
 
-const VsGame = () => {
+const VsGame = ({ roomMapType, region, roomTitle }) => {
   const [round, setRound] = useState(1);
   const [winner, setWinner] = useState(null);
 
@@ -26,6 +24,9 @@ const VsGame = () => {
         winner={winner}
         handleGameWin={handleGameWin}
         handleReset={() => setWinner(null)}
+        region={region}
+        roomMapType={roomMapType}
+        roomTitle={roomTitle}
       />
     </div>
   );

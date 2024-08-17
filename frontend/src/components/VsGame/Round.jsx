@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Button } from "@material-tailwind/react";
+import { socket } from "../../sockets/socket";
+import { calculateScore } from "../../utils/scoreUtils";
+import StreetView from "../Map/StreetView";
+import useRandomLocation from "../../hooks/useRandomLocation";
 import RoundEndScreen from "./RoundEndScreen";
 import LocationFetcher from "../Map/LocationFetcher";
 
@@ -10,10 +14,22 @@ const Round = ({
   winner,
   handleGameWin,
   handleReset,
+  roomMapType,
+  roomTitle,
+  region,
 }) => {
   const [isEnded, setIsEnded] = useState(false);
   const [player1HP, setPlayer1HP] = useState(5000);
   const [player2HP, setPlayer2HP] = useState(5000);
+  const [player1RoundScore, setPlayer1RoundScore] = useState(0);
+  const [player2RoundScore, setPlayer2RoundScore] = useState(0);
+
+  const { isLoading, data, refetch } = useRandomLocation(
+    roomMapType === "world" ? "geolist" : "geonames",
+    region && region
+  );
+
+  if (isLoading) return <div>Loading...</div>;
 
   // players hp removed if he scores worse than the opponent, hence the word attacker - the opponent "attacks" the player who's hp is being removed, and the attacker is also declared the winner if the hp of the player being attacked reaches 0
   const removeHp = (hp, setHp, attacker) => {
@@ -32,6 +48,7 @@ const Round = ({
 
   const startRound = () => {
     setIsEnded(false);
+    refetch();
   };
 
   const resetGame = () => {
@@ -42,22 +59,41 @@ const Round = ({
     handleReset();
   };
 
+  // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
+  const calculatePlayerScore = (distance, player = "player1") => {
+    const calculatedScore = calculateScore(distance);
+    player === "player1"
+      ? setPlayer1RoundScore(calculatedScore)
+      : setPlayer2RoundScore(calculatedScore);
+  };
+
   return (
     <div>
-      <Button onClick={resetGame}>Reset game</Button>
+      {/* <Button onClick={resetGame}>Reset game</Button> */}
       {winner && (
-        <div className="text-4xl font-bold text-red-500">
+        <div className="absolute z-20 top-1/2 left-1/2 text-4xl font-bold text-red-500">
           {winner.name} wins! Fatality
         </div>
       )}
-      {!isEnded && !winner && (
+      {/* {!isEnded && !winner && (
         <>
           <h1 className="text-4xl font-bold">Round {round}</h1>
           <Button onClick={endRound}>End round</Button>
           <LocationFetcher />
         </>
+      )} */}
+      {/* {isEnded && !winner && <Button onClick={startRound}>Next round</Button>} */}
+      {data && (
+        <>
+          <StreetView
+            location={{ lat: data.lat, lng: data.lng }}
+            calculateScore={calculatePlayerScore}
+            onRoundEnd={endRound}
+            onRoundStart={startRound}
+            isEnded={isEnded}
+          />
+        </>
       )}
-      {isEnded && !winner && <Button onClick={startRound}>Next round</Button>}
       {isEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
