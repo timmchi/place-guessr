@@ -6,7 +6,13 @@ const players = [
   { id: 2, name: "Sheldon" },
 ];
 
-const VsGame = ({ roomMapType, region, roomTitle, vsGameLocation }) => {
+const VsGame = ({
+  roomMapType,
+  region,
+  roomTitle,
+  vsGameLocation,
+  roomCode,
+}) => {
   const [round, setRound] = useState(1);
   const [winner, setWinner] = useState(null);
 
@@ -28,6 +34,7 @@ const VsGame = ({ roomMapType, region, roomTitle, vsGameLocation }) => {
         roomMapType={roomMapType}
         roomTitle={roomTitle}
         vsGameLocation={vsGameLocation}
+        roomCode={roomCode}
       />
     </div>
   );

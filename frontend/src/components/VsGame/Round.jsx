@@ -17,6 +17,7 @@ const Round = ({
   roomTitle,
   region,
   vsGameLocation,
+  roomCode,
 }) => {
   const [isEnded, setIsEnded] = useState(false);
   const [player1HP, setPlayer1HP] = useState(5000);
@@ -53,7 +54,8 @@ const Round = ({
     socket.emit(
       "fetch location",
       roomMapType === "world" ? "geolist" : "geonames",
-      region
+      region,
+      roomCode
     );
   };
 

@@ -88,6 +88,7 @@ const RoomLobby = ({
       roomTitle={room.title}
       region={room.region}
       vsGameLocation={vsGameLocation}
+      roomCode={roomCode}
     />
   );
 };
