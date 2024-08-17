@@ -4,9 +4,8 @@ import { socket } from "../../sockets/socket";
 import { generateRoomCode } from "../../utils/socketUtils";
 import RoomLobby from "./RoomLobby";
 
-const RoomControls = ({ room, vsGameStarted }) => {
+const RoomControls = ({ room, vsGameStarted, vsGameLocation }) => {
   const [createOrJoinRoom, setCreateOrJoinRoom] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
   const [roomCode, setRoomCode] = useState("");
 
   const joinRoom = (e) => {
@@ -58,10 +57,10 @@ const RoomControls = ({ room, vsGameStarted }) => {
       <RoomLobby
         room={room}
         roomCode={roomCode}
-        // gameStarted={gameStarted}
         gameStarted={vsGameStarted}
         // handleGameStart={() => setGameStarted(true)}
         handleGoingBack={handleEndGame}
+        vsGameLocation={vsGameLocation}
       />
     </>
   );

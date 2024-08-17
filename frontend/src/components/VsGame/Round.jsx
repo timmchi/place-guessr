@@ -5,7 +5,6 @@ import { calculateScore } from "../../utils/scoreUtils";
 import StreetView from "../Map/StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 import RoundEndScreen from "./RoundEndScreen";
-import LocationFetcher from "../Map/LocationFetcher";
 
 const Round = ({
   players,
@@ -17,6 +16,7 @@ const Round = ({
   roomMapType,
   roomTitle,
   region,
+  vsGameLocation,
 }) => {
   const [isEnded, setIsEnded] = useState(false);
   const [player1HP, setPlayer1HP] = useState(5000);
@@ -24,12 +24,13 @@ const Round = ({
   const [player1RoundScore, setPlayer1RoundScore] = useState(0);
   const [player2RoundScore, setPlayer2RoundScore] = useState(0);
 
-  const { isLoading, data, refetch } = useRandomLocation(
-    roomMapType === "world" ? "geolist" : "geonames",
-    region && region
-  );
+  //   const { isLoading, data, refetch } = useRandomLocation(
+  //     roomMapType === "world" ? "geolist" : "geonames",
+  //     region && region
+  //   );
 
-  if (isLoading) return <div>Loading...</div>;
+  //   if (isLoading) return <div>Loading...</div>;
+  if (!vsGameLocation) return <div>Loading...</div>;
 
   // players hp removed if he scores worse than the opponent, hence the word attacker - the opponent "attacks" the player who's hp is being removed, and the attacker is also declared the winner if the hp of the player being attacked reaches 0
   const removeHp = (hp, setHp, attacker) => {
@@ -48,7 +49,12 @@ const Round = ({
 
   const startRound = () => {
     setIsEnded(false);
-    refetch();
+    // refetch();
+    socket.emit(
+      "fetch location",
+      roomMapType === "world" ? "geolist" : "geonames",
+      region
+    );
   };
 
   const resetGame = () => {
@@ -83,17 +89,17 @@ const Round = ({
         </>
       )} */}
       {/* {isEnded && !winner && <Button onClick={startRound}>Next round</Button>} */}
-      {data && (
-        <>
-          <StreetView
-            location={{ lat: data.lat, lng: data.lng }}
-            calculateScore={calculatePlayerScore}
-            onRoundEnd={endRound}
-            onRoundStart={startRound}
-            isEnded={isEnded}
-          />
-        </>
-      )}
+      {/* {data && ( */}
+      <>
+        <StreetView
+          location={vsGameLocation}
+          calculateScore={calculatePlayerScore}
+          onRoundEnd={endRound}
+          onRoundStart={startRound}
+          isEnded={isEnded}
+        />
+      </>
+      {/* )} */}
       {isEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>

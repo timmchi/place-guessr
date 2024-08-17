@@ -12,6 +12,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 function App() {
   const [gameType, setGameType] = useState(null);
   const [vsGameStarted, setVsGameStarted] = useState(false);
+  const [vsGameLocation, setVsGameLocation] = useState(null);
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   const navigate = useNavigate();
@@ -51,6 +52,11 @@ function App() {
       setVsGameStarted(false);
     };
 
+    const onLocationFetched = (location) => {
+      console.log("fetching random location...");
+      setVsGameLocation(location);
+    };
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("hello", onHello);
@@ -59,6 +65,7 @@ function App() {
     socket.on("room joined", onJoiningRoom);
     socket.on("start game", onStartGame);
     socket.on("end game", onEndGame);
+    socket.on("fetched location", onLocationFetched);
 
     return () => {
       socket.off("connect", onConnect);
@@ -69,6 +76,7 @@ function App() {
       socket.off("room joined", onJoiningRoom);
       socket.off("start game", onStartGame);
       socket.off("end game", onEndGame);
+      socket.off("fetched location", onLocationFetched);
     };
   }, []);
 
@@ -104,7 +112,12 @@ function App() {
           <Route
             path="/rooms/:region"
             element={
-              <Room type={gameType} room={room} vsGameStarted={vsGameStarted} />
+              <Room
+                type={gameType}
+                room={room}
+                vsGameStarted={vsGameStarted}
+                vsGameLocation={vsGameLocation}
+              />
             }
           />
         </Routes>

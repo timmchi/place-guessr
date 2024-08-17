@@ -1,6 +1,8 @@
 const express = require("express");
 const axios = require("axios");
 const { readFileSync } = require("fs");
+const { parseText } = require("./utils/geolistUtils");
+const geolist = "./geolist.txt";
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 
@@ -48,6 +50,25 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("end game");
   });
 
+  socket.on("fetch location", async (apiType, region, roomId) => {
+    console.log("fetching location for", apiType, region, roomId);
+
+    if (apiType === "geolist") {
+      const textByLine = parseText(geolist);
+
+      const randomIndex = Math.trunc(Math.random() * textByLine.length);
+
+      const randomPlace = textByLine[randomIndex];
+
+      io.to(roomId).emit("fetched location", randomPlace);
+    }
+
+    if (apiType === "geonames") {
+      const { data } = await axios.get(`${apiURL}=${region}&json=1`);
+      io.to(roomId).emit("fetched location", data);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
 
@@ -77,13 +98,9 @@ const unknownEndpoint = (request, response) => {
 
 app.get("/geolist", (req, res) => {
   try {
-    const text = readFileSync("./geolist.txt").toString("utf-8");
-    const textByLine = text.split("\n").map((line) => {
-      const [lat, lng] = line.split(" ").map(Number);
-      return { lat, lng };
-    });
+    const textByLine = parseText(geolist);
 
-    const randomIndex = Math.trunc(Math.random() * textByLine.length + 1);
+    const randomIndex = Math.trunc(Math.random() * textByLine.length);
 
     const randomPlace = textByLine[randomIndex];
 

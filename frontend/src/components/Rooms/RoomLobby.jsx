@@ -13,12 +13,19 @@ const players = [
 const RoomLobby = ({
   room,
   gameStarted,
+  vsGameLocation,
   //   handleGameStart,
   handleGoingBack,
   roomCode,
 }) => {
   const handleGameStart = () => {
     socket.emit("start game", roomCode);
+    socket.emit(
+      "fetch location",
+      room.region === "random" ? "geolist" : "geonames",
+      room.region,
+      roomCode
+    );
   };
 
   if (!gameStarted) {
@@ -80,6 +87,7 @@ const RoomLobby = ({
       roomMapType={room.region === "random" ? "world" : "country"}
       roomTitle={room.title}
       region={room.region}
+      vsGameLocation={vsGameLocation}
     />
   );
 };
