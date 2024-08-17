@@ -38,6 +38,16 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("room joined", socket.id, roomId);
   });
 
+  socket.on("start game", (roomId) => {
+    console.log("starting game in", roomId);
+    io.to(roomId).emit("start game");
+  });
+
+  socket.on("end game", (roomId) => {
+    console.log("ending game in", roomId);
+    io.to(roomId).emit("end game");
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
 

@@ -4,7 +4,7 @@ import RoomControls from "./RoomControls";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-const Room = ({ type, room }) => {
+const Room = ({ type, room, vsGameStarted }) => {
   const navigate = useNavigate();
 
   if (!type) return <div>No room type chosen</div>;
@@ -34,7 +34,7 @@ const Room = ({ type, room }) => {
         //   roomMapType={room.region === "random" ? "world" : "country"}
         //   roomTitle={room.title}
         // />
-        <RoomControls room={room} />
+        <RoomControls room={room} vsGameStarted={vsGameStarted} />
       ) : (
         <SingleGame
           roomMapType={room.region === "random" ? "world" : "country"}

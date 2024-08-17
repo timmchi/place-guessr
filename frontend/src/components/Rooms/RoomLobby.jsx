@@ -3,6 +3,7 @@ import { Button, Typography, Avatar } from "@material-tailwind/react";
 import VsGame from "../VsGame/VsGame";
 import PlayerInLobby from "../Player/PlayerInLobby";
 import avatar from "../../../test/vavatar.jpg";
+import { socket } from "../../sockets/socket";
 
 const players = [
   { id: 1, name: "Kariz", avatar: avatar },
@@ -12,10 +13,14 @@ const players = [
 const RoomLobby = ({
   room,
   gameStarted,
-  handleGameStart,
+  //   handleGameStart,
   handleGoingBack,
   roomCode,
 }) => {
+  const handleGameStart = () => {
+    socket.emit("start game", roomCode);
+  };
+
   if (!gameStarted) {
     return (
       <div className="bg-indigo-400 w-[50%] mx-auto rounded-lg shadow-md my-12">
