@@ -138,14 +138,14 @@ const StreetView = ({
             </Button>
           </div>
         )}
-        <div className="absolute top-1/2 right-2">
+        {/* <div className="absolute top-1/2 right-2">
           <Button
             className="bg-indigo-400 hover:bg-indigo-600"
             onClick={handleEndRound}
           >
             Next round
           </Button>
-        </div>
+        </div> */}
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={panoPosition}

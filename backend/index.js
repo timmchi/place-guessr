@@ -64,9 +64,28 @@ io.on("connection", (socket) => {
     }
 
     if (apiType === "geonames") {
+      //   console.log("apitype = geonames, fetching here");
       const { data } = await axios.get(`${apiURL}=${region}&json=1`);
-      io.to(roomId).emit("fetched location", data);
+      //   console.log("data in geonames socket fetching", data);
+      const { nearest } = data;
+      const { latt, longt } = nearest;
+      io.to(roomId).emit("fetched location", {
+        lat: Number(latt),
+        lng: Number(longt),
+      });
     }
+  });
+
+  socket.on("submit answer", async (senderId, roomId) => {
+    console.log("answer submit by", senderId);
+
+    // const clients = await io.in(roomId).fetchSockets();
+    // const clientIds = clients.map((c) => c.id);
+
+    // const unreadyClientId = clientIds.find(id => id !== senderId)
+
+    // io.to(senderId).
+    io.to(roomId).except(socket.id).emit("submit answer", socket.id);
   });
 
   socket.on("disconnect", () => {

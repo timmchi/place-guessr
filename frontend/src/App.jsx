@@ -32,8 +32,8 @@ function App() {
       console.log("hello wrld");
     };
 
-    const onAnswer = (player, answer, playerId) => {
-      console.log(player, answer, playerId);
+    const onAnswer = (playerId) => {
+      console.log(playerId, "submitted answer");
     };
 
     const onJoiningRoom = (player, roomId) => {
@@ -52,6 +52,7 @@ function App() {
       setVsGameStarted(false);
     };
 
+    // heres the problem :) non-standardized parameter in the backend, lets try and fix it there..
     const onLocationFetched = (location) => {
       console.log("fetching random location...");
       setVsGameLocation(location);

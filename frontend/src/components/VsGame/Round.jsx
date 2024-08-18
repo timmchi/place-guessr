@@ -25,12 +25,6 @@ const Round = ({
   const [player1RoundScore, setPlayer1RoundScore] = useState(0);
   const [player2RoundScore, setPlayer2RoundScore] = useState(0);
 
-  //   const { isLoading, data, refetch } = useRandomLocation(
-  //     roomMapType === "world" ? "geolist" : "geonames",
-  //     region && region
-  //   );
-
-  //   if (isLoading) return <div>Loading...</div>;
   if (!vsGameLocation) return <div>Loading...</div>;
 
   // players hp removed if he scores worse than the opponent, hence the word attacker - the opponent "attacks" the player who's hp is being removed, and the attacker is also declared the winner if the hp of the player being attacked reaches 0
@@ -46,6 +40,8 @@ const Round = ({
   const endRound = () => {
     setIsEnded(true);
     handleRoundChange(round + 1);
+    // this will be used to signal to the other player than a guess has been made
+    socket.emit("submit answer", socket.id, roomCode);
   };
 
   const startRound = () => {
