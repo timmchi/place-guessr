@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const geonamesApiUrl = "http://localhost:3000/proxy";
-const geolistApiUrl = "http://localhost:3000/geolist";
+const geonamesApiUrl = "http://localhost:3000/api/locations/geonames";
+const geolistApiUrl = "http://localhost:3000/api/locations/geolist";
 
 const getRandomLocation = async (apiType, region) => {
   try {
