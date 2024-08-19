@@ -3,8 +3,11 @@ import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
-import Home from "./components/Home";
+import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
+import LogIn from "./components/Authentication/LogIn";
+import Registration from "./components/Authentication/Registration";
+import About from "./components/About";
 import { rooms } from "./data/rooms";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -103,7 +106,7 @@ function App() {
           <Route
             path="/"
             element={
-              <Home playSingleGame={playSingleGame} playVsGame={playVsGame} />
+              <Hero playSingleGame={playSingleGame} playVsGame={playVsGame} />
             }
           />
           <Route
@@ -121,6 +124,9 @@ function App() {
               />
             }
           />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<Registration />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </APIProvider>
     </div>
