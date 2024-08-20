@@ -6,15 +6,17 @@ const RoomsList = ({ type, rooms }) => {
   if (!type) return <div>Please choose game type first</div>;
 
   return (
-    <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 container mx-auto my-4">
-      {rooms.map((room) => (
-        <li key={room.id}>
-          <div>
-            <RoomCard room={room} />
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div className="h-full bg-indigo-200 p-2">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 container mx-auto my-4">
+        {rooms.map((room) => (
+          <li key={room.id}>
+            <div>
+              <RoomCard room={room} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

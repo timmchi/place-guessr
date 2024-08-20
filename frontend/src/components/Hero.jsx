@@ -11,16 +11,16 @@ const Hero = ({ playSingleGame, playVsGame }) => {
       }}
     >
       <NavBar />
-      <div className="flex flex-grow flex-col items-center justify-center text-white">
+      <div className="flex flex-grow flex-col items-center justify-center text-gray-200">
         <Typography
           variant="h1"
-          className="text-7xl backdrop-blur-[2px] mb-2 p-2 rounded-xl border-transparent"
+          className="text-7xl backdrop-blur-xs mb-1 p-2 rounded-3xl border-transparent drop-shadow-text"
         >
           Welcome to Place Guesser
         </Typography>
         <Typography
           variant="h3"
-          className="backdrop-blur-[2px] p-2 rounded-xl border-transparent"
+          className="backdrop-blur-xs p-2 rounded-3xl border-transparent drop-shadow-text"
         >
           Appear in a random place and try your best to guess where you are
         </Typography>

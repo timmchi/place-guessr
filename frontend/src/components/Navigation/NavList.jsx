@@ -6,7 +6,7 @@ const NavList = () => {
     <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
-        variant="small"
+        variant="paragraph"
         color="blue-gray"
         className="p-1 font-medium"
       >
@@ -19,7 +19,7 @@ const NavList = () => {
       </Typography>
       <Typography
         as="li"
-        variant="small"
+        variant="paragraph"
         color="blue-gray"
         className="p-1 font-medium"
       >
@@ -32,15 +32,15 @@ const NavList = () => {
       </Typography>
       <Typography
         as="li"
-        variant="small"
+        variant="paragraph"
         color="blue-gray"
         className="p-1 font-medium"
       >
         <Link
-          to="/play"
+          to="/register"
           className="flex items-center hover:text-blue-500 transition-colors"
         >
-          Play Now
+          Sign Up
         </Link>
       </Typography>
     </ul>
