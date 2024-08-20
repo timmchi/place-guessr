@@ -19,6 +19,7 @@ function App() {
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [roomCode, setRoomCode] = useState("");
+  const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
 
   const navigate = useNavigate();
 
@@ -63,6 +64,11 @@ function App() {
       setVsGameLocation(location);
     };
 
+    const onRoomChosen = (roomRegion) => {
+      console.log("room is chosen", roomRegion);
+      setJoiningUserRoomRegion(roomRegion);
+    };
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("hello", onHello);
@@ -72,6 +78,7 @@ function App() {
     socket.on("start game", onStartGame);
     socket.on("end game", onEndGame);
     socket.on("fetched location", onLocationFetched);
+    socket.on("room chosen", onRoomChosen);
 
     return () => {
       socket.off("connect", onConnect);
@@ -83,6 +90,7 @@ function App() {
       socket.off("start game", onStartGame);
       socket.off("end game", onEndGame);
       socket.off("fetched location", onLocationFetched);
+      socket.off("room chosen", onRoomChosen);
     };
   }, []);
 
@@ -134,11 +142,12 @@ function App() {
             path="/lobby"
             element={
               <RoomControls
-                vsGameStarted={vsGameStarted}
-                vsGameLocation={vsGameLocation}
                 rooms={rooms}
                 roomCode={roomCode}
                 setRoomCode={setRoomCode}
+                joiningUserRoomRegion={joiningUserRoomRegion}
+                vsGameStarted={vsGameStarted}
+                vsGameLocation={vsGameLocation}
               />
             }
           />

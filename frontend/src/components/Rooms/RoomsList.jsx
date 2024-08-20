@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import RoomCard from "./RoomCard";
 
-const RoomsList = ({ type, rooms }) => {
+const RoomsList = ({ type, rooms, roomCode }) => {
   if (!type) return <div>Please choose game type first</div>;
 
   return (
@@ -11,7 +11,7 @@ const RoomsList = ({ type, rooms }) => {
         {rooms.map((room) => (
           <li key={room.id}>
             <div>
-              <RoomCard room={room} />
+              <RoomCard room={room} roomCode={roomCode} />
             </div>
           </li>
         ))}
