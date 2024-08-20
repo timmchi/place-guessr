@@ -3,10 +3,17 @@ import { Button, Input } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { generateRoomCode } from "../../utils/socketUtils";
 import RoomLobby from "./RoomLobby";
+import RoomsList from "./RoomsList";
 
-const RoomControls = ({ room, vsGameStarted, vsGameLocation }) => {
+const RoomControls = ({
+  vsGameStarted,
+  vsGameLocation,
+  rooms,
+  roomCode,
+  setRoomCode,
+}) => {
   const [createOrJoinRoom, setCreateOrJoinRoom] = useState(false);
-  const [roomCode, setRoomCode] = useState("");
+  //   const [roomCode, setRoomCode] = useState("");
 
   const joinRoom = (e) => {
     e.preventDefault();
@@ -54,14 +61,15 @@ const RoomControls = ({ room, vsGameStarted, vsGameLocation }) => {
 
   return (
     <>
-      <RoomLobby
+      {/* <RoomLobby
         room={room}
         roomCode={roomCode}
         gameStarted={vsGameStarted}
         // handleGameStart={() => setGameStarted(true)}
         handleGoingBack={handleEndGame}
         vsGameLocation={vsGameLocation}
-      />
+      /> */}
+      <RoomsList type="VS" rooms={rooms} />
     </>
   );
 };

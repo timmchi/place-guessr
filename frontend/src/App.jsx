@@ -8,6 +8,7 @@ import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
 import Registration from "./components/Authentication/Registration";
 import About from "./components/About";
+import RoomControls from "./components/Rooms/RoomControls";
 import { rooms } from "./data/rooms";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -17,6 +18,7 @@ function App() {
   const [vsGameStarted, setVsGameStarted] = useState(false);
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [isConnected, setIsConnected] = useState(socket.connected);
+  const [roomCode, setRoomCode] = useState("");
 
   const navigate = useNavigate();
 
@@ -91,7 +93,7 @@ function App() {
 
   const playVsGame = () => {
     setGameType("VS");
-    navigate("/rooms");
+    navigate("/lobby");
   };
 
   const playSingleGame = () => {
@@ -121,12 +123,25 @@ function App() {
                 room={room}
                 vsGameStarted={vsGameStarted}
                 vsGameLocation={vsGameLocation}
+                roomCode={roomCode}
               />
             }
           />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/about" element={<About />} />
+          <Route
+            path="/lobby"
+            element={
+              <RoomControls
+                vsGameStarted={vsGameStarted}
+                vsGameLocation={vsGameLocation}
+                rooms={rooms}
+                roomCode={roomCode}
+                setRoomCode={setRoomCode}
+              />
+            }
+          />
         </Routes>
       </APIProvider>
     </div>

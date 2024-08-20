@@ -1,10 +1,12 @@
 import SingleGame from "../SingleGame/SingleGame";
 import VsGame from "../VsGame/VsGame";
 import RoomControls from "./RoomControls";
+import RoomLobby from "./RoomLobby";
+import { socket } from "../../sockets/socket";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-const Room = ({ type, room, vsGameStarted, vsGameLocation }) => {
+const Room = ({ type, room, vsGameStarted, vsGameLocation, roomCode }) => {
   const navigate = useNavigate();
 
   if (!type) return <div>No room type chosen</div>;
@@ -14,6 +16,11 @@ const Room = ({ type, room, vsGameStarted, vsGameLocation }) => {
   const goBackToRoomList = () => {
     console.log("navigating back to room list...");
     navigate("/rooms");
+  };
+
+  const handleEndGame = () => {
+    navigate("/lobby");
+    socket.emit("end game", roomCode);
   };
 
   return (
@@ -34,9 +41,16 @@ const Room = ({ type, room, vsGameStarted, vsGameLocation }) => {
         //   roomMapType={room.region === "random" ? "world" : "country"}
         //   roomTitle={room.title}
         // />
-        <RoomControls
+        // <RoomControls
+        //   room={room}
+        //   vsGameStarted={vsGameStarted}
+        //   vsGameLocation={vsGameLocation}
+        // />
+        <RoomLobby
           room={room}
-          vsGameStarted={vsGameStarted}
+          roomCode={roomCode}
+          gameStarted={vsGameStarted}
+          handleGoingBack={handleEndGame}
           vsGameLocation={vsGameLocation}
         />
       ) : (
