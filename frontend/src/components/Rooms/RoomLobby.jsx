@@ -18,6 +18,8 @@ const RoomLobby = ({
   handleGoingBack,
   roomCode,
 }) => {
+  console.log(room);
+
   const handleGameStart = () => {
     socket.emit("start game", roomCode);
     socket.emit(

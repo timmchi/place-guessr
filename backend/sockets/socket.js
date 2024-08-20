@@ -90,6 +90,12 @@ const socketHandler = (server) => {
       socket.broadcast.to(roomId).emit("submit answer", socket.id);
     });
 
+    socket.on("room chosen", async (roomId, roomRegion) => {
+      console.log("room chosen in", roomId, roomRegion);
+
+      io.emit("room chosen", roomRegion);
+    });
+
     socket.on("disconnect", () => {
       console.log("user disconnected");
 

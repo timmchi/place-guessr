@@ -7,9 +7,15 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../../sockets/socket";
 
-const RoomCard = ({ room }) => {
+const RoomCard = ({ room, roomCode = null }) => {
   const navigate = useNavigate();
+
+  const chooseRoom = () => {
+    navigate(`/rooms/${room.region}`);
+    if (roomCode) socket.emit("room chosen", roomCode, room.region);
+  };
 
   return (
     <Card
@@ -41,7 +47,7 @@ const RoomCard = ({ room }) => {
           src={room.flag}
         />
         <Button
-          onClick={() => navigate(`/rooms/${room.region}`)}
+          onClick={chooseRoom}
           className="bg-indigo-500 ml-2 hover:bg-indigo-700"
         >
           Select room
