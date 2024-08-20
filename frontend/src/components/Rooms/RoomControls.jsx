@@ -34,9 +34,9 @@ const RoomControls = ({
 
   const createRoom = () => {
     console.log("creating a room");
-    const generatedRoomCode = generateRoomCode();
-    setRoomCode(generatedRoomCode);
-    socket.emit("join room", socket.id, generatedRoomCode);
+    // const generatedRoomCode = generateRoomCode();
+    // setRoomCode(generatedRoomCode);
+    socket.emit("create room", socket.id);
     setRoomCreated(true);
   };
 

@@ -1,6 +1,7 @@
 const { Server } = require("socket.io");
 const axios = require("axios");
 const { parseText } = require("../utils/geolistUtils");
+const { generateRoomCode } = require("../utils/utils");
 const geolist = "./geolist.txt";
 
 const apiURL = "https://api.3geonames.org/?randomland";
@@ -28,10 +29,19 @@ const socketHandler = (server) => {
       io.emit("submit answer", player, answer, socket.id);
     });
 
-    socket.on("join room", (player, roomId) => {
-      console.log(`${player} joining ${roomId}`);
+    socket.on("create room", (player) => {
+      const roomId = generateRoomCode();
       socket.join(roomId);
-      io.to(roomId).emit("room joined", socket.id, roomId);
+      console.log("room created by", player, roomId);
+      io.to(roomId).emit("room created", roomId);
+    });
+
+    socket.on("join room", (player, roomId) => {
+      if (io.sockets.adapter.rooms.get(roomId)) {
+        console.log(`${player} joining ${roomId}`);
+        socket.join(roomId);
+        io.to(roomId).emit("room joined", socket.id, roomId);
+      }
     });
 
     socket.on("start game", (roomId) => {

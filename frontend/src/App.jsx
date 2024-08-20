@@ -42,6 +42,11 @@ function App() {
       console.log(playerId, "submitted answer");
     };
 
+    const onCreateRoom = (roomId) => {
+      console.log(roomId, "was created");
+      setRoomCode(roomId);
+    };
+
     const onJoiningRoom = (player, roomId) => {
       console.log(`${player} joined ${roomId}`);
     };
@@ -79,6 +84,7 @@ function App() {
     socket.on("end game", onEndGame);
     socket.on("fetched location", onLocationFetched);
     socket.on("room chosen", onRoomChosen);
+    socket.on("room created", onCreateRoom);
 
     return () => {
       socket.off("connect", onConnect);
@@ -91,6 +97,7 @@ function App() {
       socket.off("end game", onEndGame);
       socket.off("fetched location", onLocationFetched);
       socket.off("room chosen", onRoomChosen);
+      socket.off("room created", onCreateRoom);
     };
   }, []);
 
