@@ -25,6 +25,7 @@ locationRouter.get("/geonames/:region", async (req, res) => {
     const { region } = req.params;
 
     const response = await axios.get(`${apiURL}=${region}&json=1`);
+
     res.json(response.data);
   } catch (error) {
     console.error(error);

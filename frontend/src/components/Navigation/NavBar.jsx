@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import {
   Navbar,
   Collapse,
@@ -7,52 +6,8 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
-const NavList = () => {
-  return (
-    <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-medium"
-      >
-        <Link
-          to="/about"
-          className="flex items-center hover:text-blue-500 transition-colors"
-        >
-          About
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-medium"
-      >
-        <Link
-          to="/login"
-          className="flex items-center hover:text-blue-500 transition-colors"
-        >
-          Log In
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-medium"
-      >
-        <Link
-          to="/register"
-          className="flex items-center hover:text-blue-500 transition-colors"
-        >
-          Sign Up
-        </Link>
-      </Typography>
-    </ul>
-  );
-};
+import NavList from "./NavList";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [openNav, setOpenNav] = useState(false);
@@ -69,15 +24,10 @@ const NavBar = () => {
   }, []);
 
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-6 py-3">
+    <Navbar className="mx-auto max-w-screen-xl px-6 py-3 bg-opacity-65">
       <div className="flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          href="#"
-          variant="h6"
-          className="mr-4 cursor-pointer py-1.5"
-        >
-          Material Tailwind
+        <Typography variant="h6" className="mr-4 cursor-pointer py-1.5">
+          <Link to="/">Place Guesser</Link>
         </Typography>
         <div className="hidden lg:block">
           <NavList />
