@@ -21,24 +21,11 @@ function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
+  const [vsRoundEnded, setVsRoundEnded] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const onConnect = () => {
-      console.log("connected");
-      setIsConnected(true);
-    };
-
-    const onDisconnect = () => {
-      console.log("disconnected");
-      setIsConnected(false);
-    };
-
-    const onHello = () => {
-      console.log("hello wrld");
-    };
-
     const onAnswer = (playerId) => {
       console.log(playerId, "submitted answer");
     };
@@ -75,9 +62,23 @@ function App() {
       setJoiningUserRoomRegion(roomRegion);
     };
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("hello", onHello);
+    const onRoundStart = (roomRegion, roomCode) => {
+      console.log("starting round");
+      console.log("joining user room region", roomRegion);
+      setVsRoundEnded(false);
+      socket.emit(
+        "fetch location",
+        roomRegion === "random" ? "geolist" : "geonames",
+        roomRegion,
+        roomCode
+      );
+    };
+
+    const onRoundEnd = () => {
+      console.log("ending round");
+      setVsRoundEnded(true);
+    };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -86,11 +87,10 @@ function App() {
     socket.on("fetched location", onLocationFetched);
     socket.on("room chosen", onRoomChosen);
     socket.on("room created", onCreateRoom);
+    socket.on("start round", onRoundStart);
+    socket.on("end round", onRoundEnd);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("hello", onHello);
       socket.off("users", onUsers);
       socket.off("submit answer", onAnswer);
       socket.off("room joined", onJoiningRoom);
@@ -99,6 +99,8 @@ function App() {
       socket.off("fetched location", onLocationFetched);
       socket.off("room chosen", onRoomChosen);
       socket.off("room created", onCreateRoom);
+      socket.off("start round", onRoundStart);
+      socket.off("end round", onRoundEnd);
     };
   }, []);
 
@@ -118,7 +120,7 @@ function App() {
   };
 
   return (
-    <div className="bg-transparent">
+    <div>
       <APIProvider apiKey={API_KEY}>
         <Routes>
           <Route
@@ -139,6 +141,7 @@ function App() {
                 room={room}
                 vsGameStarted={vsGameStarted}
                 vsGameLocation={vsGameLocation}
+                vsRoundEnded={vsRoundEnded}
                 roomCode={roomCode}
               />
             }

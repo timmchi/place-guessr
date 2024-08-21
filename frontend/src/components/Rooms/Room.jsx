@@ -6,7 +6,14 @@ import { socket } from "../../sockets/socket";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-const Room = ({ type, room, vsGameStarted, vsGameLocation, roomCode }) => {
+const Room = ({
+  type,
+  room,
+  vsGameStarted,
+  vsGameLocation,
+  vsRoundEnded,
+  roomCode,
+}) => {
   const navigate = useNavigate();
 
   if (!type) return <div>No room type chosen</div>;
@@ -40,6 +47,7 @@ const Room = ({ type, room, vsGameStarted, vsGameLocation, roomCode }) => {
           room={room}
           roomCode={roomCode}
           gameStarted={vsGameStarted}
+          vsRoundEnded={vsRoundEnded}
           handleGoingBack={handleEndGame}
           vsGameLocation={vsGameLocation}
         />

@@ -18,6 +18,7 @@ const Round = ({
   region,
   vsGameLocation,
   roomCode,
+  vsRoundEnded,
 }) => {
   const [isEnded, setIsEnded] = useState(false);
   const [player1HP, setPlayer1HP] = useState(5000);
@@ -38,21 +39,23 @@ const Round = ({
   const resetHp = (setHp) => setHp(5000);
 
   const endRound = () => {
-    setIsEnded(true);
+    // setIsEnded(true);
     handleRoundChange(round + 1);
     // this will be used to signal to the other player than a guess has been made
+    socket.emit("end round", socket.id, roomCode);
     socket.emit("submit answer", socket.id, roomCode);
   };
 
   const startRound = () => {
-    setIsEnded(false);
+    // setIsEnded(false);
     // refetch();
-    socket.emit(
-      "fetch location",
-      roomMapType === "world" ? "geolist" : "geonames",
-      region,
-      roomCode
-    );
+    // socket.emit(
+    //   "fetch location",
+    //   roomMapType === "world" ? "geolist" : "geonames",
+    //   region,
+    //   roomCode
+    // );
+    socket.emit("start round", socket.id, roomCode);
   };
 
   const resetGame = () => {
@@ -94,11 +97,13 @@ const Round = ({
           calculateScore={calculatePlayerScore}
           onRoundEnd={endRound}
           onRoundStart={startRound}
-          isEnded={isEnded}
+          //   isEnded={isEnded}
+          isEnded={vsRoundEnded}
         />
       </>
       {/* )} */}
-      {isEnded && (
+      {/* {isEnded && ( */}
+      {vsRoundEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
           <RoundEndScreen
