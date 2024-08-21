@@ -1,13 +1,14 @@
 import NavBar from "./Navigation/NavBar";
 import Home from "./Home";
 import { Typography } from "@material-tailwind/react";
+import panorama from "../helsinki-panorama-test-min.png";
 
 const Hero = ({ playSingleGame, playVsGame }) => {
   return (
     <div
       className="bg-cover bg-center min-h-screen flex flex-col"
       style={{
-        backgroundImage: `url("https://www.newsanyway.com/wp-content/uploads/2020/06/Canva-Helsinki-cityscape-with-Helsinki-Cathedral-in-winter-Finland.jpg")`,
+        backgroundImage: `url(${panorama})`,
       }}
     >
       <NavBar />

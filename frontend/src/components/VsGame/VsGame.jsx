@@ -11,6 +11,7 @@ const VsGame = ({
   region,
   roomTitle,
   vsGameLocation,
+  vsRoundEnded,
   roomCode,
 }) => {
   const [round, setRound] = useState(1);
@@ -35,6 +36,7 @@ const VsGame = ({
         roomTitle={roomTitle}
         vsGameLocation={vsGameLocation}
         roomCode={roomCode}
+        vsRoundEnded={vsRoundEnded}
       />
     </div>
   );

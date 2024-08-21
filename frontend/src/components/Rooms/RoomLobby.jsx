@@ -14,6 +14,7 @@ const players = [
 const RoomLobby = ({
   room,
   gameStarted,
+  vsRoundEnded,
   vsGameLocation,
   //   handleGameStart,
   handleGoingBack,
@@ -94,6 +95,7 @@ const RoomLobby = ({
       roomTitle={room.title}
       region={room.region}
       vsGameLocation={vsGameLocation}
+      vsRoundEnded={vsRoundEnded}
       roomCode={roomCode}
     />
   );
