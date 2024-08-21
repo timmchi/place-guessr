@@ -100,7 +100,7 @@ const socketHandler = (server) => {
         //   console.log("apitype = geonames, fetching here");
         try {
           const { data } = await axios.get(`${apiURL}=${region}&json=1`);
-          console.log("data in geonames socket fetching", data);
+          //   console.log("data in geonames socket fetching", data);
           const { nearest } = data;
           const { latt, longt } = nearest;
           io.to(roomId).emit("fetched location", {
@@ -145,6 +145,7 @@ const socketHandler = (server) => {
 
       if (room.player1ReadyToEnd && room.player2ReadyToEnd) {
         socket.broadcast.to(roomId).emit("end round");
+        // io.to(roomId).emit("end round");
         room.player1ReadyToEnd = false;
         room.player2ReadyToEnd = false;
       }
@@ -162,6 +163,7 @@ const socketHandler = (server) => {
 
       if (room.player1ReadyToStart && room.player2ReadyToStart) {
         socket.broadcast.to(roomId).emit("start round", room.region, roomId);
+        // io.to(roomId).emit("start round", room.region, roomId);
         room.player1ReadyToStart = false;
         room.player2ReadyToStart = false;
       }

@@ -13,6 +13,7 @@ const RoomControls = ({
   joiningUserRoomRegion,
   vsGameStarted,
   vsGameLocation,
+  vsRoundEnded,
 }) => {
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomJoined, setRoomJoined] = useState(false);
@@ -61,6 +62,7 @@ const RoomControls = ({
         gameStarted={vsGameStarted}
         handleGoingBack={handleEndGame}
         vsGameLocation={vsGameLocation}
+        vsRoundEnded={vsRoundEnded}
       />
     );
   }
