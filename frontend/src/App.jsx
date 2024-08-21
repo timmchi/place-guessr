@@ -159,6 +159,7 @@ function App() {
                 joiningUserRoomRegion={joiningUserRoomRegion}
                 vsGameStarted={vsGameStarted}
                 vsGameLocation={vsGameLocation}
+                vsRoundEnded={vsRoundEnded}
               />
             }
           />

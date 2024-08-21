@@ -3,7 +3,6 @@ import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { calculateScore } from "../../utils/scoreUtils";
 import StreetView from "../Map/StreetView";
-import useRandomLocation from "../../hooks/useRandomLocation";
 import RoundEndScreen from "./RoundEndScreen";
 
 const Round = ({
@@ -20,7 +19,6 @@ const Round = ({
   roomCode,
   vsRoundEnded,
 }) => {
-  const [isEnded, setIsEnded] = useState(false);
   const [player1HP, setPlayer1HP] = useState(5000);
   const [player2HP, setPlayer2HP] = useState(5000);
   const [player1RoundScore, setPlayer1RoundScore] = useState(0);
@@ -39,7 +37,6 @@ const Round = ({
   const resetHp = (setHp) => setHp(5000);
 
   const endRound = () => {
-    // setIsEnded(true);
     handleRoundChange(round + 1);
     // this will be used to signal to the other player than a guess has been made
     socket.emit("end round", socket.id, roomCode);
@@ -47,23 +44,7 @@ const Round = ({
   };
 
   const startRound = () => {
-    // setIsEnded(false);
-    // refetch();
-    // socket.emit(
-    //   "fetch location",
-    //   roomMapType === "world" ? "geolist" : "geonames",
-    //   region,
-    //   roomCode
-    // );
     socket.emit("start round", socket.id, roomCode);
-  };
-
-  const resetGame = () => {
-    setPlayer1HP(5000);
-    setPlayer2HP(5000);
-    setIsEnded(false);
-    handleRoundChange(1);
-    handleReset();
   };
 
   // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
@@ -76,33 +57,20 @@ const Round = ({
 
   return (
     <div>
-      {/* <Button onClick={resetGame}>Reset game</Button> */}
       {winner && (
         <div className="absolute z-20 top-1/2 left-1/2 text-4xl font-bold text-red-500">
           {winner.name} wins! Fatality
         </div>
       )}
-      {/* {!isEnded && !winner && (
-        <>
-          <h1 className="text-4xl font-bold">Round {round}</h1>
-          <Button onClick={endRound}>End round</Button>
-          <LocationFetcher />
-        </>
-      )} */}
-      {/* {isEnded && !winner && <Button onClick={startRound}>Next round</Button>} */}
-      {/* {data && ( */}
       <>
         <StreetView
           location={vsGameLocation}
           calculateScore={calculatePlayerScore}
           onRoundEnd={endRound}
           onRoundStart={startRound}
-          //   isEnded={isEnded}
           isEnded={vsRoundEnded}
         />
       </>
-      {/* )} */}
-      {/* {isEnded && ( */}
       {vsRoundEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
