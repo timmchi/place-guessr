@@ -6,3 +6,7 @@ html,
 body {
   overflow-x: hidden;
 }
+
+label {
+  color: rgb(255, 202, 40) !important;
+}

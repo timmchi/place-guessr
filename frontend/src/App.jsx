@@ -9,6 +9,7 @@ import LogIn from "./components/Authentication/LogIn";
 import Registration from "./components/Authentication/Registration";
 import About from "./components/About";
 import RoomControls from "./components/Rooms/RoomControls";
+import NavBar from "./components/Navigation/NavBar";
 import { rooms } from "./data/rooms";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -117,7 +118,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="bg-transparent">
       <APIProvider apiKey={API_KEY}>
         <Routes>
           <Route
