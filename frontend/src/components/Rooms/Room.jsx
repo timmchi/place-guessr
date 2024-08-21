@@ -35,17 +35,7 @@ const Room = ({ type, room, vsGameStarted, vsGameLocation, roomCode }) => {
           Back to room selection
         </Button>
       </div>
-      {/* {type === "VS" && <RoomControls />} */}
       {type === "VS" ? (
-        // <VsGame
-        //   roomMapType={room.region === "random" ? "world" : "country"}
-        //   roomTitle={room.title}
-        // />
-        // <RoomControls
-        //   room={room}
-        //   vsGameStarted={vsGameStarted}
-        //   vsGameLocation={vsGameLocation}
-        // />
         <RoomLobby
           room={room}
           roomCode={roomCode}
