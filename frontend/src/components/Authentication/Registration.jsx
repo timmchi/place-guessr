@@ -9,7 +9,7 @@ const Registration = () => {
       </div>
       <div
         style={{ backgroundImage: `url(${bgImage})` }}
-        className="flex md:basis-1/2 bg-cover bg-center "
+        className="flex md:basis-1/2 bg-cover bg-center"
       ></div>
     </div>
   );

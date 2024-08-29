@@ -37,7 +37,7 @@ const SignUpForm = () => {
             size="lg"
             color="amber"
             placeholder="Username"
-            className="!text-amber-200 focus:!border-t-amber-400"
+            className="!text-amber-200 focus:!border-t-amber-400 !border-t-blue-gray-200"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -51,7 +51,7 @@ const SignUpForm = () => {
             size="lg"
             color="amber"
             placeholder="name@mail.com"
-            className="!text-amber-200 focus:!border-t-amber-400"
+            className="!text-amber-200 focus:!border-t-amber-400 !border-t-blue-gray-200"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -66,7 +66,7 @@ const SignUpForm = () => {
             size="lg"
             color="amber"
             placeholder="********"
-            className="!text-amber-200 focus:!border-t-amber-400"
+            className="!text-amber-200 focus:!border-t-amber-400 !border-t-blue-gray-200"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -81,7 +81,7 @@ const SignUpForm = () => {
             size="lg"
             color="amber"
             placeholder="********"
-            className="!text-amber-200 focus:!border-t-amber-400"
+            className="!text-amber-200 focus:!border-t-amber-400 !border-t-blue-gray-200"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
