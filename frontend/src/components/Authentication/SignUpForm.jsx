@@ -1,85 +1,110 @@
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
+import { useState } from "react";
+import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 const SignUpForm = () => {
-  return (<Card color="transparent" shadow={false}>
-  <Typography variant="h4" color="blue-gray">
-    Sign Up
-  </Typography>
-  <Typography color="gray" className="mt-1 font-normal">
-    Nice to meet you! Enter your details to register.
-  </Typography>
-  <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-    <div className="mb-1 flex flex-col gap-6">
-      <Typography variant="h6" color="blue-gray" className="-mb-3">
-        Your Name
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    console.log(username, email, password, repeatPassword);
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setRepeatPassword("");
+  };
+
+  return (
+    <Card color="transparent" shadow={false}>
+      <Typography variant="h3" className="text-amber-500">
+        Sign Up
       </Typography>
-      <Input
-        size="lg"
-        placeholder="name@mail.com"
-        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-        labelProps={{
-          className: "before:content-none after:content-none",
-        }}
-      />
-      <Typography variant="h6" color="blue-gray" className="-mb-3">
-        Your Email
+      <Typography className="mt-1 font-normal text-amber-200">
+        Enter your details below to register.
       </Typography>
-      <Input
-        size="lg"
-        placeholder="name@mail.com"
-        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-        labelProps={{
-          className: "before:content-none after:content-none",
-        }}
-      />
-      <Typography variant="h6" color="blue-gray" className="-mb-3">
-        Password
-      </Typography>
-      <Input
-        type="password"
-        size="lg"
-        placeholder="********"
-        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-        labelProps={{
-          className: "before:content-none after:content-none",
-        }}
-      />
-    </div>
-    <Checkbox
-      label={
-        <Typography
-          variant="small"
-          color="gray"
-          className="flex items-center font-normal"
+      <form
+        className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+        onSubmit={handleSignUp}
+      >
+        <div className="mb-1 flex flex-col gap-6">
+          <Typography variant="h5" className="-mb-3 text-amber-200">
+            Your Username
+          </Typography>
+          <Input
+            size="lg"
+            color="amber"
+            placeholder="Username"
+            className="!text-amber-200 focus:!border-t-amber-400"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Typography variant="h5" className="-mb-3 text-amber-200">
+            Your Email
+          </Typography>
+          <Input
+            size="lg"
+            color="amber"
+            placeholder="name@mail.com"
+            className="!text-amber-200 focus:!border-t-amber-400"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Typography variant="h5" className="-mb-3 text-amber-200">
+            Password
+          </Typography>
+          <Input
+            type="password"
+            size="lg"
+            color="amber"
+            placeholder="********"
+            className="!text-amber-200 focus:!border-t-amber-400"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Typography variant="h5" className="-mb-3 text-amber-200">
+            Repeat Password
+          </Typography>
+          <Input
+            type="password"
+            size="lg"
+            color="amber"
+            placeholder="********"
+            className="!text-amber-200 focus:!border-t-amber-400"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+          />
+        </div>
+        <Button
+          className="mt-6 self-center w-full bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
+          fullWidth
+          type="submit"
         >
-          I agree the
-          <a
-            href="#"
-            className="font-medium transition-colors hover:text-gray-900"
-          >
-            &nbsp;Terms and Conditions
-          </a>
+          sign up
+        </Button>
+        <Typography className="mt-4 text-center font-normal text-amber-200">
+          Already have an account?{" "}
+          <Link to="/login" className="font-medium text-amber-500">
+            Sign In
+          </Link>
         </Typography>
-      }
-      containerProps={{ className: "-ml-2.5" }}
-    />
-    <Button className="mt-6" fullWidth>
-      sign up
-    </Button>
-    <Typography color="gray" className="mt-4 text-center font-normal">
-      Already have an account?{" "}
-      <a href="#" className="font-medium text-gray-900">
-        Sign In
-      </a>
-    </Typography>
-  </form>
-</Card>>)
+      </form>
+    </Card>
+  );
 };
 
 export default SignUpForm;
