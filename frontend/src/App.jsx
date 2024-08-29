@@ -18,7 +18,6 @@ function App() {
   const [gameType, setGameType] = useState(null);
   const [vsGameStarted, setVsGameStarted] = useState(false);
   const [vsGameLocation, setVsGameLocation] = useState(null);
-  const [isConnected, setIsConnected] = useState(socket.connected);
   const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
   const [vsRoundEnded, setVsRoundEnded] = useState(false);
