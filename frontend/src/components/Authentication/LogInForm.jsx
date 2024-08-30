@@ -20,7 +20,7 @@ const LogInForm = () => {
         Sign In
       </Typography>
       <form
-        className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={handleSignIn}
       >
         <div className="mb-1 flex flex-col gap-6">
@@ -59,7 +59,7 @@ const LogInForm = () => {
           fullWidth
           type="submit"
         >
-          sign up
+          sign in
         </Button>
         <Typography className="mt-4 text-center font-normal text-amber-200">
           Don't have an account?{" "}
