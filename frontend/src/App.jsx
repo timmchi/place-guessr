@@ -120,6 +120,8 @@ function App() {
 
   return (
     <div>
+      <NavBar />
+
       <APIProvider apiKey={API_KEY}>
         <Routes>
           <Route

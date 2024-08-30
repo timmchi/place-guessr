@@ -69,7 +69,7 @@ const RoomControls = ({
 
   return (
     <div className="flex flex-col min-h-screen bg-indigo-200">
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="flex justify-center items-center flex-grow pb-12">
         <div className="flex bg-indigo-400 w-[48rem] container justify-between divide-x-2 divide-dashed divide-indigo-200 rounded-lg shadow-md h-[38rem]">
           <div className="p-4 basis-1/2 flex justify-center text-center h-full">
