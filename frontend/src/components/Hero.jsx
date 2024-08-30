@@ -11,7 +11,7 @@ const Hero = ({ playSingleGame, playVsGame }) => {
         backgroundImage: `url(${panorama})`,
       }}
     >
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="flex flex-grow flex-col items-center justify-center text-gray-200">
         <Typography
           variant="h1"

@@ -7,10 +7,14 @@ import {
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import NavList from "./NavList";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
+const pathsNotToRender = ["/rooms", "/lobby"];
 
 const NavBar = () => {
   const [openNav, setOpenNav] = useState(false);
+
+  const location = useLocation();
 
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
@@ -23,8 +27,15 @@ const NavBar = () => {
     };
   }, []);
 
+  for (let i = 0; i < pathsNotToRender.length; i++) {
+    if (location.pathname.startsWith(pathsNotToRender[i])) return null;
+  }
+
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-6 py-3 bg-opacity-55">
+    <Navbar
+      style={{ transform: "translate(-50%, 0%)" }}
+      className="fixed top-0 left-[50%] max-w-screen-xl px-6 py-3 bg-opacity-55"
+    >
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography variant="h5" className="mr-4 cursor-pointer py-1.5">
           <Link to="/">Place Guesser</Link>
