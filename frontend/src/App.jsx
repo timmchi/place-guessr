@@ -10,6 +10,7 @@ import Registration from "./components/Authentication/Registration";
 import About from "./components/About";
 import RoomControls from "./components/Rooms/RoomControls";
 import NavBar from "./components/Navigation/NavBar";
+import Test from "./components/Test";
 import { rooms } from "./data/rooms";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -150,6 +151,7 @@ function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/about" element={<About />} />
+          <Route path="/test" element={<Test />} />
           <Route
             path="/lobby"
             element={
