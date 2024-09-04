@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calculatePlayerRoundScore } from "../reducers/roundScoreReducer";
 import { causeHpRemoval } from "../reducers/hpReducer";
+import { calculateHpDamage } from "../utils/scoreUtils";
 import { Button } from "@material-tailwind/react";
 
 const scores = [0, 1000, 2000, 3000, 4000, 5000];
@@ -15,11 +16,15 @@ const Test = () => {
   console.log(playerHealthPoints, playerRoundScores);
 
   const removeHpFromPlayer = (player) => {
-    const scoreDifference = Math.abs(
-      playerRoundScores[1].player2.score - playerRoundScores[0].player1.score
+    // const scoreDifference = Math.abs(
+    //   playerRoundScores[1].player2.score - playerRoundScores[0].player1.score
+    // );
+    const hpRemovalValue = calculateHpDamage(
+      playerRoundScores[1].player2.score,
+      playerRoundScores[0].player1.score
     );
-    console.log("player: ", player, "score difference: ", scoreDifference);
-    dispatch(causeHpRemoval(player, scoreDifference));
+    console.log("player: ", player, "score difference: ", hpRemovalValue);
+    dispatch(causeHpRemoval(player, hpRemovalValue));
   };
 
   return (
