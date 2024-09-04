@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { calculateScore } from "../utils/scoreUtils";
 
 let initialState = [
@@ -10,31 +10,27 @@ const roundScoreSlice = createSlice({
   name: "roundScore",
   initialState,
   reducers: {
-    calculateRoundScore(state, action) {
-      const { player, distance } = action.payload;
+    setRoundScore(state, action) {
+      const { player, score } = action.payload;
 
-      const calculatedScore = calculateScore(distance);
+      if (player === "p1") {
+        state[0].player1.score = score;
+      }
 
-      const playerToCalculateScoreFor =
-        player === "p1" ? state.player1 : state.player2;
-
-      const playerWithCalculatedScore = {
-        ...playerToCalculateScoreFor,
-        score: calculatedScore,
-      };
-
-      return state.map((p) =>
-        p.id === playerToCalculateScoreFor.id ? playerWithCalculatedScore : p
-      );
+      if (player === "p2") {
+        state[1].player2.score = score;
+      }
     },
   },
 });
 
-export const { calculateRoundScore } = roundScoreSlice.actions;
+export const { setRoundScore } = roundScoreSlice.actions;
 
 export const calculatePlayerRoundScore = (player, distance) => {
   return async (dispatch) => {
-    dispatch(calculateRoundScore({ player, distance }));
+    const score = Math.floor(calculateScore(distance));
+
+    dispatch(setRoundScore({ player, score }));
   };
 };
 
