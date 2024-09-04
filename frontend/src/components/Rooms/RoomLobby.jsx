@@ -34,9 +34,8 @@ const RoomLobby = ({
 
   if (!gameStarted) {
     return (
-      <div className="bg-indigo-200 min-h-screen">
-        {/* <NavBar /> */}
-        <div className="w-[50%] bg-indigo-400 mx-auto rounded-lg shadow-md my-12">
+      <div className="flex bg-indigo-200 min-h-screen justify-center items-center">
+        <div className="self-start w-[50%] bg-indigo-400 mx-auto rounded-lg shadow-md my-auto">
           <div className="flex gap-4 justify-center pt-12">
             <Typography variant="h1" className="text-center pt-2">
               {room.title}
