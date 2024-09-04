@@ -41,3 +41,9 @@ export const calculateScore = (distance) => {
 // console.log("100 km score", calculateScore(100)); 4675.797466421211
 
 // console.log("0 km score", calculateScore(0)); 5000
+
+export const calculateHpDamage = (score1, score2, multiplier = 1) => {
+  const scoreDifference = Math.abs(score1 - score2);
+
+  return scoreDifference * multiplier;
+};
