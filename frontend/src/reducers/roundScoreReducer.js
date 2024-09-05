@@ -21,10 +21,17 @@ const roundScoreSlice = createSlice({
         state[1].player2.score = score;
       }
     },
+    roundScoresReceived(state, action) {
+      const { player1Score, player2Score } = action.payload;
+
+      state[0].player1.score = player1Score;
+      state[1].player2.score = player2Score;
+    },
   },
 });
 
-export const { playerScoreCalculated } = roundScoreSlice.actions;
+export const { playerScoreCalculated, roundScoresReceived } =
+  roundScoreSlice.actions;
 
 export const calculatePlayerRoundScore = (player, distance) => {
   return async (dispatch) => {

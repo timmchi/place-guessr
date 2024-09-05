@@ -42,6 +42,8 @@ const socketHandler = (server) => {
           player2ReadyToEnd: false,
           player1ReadyToStart: false,
           player2ReadyToStart: false,
+          player1RoundScore: 0,
+          player2RoundScore: 0,
         },
       ];
       console.log("room created by", player, roomId);
@@ -166,6 +168,24 @@ const socketHandler = (server) => {
         // io.to(roomId).emit("start round", room.region, roomId);
         room.player1ReadyToStart = false;
         room.player2ReadyToStart = false;
+        room.player1RoundScore = 0;
+        room.player2RoundScore = 0;
+      }
+    });
+
+    socket.on("score calculated", async (senderId, roomId, score) => {
+      const room = rooms.find((room) => room.roomId === roomId);
+
+      if (room.player1 === senderId) room.player1RoundScore = score;
+
+      if (room.player2 === senderId) room.player2RoundScore = score;
+
+      if (room.player1RoundScore && room.player2RoundScore) {
+        io.to(roomId).emit(
+          "scores set",
+          room.player1RoundScore,
+          room.player2RoundScore
+        );
       }
     });
 

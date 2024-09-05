@@ -3,6 +3,8 @@ import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { roundScoresReceived } from "./reducers/roundScoreReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -24,6 +26,7 @@ function App() {
   const [vsRoundEnded, setVsRoundEnded] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onAnswer = (playerId) => {
@@ -79,6 +82,11 @@ function App() {
       setVsRoundEnded(true);
     };
 
+    const onScoresSet = (player1Score, player2Score) => {
+      console.log("settings scores for obth players");
+      dispatch(roundScoresReceived(player1Score, player2Score));
+    };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -89,6 +97,7 @@ function App() {
     socket.on("room created", onCreateRoom);
     socket.on("start round", onRoundStart);
     socket.on("end round", onRoundEnd);
+    socket.on("scores set", onScoresSet);
 
     return () => {
       socket.off("users", onUsers);
@@ -101,6 +110,7 @@ function App() {
       socket.off("room created", onCreateRoom);
       socket.off("start round", onRoundStart);
       socket.off("end round", onRoundEnd);
+      socket.off("scores set", onScoresSet);
     };
   }, []);
 
