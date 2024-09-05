@@ -4,7 +4,10 @@ import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { roundScoresReceived } from "./reducers/roundScoreReducer";
+import {
+  roundScoresReceived,
+  roundScoresReset,
+} from "./reducers/roundScoreReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -75,6 +78,7 @@ function App() {
         roomRegion,
         roomCode
       );
+      dispatch(roundScoresReset());
     };
 
     const onRoundEnd = () => {
@@ -83,8 +87,12 @@ function App() {
     };
 
     const onScoresSet = (player1Score, player2Score) => {
-      console.log("settings scores for obth players");
-      dispatch(roundScoresReceived(player1Score, player2Score));
+      console.log(
+        "settings scores for obth players",
+        player1Score,
+        player2Score
+      );
+      dispatch(roundScoresReceived({ player1Score, player2Score }));
     };
 
     socket.on("users", onUsers);

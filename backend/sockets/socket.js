@@ -52,7 +52,7 @@ const socketHandler = (server) => {
 
     socket.on("join room", (player, roomId) => {
       if (io.sockets.adapter.rooms.get(roomId)) {
-        console.log(`${player} joining ${roomId}`);
+        // console.log(`${player} joining ${roomId}`);
         const room = rooms.find((r) => r.roomId === roomId);
 
         if (room) {
@@ -71,18 +71,18 @@ const socketHandler = (server) => {
     });
 
     socket.on("start game", (roomId) => {
-      console.log("starting game in", roomId);
+      //   console.log("starting game in", roomId);
       io.to(roomId).emit("start game");
     });
 
     socket.on("end game", (roomId) => {
-      console.log("ending game in", roomId);
+      //   console.log("ending game in", roomId);
       rooms = rooms.filter((room) => room.roomId === roomId);
       io.to(roomId).emit("end game");
     });
 
     socket.on("fetch location", async (apiType, region, roomId) => {
-      console.log("fetching location for", apiType, region, roomId);
+      //   console.log("fetching location for", apiType, region, roomId);
 
       if (apiType === "geolist") {
         try {
@@ -116,7 +116,7 @@ const socketHandler = (server) => {
     });
 
     socket.on("submit answer", (senderId, roomId) => {
-      console.log("answer submit by", senderId);
+      //   console.log("answer submit by", senderId);
 
       // const clients = await io.in(roomId).fetchSockets();
       // const clientIds = clients.map((c) => c.id);
@@ -128,7 +128,7 @@ const socketHandler = (server) => {
     });
 
     socket.on("room chosen", (roomId, roomRegion) => {
-      console.log("room chosen in", roomId, roomRegion);
+      //   console.log("room chosen in", roomId, roomRegion);
       const room = rooms.find((r) => r.roomId === roomId);
       room.region = roomRegion;
 
@@ -175,12 +175,20 @@ const socketHandler = (server) => {
 
     socket.on("score calculated", async (senderId, roomId, score) => {
       const room = rooms.find((room) => room.roomId === roomId);
+      console.log("in score calculated atm");
 
-      if (room.player1 === senderId) room.player1RoundScore = score;
+      if (room.player1 === senderId) {
+        console.log("score of the first player is", score);
+        room.player1RoundScore = score;
+      }
 
-      if (room.player2 === senderId) room.player2RoundScore = score;
+      if (room.player2 === senderId) {
+        console.log("score of the second player is", score);
+        room.player2RoundScore = score;
+      }
 
       if (room.player1RoundScore && room.player2RoundScore) {
+        console.log("both scores calculated, emitting scores set...");
         io.to(roomId).emit(
           "scores set",
           room.player1RoundScore,

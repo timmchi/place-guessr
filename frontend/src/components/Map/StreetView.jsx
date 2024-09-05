@@ -107,7 +107,9 @@ const StreetView = ({
     console.log("guess location in submit guess", guessLocation);
     console.log("answer location in submit guess", updatedAnswerLocation);
 
-    calculateScore(player, distanceResult);
+    console.log("player in submitguess", player);
+
+    calculateScore(distanceResult, player.player);
     onRoundEnd();
   };
 

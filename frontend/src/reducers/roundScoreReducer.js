@@ -27,17 +27,28 @@ const roundScoreSlice = createSlice({
       state[0].player1.score = player1Score;
       state[1].player2.score = player2Score;
     },
+    roundScoresReset(state) {
+      state[0].player1.score = 0;
+      state[1].player2.score = 0;
+    },
   },
 });
 
-export const { playerScoreCalculated, roundScoresReceived } =
+export const { playerScoreCalculated, roundScoresReceived, roundScoresReset } =
   roundScoreSlice.actions;
 
 export const calculatePlayerRoundScore = (player, distance) => {
   return async (dispatch) => {
     const score = Math.floor(calculateScore(distance));
-
+    console.log(
+      "calculating player round score for",
+      player,
+      "based on distance",
+      distance
+    );
     dispatch(playerScoreCalculated({ player, score }));
+
+    return score;
   };
 };
 

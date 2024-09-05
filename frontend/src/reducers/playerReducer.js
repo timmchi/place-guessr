@@ -6,15 +6,15 @@ const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    roomCreated(state) {
+    roomWasCreated(state) {
       state.player = "p1";
     },
-    roomJoined(state) {
+    roomWasJoined(state) {
       state.player = "p2";
     },
   },
 });
 
-export const { roomCreated, roomJoined } = playerSlice.actions;
+export const { roomWasCreated, roomWasJoined } = playerSlice.actions;
 
 export default playerSlice.reducer;
