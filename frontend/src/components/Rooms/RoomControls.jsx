@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Button, Input } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { roomCreated, roomJoined } from "../../reducers/playerReducer";
 import RoomLobby from "./RoomLobby";
 import RoomsList from "./RoomsList";
-import NavBar from "../Navigation/NavBar";
 
 const RoomControls = ({
   rooms,
@@ -18,6 +19,7 @@ const RoomControls = ({
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomJoined, setRoomJoined] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //   const [roomCode, setRoomCode] = useState("");
   const roomRegion = rooms.find(
@@ -31,6 +33,7 @@ const RoomControls = ({
     console.log("joining roooooom....");
     socket.emit("join room", socket.id, roomCode);
     setRoomJoined(true);
+    dispatch(roomJoined());
   };
 
   const createRoom = () => {
@@ -39,6 +42,7 @@ const RoomControls = ({
     // setRoomCode(generatedRoomCode);
     socket.emit("create room", socket.id);
     setRoomCreated(true);
+    dispatch(roomCreated());
   };
 
   const handleEndGame = () => {

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { calculateScore } from "../../utils/scoreUtils";
+import { calculatePlayerRoundScore } from "../../reducers/roundScoreReducer";
+import { useDispatch } from "react-redux";
 import StreetView from "../Map/StreetView";
 import RoundEndScreen from "./RoundEndScreen";
 
@@ -19,22 +21,13 @@ const Round = ({
   roomCode,
   vsRoundEnded,
 }) => {
-  const [player1HP, setPlayer1HP] = useState(5000);
-  const [player2HP, setPlayer2HP] = useState(5000);
-  const [player1RoundScore, setPlayer1RoundScore] = useState(0);
-  const [player2RoundScore, setPlayer2RoundScore] = useState(0);
+  //   const [player1HP, setPlayer1HP] = useState(5000);
+  //   const [player2HP, setPlayer2HP] = useState(5000);
+  //   const [player1RoundScore, setPlayer1RoundScore] = useState(0);
+  //   const [player2RoundScore, setPlayer2RoundScore] = useState(0);
+  const dispatch = useDispatch();
 
   if (!vsGameLocation) return <div>Loading...</div>;
-
-  // players hp removed if he scores worse than the opponent, hence the word attacker - the opponent "attacks" the player who's hp is being removed, and the attacker is also declared the winner if the hp of the player being attacked reaches 0
-  const removeHp = (hp, setHp, attacker) => {
-    const newHp = Math.max(0, hp - 1000);
-    setHp(newHp);
-
-    if (newHp === 0) handleGameWin(attacker);
-  };
-
-  const resetHp = (setHp) => setHp(5000);
 
   const endRound = () => {
     handleRoundChange(round + 1);
@@ -48,11 +41,10 @@ const Round = ({
   };
 
   // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
-  const calculatePlayerScore = (distance, player = "player1") => {
-    const calculatedScore = calculateScore(distance);
-    player === "player1"
-      ? setPlayer1RoundScore(calculatedScore)
-      : setPlayer2RoundScore(calculatedScore);
+  const calculatePlayerScore = (distance, player = "p1") => {
+    player === "p1"
+      ? dispatch(calculatePlayerRoundScore("p1", distance))
+      : dispatch(calculatePlayerRoundScore("p2", distance));
   };
 
   return (
@@ -76,16 +68,16 @@ const Round = ({
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
           <RoundEndScreen
             players={players}
-            player1hp={player1HP}
-            player2hp={player2HP}
-            removePlayer1hp={() =>
-              removeHp(player1HP, setPlayer1HP, players[1])
-            }
-            removePlayer2hp={() =>
-              removeHp(player2HP, setPlayer2HP, players[0])
-            }
-            resetPlayer1hp={() => resetHp(setPlayer1HP)}
-            resetPlayer2hp={() => resetHp(setPlayer2HP)}
+            // player1hp={player1HP}
+            // player2hp={player2HP}
+            // removePlayer1hp={() =>
+            //   removeHp(player1HP, setPlayer1HP, players[1])
+            // }
+            // removePlayer2hp={() =>
+            //   removeHp(player2HP, setPlayer2HP, players[0])
+            // }
+            // resetPlayer1hp={() => resetHp(setPlayer1HP)}
+            // resetPlayer2hp={() => resetHp(setPlayer2HP)}
           />
         </>
       )}

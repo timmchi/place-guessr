@@ -5,18 +5,18 @@ const userSlice = createSlice({
   name: "user",
   initialState: null,
   reducers: {
-    setUser(state, action) {
+    userSet(state, action) {
       return action.payload;
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { userSet } = userSlice.actions;
 
 export const initializeUser = (user) => {
   return async (dispatch) => {
     userService.setToken(user.token);
-    dispatch(setUser(user));
+    dispatch(userSet(user));
   };
 };
 
