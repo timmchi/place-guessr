@@ -5,6 +5,7 @@ import {
   StreetViewPanorama,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import { useSelector } from "react-redux";
 import { haversine_distance } from "../../utils/scoreUtils";
 import MapElement from "./Map";
 import { Button } from "@material-tailwind/react";
@@ -23,6 +24,7 @@ const StreetView = ({
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
+  const player = useSelector((state) => state.player);
 
   let distance;
 
@@ -105,7 +107,7 @@ const StreetView = ({
     console.log("guess location in submit guess", guessLocation);
     console.log("answer location in submit guess", updatedAnswerLocation);
 
-    calculateScore(distanceResult);
+    calculateScore(player, distanceResult);
     onRoundEnd();
   };
 

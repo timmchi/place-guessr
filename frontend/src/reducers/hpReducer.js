@@ -9,20 +9,9 @@ const hpSlice = createSlice({
   name: "hp",
   initialState,
   reducers: {
-    removeHP(state, action) {
+    removedHP(state, action) {
       const { player, amount } = action.payload;
 
-      //   const playerToRemoveHpFrom =
-      //     player === "p1" ? state.player1 : state.player2;
-
-      //   const playerWithRemovedHp = {
-      //     ...playerToRemoveHpFrom,
-      //     hp: playerToRemoveHpFrom.hp - amount,
-      //   };
-
-      //   return state.map((p) =>
-      //     p.id === playerToRemoveHpFrom.id ? playerWithRemovedHp : p
-      //   );
       if (player === "p1") {
         state[0].player1.hp = state[0].player1.hp - amount;
       }
@@ -34,11 +23,11 @@ const hpSlice = createSlice({
   },
 });
 
-export const { removeHP } = hpSlice.actions;
+export const { removedHP } = hpSlice.actions;
 
 export const causeHpRemoval = (player, amount) => {
   return async (dispatch) => {
-    dispatch(removeHP({ player, amount }));
+    dispatch(removedHP({ player, amount }));
   };
 };
 

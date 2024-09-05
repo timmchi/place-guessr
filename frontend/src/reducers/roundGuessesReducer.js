@@ -6,7 +6,7 @@ const roundGuessSlice = createSlice({
   name: "roundGuess",
   initialState,
   reducers: {
-    setRoundGuess(state, action) {
+    locationGuessed(state, action) {
       const { player, guessLocation } = action.payload;
 
       if (player === "p1") {
@@ -17,23 +17,23 @@ const roundGuessSlice = createSlice({
         state.player2Guess = guessLocation;
       }
     },
-    resetGuesses(state, action) {
+    guessesReset() {
       return null;
     },
   },
 });
 
-export const { setRoundGuess, resetGuesses } = roundGuessSlice.actions;
+export const { locationGuessed, guessesReset } = roundGuessSlice.actions;
 
 export const makeGuess = (player, guessLocation) => {
   return async (dispatch) => {
-    dispatch(setRoundGuess({ player, guessLocation }));
+    dispatch(locationGuessed({ player, guessLocation }));
   };
 };
 
 export const resetRound = () => {
   return async (dispatch) => {
-    dispatch(resetGuesses());
+    dispatch(guessesReset());
   };
 };
 

@@ -4,6 +4,7 @@ import userReducer from "./userReducer";
 import hpReducer from "./hpReducer";
 import roundScoreReducer from "./roundScoreReducer";
 import roundGuessesReducer from "./roundGuessesReducer";
+import playerReducer from "./playerReducer";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     hp: hpReducer,
     roundScore: roundScoreReducer,
     roundGuesses: roundGuessesReducer,
+    player: playerReducer,
   },
 });
 

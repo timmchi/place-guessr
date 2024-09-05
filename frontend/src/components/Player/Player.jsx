@@ -1,17 +1,10 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button } from "@material-tailwind/react";
 import HealthBar from "./HealthBar";
 import Avatar from "./Avatar";
 
-const Player = ({
-  player,
-  healthPoints,
-  removeHp,
-  resetHp,
-  gameType,
-  score,
-  round,
-}) => {
+const Player = ({ player, healthPoints, gameType, score }) => {
   return (
     <div
       className={`flex ${
@@ -33,10 +26,7 @@ const Player = ({
       {gameType === "vs" && (
         <>
           <HealthBar healthPoints={healthPoints} />
-          <div className="flex gap-2 pt-2">
-            <Button onClick={removeHp}>-1000</Button>
-            <Button onClick={resetHp}>Reset</Button>
-          </div>
+          {score}
         </>
       )}
     </div>

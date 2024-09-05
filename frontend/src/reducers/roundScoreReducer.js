@@ -10,7 +10,7 @@ const roundScoreSlice = createSlice({
   name: "roundScore",
   initialState,
   reducers: {
-    setRoundScore(state, action) {
+    playerScoreCalculated(state, action) {
       const { player, score } = action.payload;
 
       if (player === "p1") {
@@ -24,13 +24,13 @@ const roundScoreSlice = createSlice({
   },
 });
 
-export const { setRoundScore } = roundScoreSlice.actions;
+export const { playerScoreCalculated } = roundScoreSlice.actions;
 
 export const calculatePlayerRoundScore = (player, distance) => {
   return async (dispatch) => {
     const score = Math.floor(calculateScore(distance));
 
-    dispatch(setRoundScore({ player, score }));
+    dispatch(playerScoreCalculated({ player, score }));
   };
 };
 
