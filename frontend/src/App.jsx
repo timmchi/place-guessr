@@ -3,11 +3,13 @@ import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   roundScoresReceived,
   roundScoresReset,
 } from "./reducers/roundScoreReducer";
+import { calculateHpDamage } from "./utils/scoreUtils";
+import { causeHpRemoval } from "./reducers/hpReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -82,7 +84,8 @@ function App() {
     };
 
     const onRoundEnd = () => {
-      console.log("ending round");
+      // the reason for round end screen not appearing for the second user is that setvsroundended seems to not be passed to some component that relies on it. Probably pretty easy to fix it with redux
+      // Actually, this depends on the player that submitted the guess first - they get the round end screen ui, but the other person doesnt
       setVsRoundEnded(true);
     };
 
@@ -93,6 +96,7 @@ function App() {
         player2Score
       );
       dispatch(roundScoresReceived({ player1Score, player2Score }));
+      removeHpFromPlayer(player1Score, player2Score);
     };
 
     socket.on("users", onUsers);
@@ -135,6 +139,23 @@ function App() {
   const playSingleGame = () => {
     setGameType("SINGLE");
     navigate("/rooms");
+  };
+
+  const removeHpFromPlayer = (player1Score, player2Score) => {
+    // these are 0, need to find a way to grab this state to make the calculations
+    const hpRemovalValue = calculateHpDamage(player1Score, player2Score);
+    console.log("hp removal value", hpRemovalValue);
+
+    // there will be a difference between scores in 99.99% of cases, and even if there
+    // isnt, the amount of hp being removed will be 0. So, no sense in trying to fix
+    // for this edge case atm or maybe ever
+    if (player1Score > player2Score) {
+      dispatch(causeHpRemoval("p2", hpRemovalValue));
+    }
+
+    if (player1Score < player2Score) {
+      dispatch(causeHpRemoval("p1", hpRemovalValue));
+    }
   };
 
   return (
