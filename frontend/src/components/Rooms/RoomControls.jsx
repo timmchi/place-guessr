@@ -3,7 +3,7 @@ import { Button, Input } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { roomCreated, roomJoined } from "../../reducers/playerReducer";
+import { roomWasCreated, roomWasJoined } from "../../reducers/playerReducer";
 import RoomLobby from "./RoomLobby";
 import RoomsList from "./RoomsList";
 
@@ -33,7 +33,7 @@ const RoomControls = ({
     console.log("joining roooooom....");
     socket.emit("join room", socket.id, roomCode);
     setRoomJoined(true);
-    dispatch(roomJoined());
+    dispatch(roomWasJoined());
   };
 
   const createRoom = () => {
@@ -42,7 +42,7 @@ const RoomControls = ({
     // setRoomCode(generatedRoomCode);
     socket.emit("create room", socket.id);
     setRoomCreated(true);
-    dispatch(roomCreated());
+    dispatch(roomWasCreated());
   };
 
   const handleEndGame = () => {
