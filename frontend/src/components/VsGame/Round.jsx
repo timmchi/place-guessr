@@ -27,34 +27,36 @@ const Round = ({
 
   if (!vsGameLocation) return <div>Loading...</div>;
 
-  const removeHpFromPlayer = () => {
-    const hpRemovalValue = calculateHpDamage(
-      playerRoundScores[1].player2.score,
-      playerRoundScores[0].player1.score
-    );
+  //   const removeHpFromPlayer = () => {
+  //     // these are 0, need to find a way to grab this state to make the calculations
+  //     const hpRemovalValue = calculateHpDamage(
+  //       playerRoundScores[1].player2.score,
+  //       playerRoundScores[0].player1.score
+  //     );
+  //     console.log("hp removal value", hpRemovalValue);
 
-    // there will be a difference between scores in 99.99% of cases, and even if there
-    // isnt, the amount of hp being removed will be 0. So, no sense in trying to fix
-    // for this edge case atm or maybe ever
-    if (
-      playerRoundScores[0].player1.score > playerRoundScores[1].player2.score
-    ) {
-      dispatch(causeHpRemoval("p2", hpRemovalValue));
-    }
+  //     // there will be a difference between scores in 99.99% of cases, and even if there
+  //     // isnt, the amount of hp being removed will be 0. So, no sense in trying to fix
+  //     // for this edge case atm or maybe ever
+  //     if (
+  //       playerRoundScores[0].player1.score > playerRoundScores[1].player2.score
+  //     ) {
+  //       dispatch(causeHpRemoval("p2", hpRemovalValue));
+  //     }
 
-    if (
-      playerRoundScores[0].player1.score < playerRoundScores[1].player2.score
-    ) {
-      dispatch(causeHpRemoval("p1", hpRemovalValue));
-    }
-  };
+  //     if (
+  //       playerRoundScores[0].player1.score < playerRoundScores[1].player2.score
+  //     ) {
+  //       dispatch(causeHpRemoval("p1", hpRemovalValue));
+  //     }
+  //   };
 
   const endRound = () => {
     handleRoundChange(round + 1);
     // this will be used to signal to the other player than a guess has been made
     socket.emit("end round", socket.id, roomCode);
     socket.emit("submit answer", socket.id, roomCode);
-    removeHpFromPlayer();
+    // removeHpFromPlayer();
   };
 
   const startRound = () => {
@@ -65,34 +67,14 @@ const Round = ({
   const calculatePlayerScore = async (distance, player = "p1") => {
     if (player === "p1") {
       const score = await dispatch(calculatePlayerRoundScore("p1", distance));
-      console.log(
-        "dispatched p1 round score calculation, score is",
-        // playerRoundScores[0].player1.score
-        score
-      );
-      socket.emit(
-        "score calculated",
-        socket.id,
-        roomCode,
-        // playerRoundScores[0].player1.score
-        score
-      );
+      console.log("dispatched p1 round score calculation, score is", score);
+      socket.emit("score calculated", socket.id, roomCode, score);
     }
 
     if (player === "p2") {
       const score = await dispatch(calculatePlayerRoundScore("p2", distance));
-      console.log(
-        "dispatched p2 round score calculation, score is",
-        // playerRoundScores[1].player2.score
-        score
-      );
-      socket.emit(
-        "score calculated",
-        socket.id,
-        roomCode,
-        // playerRoundScores[1].player2.score
-        score
-      );
+      console.log("dispatched p2 round score calculation, score is", score);
+      socket.emit("score calculated", socket.id, roomCode, score);
     }
   };
 
@@ -115,19 +97,7 @@ const Round = ({
       {vsRoundEnded && (
         <>
           <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
-          <RoundEndScreen
-            players={players}
-            // player1hp={player1HP}
-            // player2hp={player2HP}
-            // removePlayer1hp={() =>
-            //   removeHp(player1HP, setPlayer1HP, players[1])
-            // }
-            // removePlayer2hp={() =>
-            //   removeHp(player2HP, setPlayer2HP, players[0])
-            // }
-            // resetPlayer1hp={() => resetHp(setPlayer1HP)}
-            // resetPlayer2hp={() => resetHp(setPlayer2HP)}
-          />
+          <RoundEndScreen players={players} />
         </>
       )}
     </div>
