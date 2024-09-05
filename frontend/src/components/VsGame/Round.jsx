@@ -3,7 +3,7 @@ import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { calculateScore } from "../../utils/scoreUtils";
 import { calculatePlayerRoundScore } from "../../reducers/roundScoreReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import StreetView from "../Map/StreetView";
 import RoundEndScreen from "./RoundEndScreen";
 
@@ -21,11 +21,8 @@ const Round = ({
   roomCode,
   vsRoundEnded,
 }) => {
-  //   const [player1HP, setPlayer1HP] = useState(5000);
-  //   const [player2HP, setPlayer2HP] = useState(5000);
-  //   const [player1RoundScore, setPlayer1RoundScore] = useState(0);
-  //   const [player2RoundScore, setPlayer2RoundScore] = useState(0);
   const dispatch = useDispatch();
+  const playerRoundScores = useSelector((state) => state.roundScore);
 
   if (!vsGameLocation) return <div>Loading...</div>;
 
@@ -42,9 +39,29 @@ const Round = ({
 
   // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
   const calculatePlayerScore = (distance, player = "p1") => {
-    player === "p1"
-      ? dispatch(calculatePlayerRoundScore("p1", distance))
-      : dispatch(calculatePlayerRoundScore("p2", distance));
+    // player === "p1"
+    //   ? dispatch(calculatePlayerRoundScore("p1", distance))
+    //   : dispatch(calculatePlayerRoundScore("p2", distance));
+
+    if (player === "p1") {
+      dispatch(calculatePlayerRoundScore("p1", distance));
+      socket.emit(
+        "score calculated",
+        socket.id,
+        roomCode,
+        playerRoundScores[0].player1.score
+      );
+    }
+
+    if (player === "p2") {
+      dispatch(calculatePlayerRoundScore("p2", distance));
+      socket.emit(
+        "score calculated",
+        socket.id,
+        roomCode,
+        playerRoundScores[1].player2.score
+      );
+    }
   };
 
   return (
