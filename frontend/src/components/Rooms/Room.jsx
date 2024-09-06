@@ -1,6 +1,4 @@
 import SingleGame from "../SingleGame/SingleGame";
-import VsGame from "../VsGame/VsGame";
-import RoomControls from "./RoomControls";
 import RoomLobby from "./RoomLobby";
 import { socket } from "../../sockets/socket";
 import { Button } from "@material-tailwind/react";
@@ -9,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 const Room = ({
   type,
   room,
-  vsGameStarted,
+  //   vsGameStarted,
   vsGameLocation,
-  vsRoundEnded,
+  //   vsRoundEnded,
   roomCode,
 }) => {
   const navigate = useNavigate();
@@ -46,8 +44,8 @@ const Room = ({
         <RoomLobby
           room={room}
           roomCode={roomCode}
-          gameStarted={vsGameStarted}
-          vsRoundEnded={vsRoundEnded}
+          //   gameStarted={vsGameStarted}
+          //   vsRoundEnded={vsRoundEnded}
           handleGoingBack={handleEndGame}
           vsGameLocation={vsGameLocation}
         />

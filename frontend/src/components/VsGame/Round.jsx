@@ -20,36 +20,13 @@ const Round = ({
   region,
   vsGameLocation,
   roomCode,
-  vsRoundEnded,
+  //   vsRoundEnded,
 }) => {
   const dispatch = useDispatch();
-  const playerRoundScores = useSelector((state) => state.roundScore);
+  const vsRoundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
+  console.log("vsRoundEnded in Round component", vsRoundEnded);
 
   if (!vsGameLocation) return <div>Loading...</div>;
-
-  //   const removeHpFromPlayer = () => {
-  //     // these are 0, need to find a way to grab this state to make the calculations
-  //     const hpRemovalValue = calculateHpDamage(
-  //       playerRoundScores[1].player2.score,
-  //       playerRoundScores[0].player1.score
-  //     );
-  //     console.log("hp removal value", hpRemovalValue);
-
-  //     // there will be a difference between scores in 99.99% of cases, and even if there
-  //     // isnt, the amount of hp being removed will be 0. So, no sense in trying to fix
-  //     // for this edge case atm or maybe ever
-  //     if (
-  //       playerRoundScores[0].player1.score > playerRoundScores[1].player2.score
-  //     ) {
-  //       dispatch(causeHpRemoval("p2", hpRemovalValue));
-  //     }
-
-  //     if (
-  //       playerRoundScores[0].player1.score < playerRoundScores[1].player2.score
-  //     ) {
-  //       dispatch(causeHpRemoval("p1", hpRemovalValue));
-  //     }
-  //   };
 
   const endRound = () => {
     handleRoundChange(round + 1);

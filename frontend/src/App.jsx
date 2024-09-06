@@ -10,6 +10,12 @@ import {
 } from "./reducers/roundScoreReducer";
 import { calculateHpDamage } from "./utils/scoreUtils";
 import { causeHpRemoval } from "./reducers/hpReducer";
+import {
+  gameStarted,
+  gameEnded,
+  roundStarted,
+  roundEnded,
+} from "./reducers/vsGameReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -24,11 +30,9 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
   const [gameType, setGameType] = useState(null);
-  const [vsGameStarted, setVsGameStarted] = useState(false);
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
-  const [vsRoundEnded, setVsRoundEnded] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,12 +55,12 @@ function App() {
 
     const onStartGame = () => {
       console.log("starting game");
-      setVsGameStarted(true);
+      dispatch(gameStarted());
     };
 
     const onEndGame = () => {
       console.log("ending game");
-      setVsGameStarted(false);
+      dispatch(gameEnded());
     };
 
     // heres the problem :) non-standardized parameter in the backend, lets try and fix it there..
@@ -73,7 +77,7 @@ function App() {
     const onRoundStart = (roomRegion, roomCode) => {
       console.log("starting round");
       console.log("joining user room region", roomRegion);
-      setVsRoundEnded(false);
+      dispatch(roundStarted());
       socket.emit(
         "fetch location",
         roomRegion === "random" ? "geolist" : "geonames",
@@ -86,7 +90,7 @@ function App() {
     const onRoundEnd = () => {
       // the reason for round end screen not appearing for the second user is that setvsroundended seems to not be passed to some component that relies on it. Probably pretty easy to fix it with redux
       // Actually, this depends on the player that submitted the guess first - they get the round end screen ui, but the other person doesnt
-      setVsRoundEnded(true);
+      dispatch(roundEnded());
     };
 
     const onScoresSet = (player1Score, player2Score) => {
@@ -180,9 +184,7 @@ function App() {
               <Room
                 type={gameType}
                 room={room}
-                vsGameStarted={vsGameStarted}
                 vsGameLocation={vsGameLocation}
-                vsRoundEnded={vsRoundEnded}
                 roomCode={roomCode}
               />
             }
@@ -199,9 +201,7 @@ function App() {
                 roomCode={roomCode}
                 setRoomCode={setRoomCode}
                 joiningUserRoomRegion={joiningUserRoomRegion}
-                vsGameStarted={vsGameStarted}
                 vsGameLocation={vsGameLocation}
-                vsRoundEnded={vsRoundEnded}
               />
             }
           />
