@@ -10,6 +10,12 @@ import {
 
 import { GoogleMapsContext, useMapsLibrary } from "@vis.gl/react-google-maps";
 
+const lineSymbol = {
+  path: "M 0,-1 0,1",
+  strokeOpacity: 1,
+  scale: 4,
+};
+
 function usePolyline(props) {
   const {
     onClick,
@@ -34,7 +40,12 @@ function usePolyline(props) {
 
   const geometryLibrary = useMapsLibrary("geometry");
 
-  const polyline = useRef(new google.maps.Polyline()).current;
+  const polyline = useRef(
+    new google.maps.Polyline({
+      strokeOpacity: 0,
+      icons: [{ icon: lineSymbol, offset: 0, repeat: "20px" }],
+    })
+  ).current;
   // update PolylineOptions (note the dependencies aren't properly checked
   // here, we just assume that setOptions is smart enough to not waste a
   // lot of time updating values that didn't change)

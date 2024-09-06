@@ -3,6 +3,7 @@ import { Polyline } from "./Polyline";
 import { Button, Avatar } from "@material-tailwind/react";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import avatar from "../../../test/vavatar.jpg";
+import avatar2 from "../../../test/avatar2.jpg";
 import { useSelector } from "react-redux";
 
 const MAP_ID = import.meta.env.VITE_MAP_ID;
@@ -70,7 +71,7 @@ const MapElement = ({
               </AdvancedMarker>
               <AdvancedMarker position={player2Guess} title="Player 2's guess">
                 <Avatar
-                  src={avatar}
+                  src={avatar2}
                   alt="Player 2's avatar"
                   withBorder={true}
                   size="sm"
