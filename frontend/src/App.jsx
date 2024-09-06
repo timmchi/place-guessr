@@ -89,7 +89,8 @@ function App() {
 
     const onRoundEnd = () => {
       // the reason for round end screen not appearing for the second user is that setvsroundended seems to not be passed to some component that relies on it. Probably pretty easy to fix it with redux
-      // Actually, this depends on the player that submitted the guess first - they get the round end screen ui, but the other person doesnt
+      // Actually, this depends on the player that submitted the guess first - they get the round end screen ui, but the other person doesnt. The person that submitted the first guess receives this event and its logged in the console, and the second person doesnt.
+      console.log("end round event received, ending round...");
       dispatch(roundEnded());
     };
 
