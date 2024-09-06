@@ -146,8 +146,8 @@ const socketHandler = (server) => {
       if (room.player2 === senderId) room.player2ReadyToEnd = true;
 
       if (room.player1ReadyToEnd && room.player2ReadyToEnd) {
-        socket.broadcast.to(roomId).emit("end round");
-        // io.to(roomId).emit("end round");
+        // socket.broadcast.to(roomId).emit("end round");
+        io.to(roomId).emit("end round");
         room.player1ReadyToEnd = false;
         room.player2ReadyToEnd = false;
       }
@@ -164,8 +164,8 @@ const socketHandler = (server) => {
       if (room.player2 === senderId) room.player2ReadyToStart = true;
 
       if (room.player1ReadyToStart && room.player2ReadyToStart) {
-        socket.broadcast.to(roomId).emit("start round", room.region, roomId);
-        // io.to(roomId).emit("start round", room.region, roomId);
+        // socket.broadcast.to(roomId).emit("start round", room.region, roomId);
+        io.to(roomId).emit("start round", room.region, roomId);
         room.player1ReadyToStart = false;
         room.player2ReadyToStart = false;
         room.player1RoundScore = 0;
