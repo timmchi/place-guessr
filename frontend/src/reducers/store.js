@@ -6,6 +6,7 @@ import roundScoreReducer from "./roundScoreReducer";
 import roundGuessesReducer from "./roundGuessesReducer";
 import playerReducer from "./playerReducer";
 import vsGameReducer from "./vsGameReducer";
+import gameTypeReducer from "./gameTypeReducer";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     roundGuesses: roundGuessesReducer,
     player: playerReducer,
     vsGame: vsGameReducer,
+    gameType: gameTypeReducer,
   },
 });
 

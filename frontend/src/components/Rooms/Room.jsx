@@ -3,18 +3,13 @@ import RoomLobby from "./RoomLobby";
 import { socket } from "../../sockets/socket";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Room = ({
-  type,
-  room,
-  //   vsGameStarted,
-  vsGameLocation,
-  //   vsRoundEnded,
-  roomCode,
-}) => {
+const Room = ({ room, vsGameLocation, roomCode }) => {
   const navigate = useNavigate();
+  const gameType = useSelector((state) => state.gameType);
 
-  if (!type) return <div>No room type chosen</div>;
+  if (!gameType) return <div>No game type chosen</div>;
 
   if (!room) return <div>This room does not exist</div>;
 
@@ -31,8 +26,6 @@ const Room = ({
   return (
     <div className="relative text-2xl font-bold text-white">
       <div className="absolute z-20 right-5 top-36">
-        {/* <p>{room.title}</p>
-        <p>{room.region}</p> */}
         <Button
           onClick={goBackToRoomList}
           className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
@@ -40,12 +33,10 @@ const Room = ({
           Back to room selection
         </Button>
       </div>
-      {type === "VS" ? (
+      {gameType === "VS" ? (
         <RoomLobby
           room={room}
           roomCode={roomCode}
-          //   gameStarted={vsGameStarted}
-          //   vsRoundEnded={vsRoundEnded}
           handleGoingBack={handleEndGame}
           vsGameLocation={vsGameLocation}
         />

@@ -3,6 +3,7 @@ import { Polyline } from "./Polyline";
 import { Button, Avatar } from "@material-tailwind/react";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import avatar from "../../../test/vavatar.jpg";
+import { useSelector } from "react-redux";
 
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
@@ -13,6 +14,11 @@ const MapElement = ({
   submitGuess,
   isEnded,
 }) => {
+  const gameType = useSelector((state) => state.gameType);
+  const { player1Guess, player2Guess } = useSelector(
+    (state) => state.roundGuesses
+  );
+
   if (isEnded) {
     return (
       <div
@@ -27,23 +33,64 @@ const MapElement = ({
           reuseMaps={true}
           mapId={MAP_ID}
         >
-          <AdvancedMarker position={guessLocation} title="Your guess">
-            <Avatar
-              src={avatar}
-              alt="your guess location"
-              withBorder={true}
-              size="sm"
-            />
-          </AdvancedMarker>
+          {gameType === "SINGLE" && (
+            <>
+              <AdvancedMarker position={guessLocation} title="Your guess">
+                <Avatar
+                  src={avatar}
+                  alt="your guess location"
+                  withBorder={true}
+                  size="sm"
+                />
+              </AdvancedMarker>
 
-          <AdvancedMarker position={answerLocation} title="Correct location">
-            <IoCheckmarkCircleSharp
-              style={{ padding: 0, margin: 0 }}
-              className="text-green-400 h-[2.3rem] w-[2.3rem] rounded-full border-2 border-black bg-green-800"
-            />
-          </AdvancedMarker>
+              <AdvancedMarker
+                position={answerLocation}
+                title="Correct location"
+              >
+                <IoCheckmarkCircleSharp
+                  style={{ padding: 0, margin: 0 }}
+                  className="text-green-400 h-[2.3rem] w-[2.3rem] rounded-full border-2 border-black bg-green-800"
+                />
+              </AdvancedMarker>
 
-          <Polyline path={[guessLocation, answerLocation]} />
+              <Polyline path={[guessLocation, answerLocation]} />
+            </>
+          )}
+          {gameType === "VS" && (
+            // perhaps checks for player1guess and player2guess existing should be implemented
+            <>
+              <AdvancedMarker position={player1Guess} title="Player 1's guess">
+                <Avatar
+                  src={avatar}
+                  alt="Player 1's avatar"
+                  withBorder={true}
+                  size="sm"
+                />
+              </AdvancedMarker>
+              <AdvancedMarker position={player2Guess} title="Player 2's guess">
+                <Avatar
+                  src={avatar}
+                  alt="Player 2's avatar"
+                  withBorder={true}
+                  size="sm"
+                />
+              </AdvancedMarker>
+
+              <AdvancedMarker
+                position={answerLocation}
+                title="Correct location"
+              >
+                <IoCheckmarkCircleSharp
+                  style={{ padding: 0, margin: 0 }}
+                  className="text-green-400 h-[2.3rem] w-[2.3rem] rounded-full border-2 border-black bg-green-800"
+                />
+              </AdvancedMarker>
+
+              <Polyline path={[player1Guess, answerLocation]} />
+              <Polyline path={[player2Guess, answerLocation]} />
+            </>
+          )}
         </Map>
       </div>
     );
@@ -63,17 +110,37 @@ const MapElement = ({
         reuseMaps={true}
         mapId={MAP_ID}
       >
-        {guessLocation && (
-          <AdvancedMarker
-            position={guessLocation}
-            draggable={true}
-            title="Your guess"
-          />
+        {gameType === "SINGLE" && (
+          <>
+            {guessLocation && (
+              <AdvancedMarker
+                position={guessLocation}
+                draggable={true}
+                title="Your guess"
+              />
+            )}
+            {answerLocation && (
+              <AdvancedMarker
+                position={answerLocation}
+                title="Correct location"
+              />
+            )}
+            {guessLocation && answerLocation && (
+              <Polyline path={[guessLocation, answerLocation]} />
+            )}
+          </>
         )}
-        {answerLocation && (
-          <AdvancedMarker position={answerLocation} title="Correct location" />
+        {gameType === "VS" && (
+          <>
+            {guessLocation && (
+              <AdvancedMarker
+                position={guessLocation}
+                draggable={true}
+                title="Your guess"
+              />
+            )}
+          </>
         )}
-        {answerLocation && <Polyline path={[guessLocation, answerLocation]} />}
       </Map>
       <Button
         color="green"
