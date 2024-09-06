@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { haversine_distance } from "../../utils/scoreUtils";
 import MapElement from "./Map";
 import { Button } from "@material-tailwind/react";
+import { socket } from "../../sockets/socket";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAX_RADIUS = 15000;
@@ -19,6 +20,7 @@ const StreetView = ({
   onRoundEnd,
   onRoundStart,
   isEnded,
+  roomCode,
 }) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
@@ -94,9 +96,13 @@ const StreetView = ({
     console.log(latLng);
   };
 
+  // HERE IS WHERE WE SEND THE GUESS!
   const submitGuess = () => {
     console.log("submitting answer, ending round...");
     const updatedAnswerLocation = panoPosition;
+
+    // emit here maybe?
+    socket.emit("guess sent", socket.id, roomCode, guessLocation);
 
     setAnswerLocation(updatedAnswerLocation);
 
@@ -129,7 +135,7 @@ const StreetView = ({
     <div className="">
       <div className="relative">
         {distance && (
-          <div className="absolute z-20 text-white-200 bottom-0 left-[42rem] pb-8 font-bold flex items-center gap-4">
+          <div className="absolute z-20 text-white-200 bottom-0 left-[42rem] pb-8 font-bold flex items-center gap-4 text-white">
             <div>
               <p className="text-4xl">{distance} km</p>
               <p className="text-sm">from location</p>

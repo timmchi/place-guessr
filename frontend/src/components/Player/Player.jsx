@@ -24,7 +24,7 @@ const Player = ({ player, healthPoints, gameType, score }) => {
         </>
       )}
       {gameType === "vs" && (
-        <div className="bg-blue-gray-300 text-center">
+        <div className="bg-blue-gray-300 text-center text-white">
           <HealthBar healthPoints={healthPoints} />
           Score: {score}
         </div>

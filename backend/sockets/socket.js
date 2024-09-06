@@ -44,6 +44,8 @@ const socketHandler = (server) => {
           player2ReadyToStart: false,
           player1RoundScore: 0,
           player2RoundScore: 0,
+          player1Guess: null,
+          player2Guess: null,
         },
       ];
       console.log("room created by", player, roomId);
@@ -115,18 +117,6 @@ const socketHandler = (server) => {
       }
     });
 
-    socket.on("submit answer", (senderId, roomId) => {
-      //   console.log("answer submit by", senderId);
-
-      // const clients = await io.in(roomId).fetchSockets();
-      // const clientIds = clients.map((c) => c.id);
-
-      // const unreadyClientId = clientIds.find(id => id !== senderId)
-
-      // io.to(senderId).
-      socket.broadcast.to(roomId).emit("submit answer", socket.id);
-    });
-
     socket.on("room chosen", (roomId, roomRegion) => {
       //   console.log("room chosen in", roomId, roomRegion);
       const room = rooms.find((r) => r.roomId === roomId);
@@ -170,12 +160,13 @@ const socketHandler = (server) => {
         room.player2ReadyToStart = false;
         room.player1RoundScore = 0;
         room.player2RoundScore = 0;
+        room.player1Guess = null;
+        room.player2Guess = null;
       }
     });
 
     socket.on("score calculated", async (senderId, roomId, score) => {
       const room = rooms.find((room) => room.roomId === roomId);
-      console.log("in score calculated atm");
 
       if (room.player1 === senderId) {
         console.log("score of the first player is", score);
@@ -194,6 +185,25 @@ const socketHandler = (server) => {
           room.player1RoundScore,
           room.player2RoundScore
         );
+      }
+    });
+
+    socket.on("guess sent", async (senderId, roomId, guess) => {
+      const room = rooms.find((room) => room.roomId === roomId);
+
+      if (room.player1 === senderId) {
+        console.log("guess of the first player is", guess);
+        room.player1Guess = guess;
+      }
+
+      if (room.player2 === senderId) {
+        console.log("guess of the second player is", guess);
+        room.player2Guess = guess;
+      }
+
+      if (room.player1Guess && room.player2Guess) {
+        console.log("both guesses received, emitting guesses set...");
+        io.to(roomId).emit("guesses set", room.player1Guess, room.player2Guess);
       }
     });
 

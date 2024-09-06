@@ -3,7 +3,7 @@ import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   roundScoresReceived,
   roundScoresReset,
@@ -16,6 +16,15 @@ import {
   roundStarted,
   roundEnded,
 } from "./reducers/vsGameReducer";
+import {
+  playerGuessesReceived,
+  guessesReset,
+} from "./reducers/roundGuessesReducer";
+import {
+  vsGameChosen,
+  singleGameChosen,
+  gameTypeReset,
+} from "./reducers/gameTypeReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -29,7 +38,7 @@ import { rooms } from "./data/rooms";
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
-  const [gameType, setGameType] = useState(null);
+  //   const [gameType, setGameType] = useState(null);
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
@@ -61,6 +70,7 @@ function App() {
     const onEndGame = () => {
       console.log("ending game");
       dispatch(gameEnded());
+      dispatch(gameTypeReset());
     };
 
     // heres the problem :) non-standardized parameter in the backend, lets try and fix it there..
@@ -85,11 +95,10 @@ function App() {
         roomCode
       );
       dispatch(roundScoresReset());
+      dispatch(guessesReset());
     };
 
     const onRoundEnd = () => {
-      // the reason for round end screen not appearing for the second user is that setvsroundended seems to not be passed to some component that relies on it. Probably pretty easy to fix it with redux
-      // Actually, this depends on the player that submitted the guess first - they get the round end screen ui, but the other person doesnt. The person that submitted the first guess receives this event and its logged in the console, and the second person doesnt.
       console.log("end round event received, ending round...");
       dispatch(roundEnded());
     };
@@ -104,6 +113,10 @@ function App() {
       removeHpFromPlayer(player1Score, player2Score);
     };
 
+    const onPlayerGuessesReceived = (player1Guess, player2Guess) => {
+      dispatch(playerGuessesReceived({ player1Guess, player2Guess }));
+    };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -115,6 +128,7 @@ function App() {
     socket.on("start round", onRoundStart);
     socket.on("end round", onRoundEnd);
     socket.on("scores set", onScoresSet);
+    socket.on("guesses set", onPlayerGuessesReceived);
 
     return () => {
       socket.off("users", onUsers);
@@ -128,6 +142,7 @@ function App() {
       socket.off("start round", onRoundStart);
       socket.off("end round", onRoundEnd);
       socket.off("scores set", onScoresSet);
+      socket.off("guesses set", onPlayerGuessesReceived);
     };
   }, []);
 
@@ -137,12 +152,14 @@ function App() {
     : null;
 
   const playVsGame = () => {
-    setGameType("VS");
+    // setGameType("VS");
+    dispatch(vsGameChosen());
     navigate("/lobby");
   };
 
   const playSingleGame = () => {
-    setGameType("SINGLE");
+    // setGameType("SINGLE");
+    dispatch(singleGameChosen());
     navigate("/rooms");
   };
 
@@ -175,15 +192,11 @@ function App() {
               <Hero playSingleGame={playSingleGame} playVsGame={playVsGame} />
             }
           />
-          <Route
-            path="/rooms"
-            element={<RoomsList type={gameType} rooms={rooms} />}
-          />
+          <Route path="/rooms" element={<RoomsList rooms={rooms} />} />
           <Route
             path="/rooms/:region"
             element={
               <Room
-                type={gameType}
                 room={room}
                 vsGameLocation={vsGameLocation}
                 roomCode={roomCode}

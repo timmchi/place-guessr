@@ -24,16 +24,14 @@ const Round = ({
 }) => {
   const dispatch = useDispatch();
   const vsRoundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
-  console.log("vsRoundEnded in Round component", vsRoundEnded);
+  //   console.log("vsRoundEnded in Round component", vsRoundEnded);
 
   if (!vsGameLocation) return <div>Loading...</div>;
 
   const endRound = () => {
     handleRoundChange(round + 1);
-    // this will be used to signal to the other player than a guess has been made
+
     socket.emit("end round", socket.id, roomCode);
-    socket.emit("submit answer", socket.id, roomCode);
-    // removeHpFromPlayer();
   };
 
   const startRound = () => {
@@ -69,6 +67,7 @@ const Round = ({
           onRoundEnd={endRound}
           onRoundStart={startRound}
           isEnded={vsRoundEnded}
+          roomCode={roomCode}
         />
       </>
       {vsRoundEnded && (
