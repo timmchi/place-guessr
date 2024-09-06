@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Typography, Avatar } from "@material-tailwind/react";
 import VsGame from "../VsGame/VsGame";
 import PlayerInLobby from "../Player/PlayerInLobby";
-import NavBar from "../Navigation/NavBar";
+import { useSelector } from "react-redux";
 import avatar from "../../../test/vavatar.jpg";
 import { socket } from "../../sockets/socket";
 
@@ -13,14 +13,15 @@ const players = [
 
 const RoomLobby = ({
   room,
-  gameStarted,
-  vsRoundEnded,
+  //   gameStarted,
+  //   vsRoundEnded,
   vsGameLocation,
   //   handleGameStart,
   handleGoingBack,
   roomCode,
 }) => {
-  console.log(room);
+  const gameStarted = useSelector((state) => state.vsGame.vsGameStarted);
+  //   console.log("game started in roomLobby", gameStarted);
 
   const handleGameStart = () => {
     socket.emit("start game", roomCode);
@@ -35,7 +36,7 @@ const RoomLobby = ({
   if (!gameStarted) {
     return (
       <div className="flex bg-indigo-200 min-h-screen justify-center items-center">
-        <div className="self-start w-[50%] bg-indigo-400 mx-auto rounded-lg shadow-md my-auto">
+        <div className="self-start w-[50%] bg-indigo-400 mx-auto rounded-lg shadow-md my-auto text-white">
           <div className="flex gap-4 justify-center pt-12">
             <Typography variant="h1" className="text-center pt-2">
               {room.title}
@@ -94,7 +95,7 @@ const RoomLobby = ({
       roomTitle={room.title}
       region={room.region}
       vsGameLocation={vsGameLocation}
-      vsRoundEnded={vsRoundEnded}
+      //   vsRoundEnded={vsRoundEnded}
       roomCode={roomCode}
     />
   );

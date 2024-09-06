@@ -12,9 +12,9 @@ const RoomControls = ({
   roomCode,
   setRoomCode,
   joiningUserRoomRegion,
-  vsGameStarted,
+  //   vsGameStarted,
   vsGameLocation,
-  vsRoundEnded,
+  //   vsRoundEnded,
 }) => {
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomJoined, setRoomJoined] = useState(false);
@@ -63,10 +63,10 @@ const RoomControls = ({
       <RoomLobby
         room={roomRegion}
         roomCode={roomCode}
-        gameStarted={vsGameStarted}
+        // gameStarted={vsGameStarted}
         handleGoingBack={handleEndGame}
         vsGameLocation={vsGameLocation}
-        vsRoundEnded={vsRoundEnded}
+        // vsRoundEnded={vsRoundEnded}
       />
     );
   }
