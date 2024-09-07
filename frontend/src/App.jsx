@@ -82,6 +82,7 @@ function App() {
     const onRoomChosen = (roomRegion) => {
       console.log("room is chosen", roomRegion);
       setJoiningUserRoomRegion(roomRegion);
+      dispatch(vsGameChosen());
     };
 
     const onRoundStart = (roomRegion, roomCode) => {

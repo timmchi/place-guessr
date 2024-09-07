@@ -32,6 +32,12 @@ export const calculateScore = (distance) => {
   return score;
 };
 
+export const calculateDistance = (score) => {
+  const distance = -1491.6862 * Math.log(score / 5000);
+
+  return distance;
+};
+
 // console.log("5000 km score", calculateScore(5000)); 175.08718187455935
 
 // console.log("1000 km score", calculateScore(1000)); 2557.5661421777627
