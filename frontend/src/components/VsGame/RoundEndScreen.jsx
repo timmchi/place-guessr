@@ -6,7 +6,7 @@ const RoundEndScreen = ({ players }) => {
   const playerRoundScores = useSelector((state) => state.roundScore);
 
   return (
-    <div className="flex">
+    <div className="flex xl:gap-[66rem]">
       <Player
         key="player1"
         player={players[0]}
