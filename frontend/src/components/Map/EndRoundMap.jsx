@@ -16,7 +16,7 @@ const EndRoundMap = ({
   return (
     <>
       <Map
-        defaultZoom={6}
+        defaultZoom={5}
         defaultCenter={answerLocation}
         disableDefaultUI={true}
         clickableIcons={false}

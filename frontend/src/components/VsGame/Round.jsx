@@ -60,25 +60,22 @@ const Round = ({
           {winner.name} wins! Fatality
         </div>
       )}
-      <div className="relative">
-        <StreetView
-          location={vsGameLocation}
-          calculateScore={calculatePlayerScore}
-          onRoundEnd={endRound}
-          onRoundStart={startRound}
-          isEnded={vsRoundEnded}
-          roomCode={roomCode}
-        />
 
-        {vsRoundEnded && (
-          <div className="absolute top-0 left-0 w-full h-full z-30 flex items-center justify-center">
-            <div className="text-center">
-              {/* <h1 className="text-4xl font-bold">Round {round - 1} results</h1> */}
-              <RoundEndScreen players={players} />
-            </div>
-          </div>
-        )}
-      </div>
+      <StreetView
+        location={vsGameLocation}
+        calculateScore={calculatePlayerScore}
+        onRoundEnd={endRound}
+        onRoundStart={startRound}
+        isEnded={vsRoundEnded}
+        roomCode={roomCode}
+      />
+      {/* 
+      {vsRoundEnded && (
+        <>
+          {/* <h1 className="text-4xl font-bold">Round {round - 1} results</h1> */}
+      {/* <RoundEndScreen players={players} />
+        </>
+      )} */}
     </>
   );
 };
