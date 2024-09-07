@@ -27,6 +27,8 @@ const StreetView = ({
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
   const player = useSelector((state) => state.player);
+  const gameType = useSelector((state) => state.gameType);
+  const roundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
 
   let distance;
 
@@ -134,12 +136,24 @@ const StreetView = ({
   return (
     <div className="">
       <div className="relative">
-        {distance && (
+        {/* here are the controls for the single game, in the case of the single game here is also where the score is rendered */}
+        {distance && gameType !== "VS" && (
           <div className="absolute z-20 text-white-200 bottom-0 left-[42rem] pb-8 font-bold flex items-center gap-4 text-white">
             <div>
               <p className="text-4xl">{distance} km</p>
               <p className="text-sm">from location</p>
             </div>
+
+            <Button
+              className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
+              onClick={handleStartRound}
+            >
+              Start Next Round
+            </Button>
+          </div>
+        )}
+        {roundEnded && (
+          <div className="absolute z-20 text-white-200 bottom-0 xl:left-[54rem] pb-16 font-bold flex items-center text-white">
             <Button
               className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
               onClick={handleStartRound}

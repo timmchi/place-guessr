@@ -69,13 +69,6 @@ const Round = ({
         isEnded={vsRoundEnded}
         roomCode={roomCode}
       />
-      {/* 
-      {vsRoundEnded && (
-        <>
-          {/* <h1 className="text-4xl font-bold">Round {round - 1} results</h1> */}
-      {/* <RoundEndScreen players={players} />
-        </>
-      )} */}
     </>
   );
 };
