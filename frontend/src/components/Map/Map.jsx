@@ -20,11 +20,28 @@ const MapElement = ({
 
   // here is where the end round map is situated, needs to be fixed for a vs game - smaller map
   // and player profiles on the sides
-  if (isEnded) {
+  if (isEnded && gameType === "SINGLE") {
     return (
       <div
         style={{ transition: "all 0.5s" }}
         className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 pb-36"
+      >
+        <EndRoundMap
+          gameType={gameType}
+          guessLocation={guessLocation}
+          answerLocation={answerLocation}
+          player1Guess={player1Guess}
+          player2Guess={player2Guess}
+        />
+      </div>
+    );
+  }
+
+  if (isEnded && gameType === "VS") {
+    return (
+      <div
+        style={{ transition: "all 0.5s" }}
+        className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 pb-36 px-12 md:px-56 xl:px-[30rem] xl:py-48"
       >
         <EndRoundMap
           gameType={gameType}
