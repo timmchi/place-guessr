@@ -23,7 +23,6 @@ const VsGame = ({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-indigo-400">Playing a VS game</h1>
       <Round
         players={players}
         round={round}
@@ -36,7 +35,6 @@ const VsGame = ({
         roomTitle={roomTitle}
         vsGameLocation={vsGameLocation}
         roomCode={roomCode}
-        // vsRoundEnded={vsRoundEnded}
       />
     </div>
   );
