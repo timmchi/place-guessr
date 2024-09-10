@@ -207,6 +207,10 @@ const socketHandler = (server) => {
       }
     });
 
+    socket.on("god reset", async (roomId) => {
+      io.to(roomId).emit("god reset");
+    });
+
     socket.on("disconnect", () => {
       console.log("user disconnected");
 

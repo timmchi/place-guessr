@@ -118,6 +118,11 @@ function App() {
       dispatch(playerGuessesReceived({ player1Guess, player2Guess }));
     };
 
+    const onGodReset = () => {
+      dispatch(gameEnded());
+      dispatch(gameTypeReset());
+    };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -130,6 +135,7 @@ function App() {
     socket.on("end round", onRoundEnd);
     socket.on("scores set", onScoresSet);
     socket.on("guesses set", onPlayerGuessesReceived);
+    socket.on("god reset", onGodReset);
 
     return () => {
       socket.off("users", onUsers);
@@ -144,6 +150,7 @@ function App() {
       socket.off("end round", onRoundEnd);
       socket.off("scores set", onScoresSet);
       socket.off("guesses set", onPlayerGuessesReceived);
+      socket.off("god reset", onGodReset);
     };
   }, []);
 
