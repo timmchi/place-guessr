@@ -32,16 +32,17 @@ import Registration from "./components/Authentication/Registration";
 import About from "./components/About";
 import RoomControls from "./components/Rooms/RoomControls";
 import NavBar from "./components/Navigation/NavBar";
+import MainPageShield from "./components/MainPageShield";
 import Test from "./components/Test";
 import { rooms } from "./data/rooms";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
-  //   const [gameType, setGameType] = useState(null);
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
+  const [pageShielded, setPageShielded] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -190,6 +191,10 @@ function App() {
 
   return (
     <div>
+      {pageShielded && (
+        <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
+      )}
+
       <NavBar />
 
       <APIProvider apiKey={API_KEY}>
