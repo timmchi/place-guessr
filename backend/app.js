@@ -4,6 +4,7 @@ require("express-async-errors");
 const { requestLogger } = require("./middleware/middleware");
 const { unknownEndpoint } = require("./utils/utils");
 const locationRouter = require("./controllers/locations");
+const usersRouter = require("./controllers/users");
 const socketHandler = require("./sockets/socket");
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.use("/api/locations", locationRouter);
+app.use("/api/users", usersRouter);
 
 app.use(unknownEndpoint);
 
