@@ -11,6 +11,7 @@ const socketHandler = (server) => {
     cors: {
       origin: "http://localhost:5173",
     },
+    connectionStateRecovery: {},
   });
 
   const users = [];
