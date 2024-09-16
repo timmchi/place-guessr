@@ -2,15 +2,21 @@ import { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
-const SignUpForm = () => {
+const SignUpForm = ({ handleUserCreation }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     console.log(username, email, password, repeatPassword);
+    await handleUserCreation({
+      username,
+      email,
+      password,
+      repeatPassword,
+    });
     setUsername("");
     setEmail("");
     setPassword("");
