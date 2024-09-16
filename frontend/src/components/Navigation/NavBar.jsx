@@ -11,8 +11,9 @@ import { Link, useLocation } from "react-router-dom";
 
 const pathsNotToRender = ["/rooms", "/lobby"];
 
-const NavBar = () => {
+const NavBar = ({ user, handleLogout }) => {
   const [openNav, setOpenNav] = useState(false);
+  console.log("user in navbar", user);
 
   const location = useLocation();
 
@@ -41,7 +42,7 @@ const NavBar = () => {
           <Link to="/">Place Guesser</Link>
         </Typography>
         <div className="hidden lg:block">
-          <NavList />
+          <NavList user={user} handleLogout={handleLogout} />
         </div>
         <IconButton
           variant="text"
@@ -57,7 +58,7 @@ const NavBar = () => {
         </IconButton>
       </div>
       <Collapse open={openNav}>
-        <NavList />
+        <NavList user={user} handleLogout={handleLogout} />
       </Collapse>
     </Navbar>
   );

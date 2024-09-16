@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
-import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useMatch,
+  redirect,
+} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   roundScoresReceived,
@@ -33,8 +39,13 @@ import About from "./components/About";
 import RoomControls from "./components/Rooms/RoomControls";
 import NavBar from "./components/Navigation/NavBar";
 import MainPageShield from "./components/MainPageShield";
+import UserProfile from "./components/Users/UserProfile";
 import Test from "./components/Test";
 import { rooms } from "./data/rooms";
+import { useMutation } from "@tanstack/react-query";
+import loginService from "./services/login";
+import { saveUser, getUser, removeUser } from "./utils/localStorageUtils";
+import usersService from "./services/users";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -43,6 +54,7 @@ function App() {
   const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
   const [pageShielded, setPageShielded] = useState(true);
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -155,6 +167,16 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const loggedUser = getUser();
+    console.log("logged user in app effect", loggedUser);
+    if (loggedUser && loggedUser != null) {
+      setUser(loggedUser);
+      usersService.setToken(user?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const regionMatch = useMatch("/rooms/:region");
   const room = regionMatch
     ? rooms.find((room) => room.region === regionMatch.params.region)
@@ -189,13 +211,33 @@ function App() {
     }
   };
 
+  const loginMutation = useMutation({
+    mutationFn: loginService.login,
+    onSuccess: (data) => {
+      console.log("login mutation", data);
+      setUser(data);
+      saveUser(JSON.stringify(data));
+      usersService.setToken(data.token);
+      navigate("/");
+    },
+  });
+
+  const handleLogin = async (credentials) => {
+    loginMutation.mutate(credentials);
+  };
+
+  const handleLogout = () => {
+    removeUser();
+    setUser(null);
+  };
+
   return (
     <div>
       {pageShielded && (
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
       )}
 
-      <NavBar />
+      <NavBar user={user} handleLogout={handleLogout} />
 
       <APIProvider apiKey={API_KEY}>
         <Routes>
@@ -216,10 +258,11 @@ function App() {
               />
             }
           />
-          <Route path="/login" element={<LogIn />} />
+          <Route path="/login" element={<LogIn handleLogin={handleLogin} />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/about" element={<About />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/users/:id" element={<UserProfile />} />
           <Route
             path="/lobby"
             element={
