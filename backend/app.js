@@ -5,6 +5,7 @@ const { requestLogger } = require("./middleware/middleware");
 const { unknownEndpoint } = require("./utils/utils");
 const locationRouter = require("./controllers/locations");
 const usersRouter = require("./controllers/users");
+const loginRouter = require("./controllers/login");
 const socketHandler = require("./sockets/socket");
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.static("dist"));
 
 app.use("/api/locations", locationRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/login", loginRouter);
 
 app.use(unknownEndpoint);
 

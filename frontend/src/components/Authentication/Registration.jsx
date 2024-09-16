@@ -2,11 +2,14 @@ import bgImage from "../../berlinsignup.png";
 import SignUpForm from "./SignUpForm";
 import usersService from "../../services/users";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
   const newUserMutation = useMutation({
     mutationFn: usersService.createUser,
+    onSuccess: () => navigate("/login"),
   });
+  const navigate = useNavigate();
 
   const handleUserCreation = async (userData) => {
     newUserMutation.mutate(userData);
