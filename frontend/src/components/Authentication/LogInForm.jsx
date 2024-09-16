@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
-const LogInForm = () => {
+const LogInForm = ({ handleLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     console.log(email, password);
-
+    await handleLogin({ email, password });
     setEmail("");
     setPassword("");
   };
