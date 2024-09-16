@@ -24,10 +24,6 @@ User.init(
         isEmail: true,
       },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     passwordHash: {
       type: DataTypes.STRING,
       allowNull: false,

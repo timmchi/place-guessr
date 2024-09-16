@@ -1,11 +1,21 @@
 import bgImage from "../../berlinsignup.png";
 import SignUpForm from "./SignUpForm";
+import usersService from "../../services/users";
+import { useMutation } from "@tanstack/react-query";
 
 const Registration = () => {
+  const newUserMutation = useMutation({
+    mutationFn: usersService.createUser,
+  });
+
+  const handleUserCreation = async (userData) => {
+    newUserMutation.mutate(userData);
+  };
+
   return (
     <div className="flex h-screen flex-col md:flex-row">
       <div className="flex flex-1 justify-center bg-indigo-300 text-white items-center">
-        <SignUpForm />
+        <SignUpForm handleUserCreation={handleUserCreation} />
       </div>
       <div
         style={{ backgroundImage: `url(${bgImage})` }}

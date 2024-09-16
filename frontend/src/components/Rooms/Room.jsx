@@ -18,6 +18,11 @@ const Room = ({ room, vsGameLocation, roomCode }) => {
     navigate("/rooms");
   };
 
+  const goBackToHomePage = () => {
+    console.log("navigating back to home page...");
+    navigate("/");
+  };
+
   const handleEndGame = () => {
     navigate("/lobby");
     socket.emit("end game", roomCode);
@@ -26,12 +31,20 @@ const Room = ({ room, vsGameLocation, roomCode }) => {
   return (
     <div className="relative text-2xl font-bold text-white">
       <div className="absolute z-20 right-5 top-36">
-        <Button
-          onClick={goBackToRoomList}
-          className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
-        >
-          Back to room selection
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Button
+            onClick={goBackToRoomList}
+            className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
+          >
+            Back to room selection
+          </Button>
+          <Button
+            onClick={goBackToHomePage}
+            className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
+          >
+            Back to home page
+          </Button>
+        </div>
       </div>
       {gameType === "VS" ? (
         <RoomLobby
