@@ -15,13 +15,13 @@ const validateLogin = (req, res, next) => {
 };
 
 const validateRegistration = (req, res, next) => {
-  const { email, username, password, passwordConfirm } = req.body;
+  const { email, username, password, repeatPassword } = req.body;
 
   const parsedCredentials = v.parse(validationSchemas.RegistrationSchema, {
     email,
     username,
     password,
-    passwordConfirm,
+    repeatPassword,
   });
 
   req.parsedCredentials = parsedCredentials;
