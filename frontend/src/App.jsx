@@ -15,12 +15,13 @@ import {
   roundScoresReset,
 } from "./reducers/roundScoreReducer";
 import { calculateHpDamage } from "./utils/scoreUtils";
-import { causeHpRemoval } from "./reducers/hpReducer";
+import { removedHP } from "./reducers/hpReducer";
 import {
   gameStarted,
   gameEnded,
   roundStarted,
   roundEnded,
+  gameWon,
 } from "./reducers/vsGameReducer";
 import {
   playerGuessesReceived,
@@ -46,6 +47,7 @@ import { useMutation } from "@tanstack/react-query";
 import loginService from "./services/login";
 import { saveUser, getUser, removeUser } from "./utils/localStorageUtils";
 import usersService from "./services/users";
+import { useSelector } from "react-redux";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -58,6 +60,7 @@ function App() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const playerHealthPoints = useSelector((state) => state.hp);
 
   useEffect(() => {
     const onAnswer = (playerId) => {
@@ -97,17 +100,11 @@ function App() {
       dispatch(vsGameChosen());
     };
 
-    const onRoundStart = (location, roomRegion, roomCode) => {
+    const onRoundStart = (location) => {
       console.log("Round starting with location:", location);
       setVsGameLocation(location);
       dispatch(roundStarted());
-      // HERE IS WHY IT IS FETCHED TWICE!!! Fetched on button click in room lobby, and also fetched here as this is where the initial location is fetched
-      //   socket.emit(
-      //     "fetch location",
-      //     roomRegion === "random" ? "geolist" : "geonames",
-      //     roomRegion,
-      //     roomCode
-      //   );
+
       dispatch(roundScoresReset());
       dispatch(guessesReset());
     };
@@ -203,11 +200,11 @@ function App() {
     // isnt, the amount of hp being removed will be 0. So, no sense in trying to fix
     // for this edge case atm or maybe ever
     if (player1Score > player2Score) {
-      dispatch(causeHpRemoval("p2", hpRemovalValue));
+      dispatch(removedHP({ player: "p2", amount: hpRemovalValue }));
     }
 
     if (player1Score < player2Score) {
-      dispatch(causeHpRemoval("p1", hpRemovalValue));
+      dispatch(removedHP({ player: "p1", amount: hpRemovalValue }));
     }
 
     // hp cant bget lower than 0 - insta game end and win/loss

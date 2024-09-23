@@ -13,22 +13,16 @@ const hpSlice = createSlice({
       const { player, amount } = action.payload;
 
       if (player === "p1") {
-        state[0].player1.hp = state[0].player1.hp - amount;
+        state[0].player1.hp = Math.max(state[0].player1.hp - amount, 0);
       }
 
       if (player === "p2") {
-        state[1].player2.hp = state[1].player2.hp - amount;
+        state[1].player2.hp = Math.max(state[1].player2.hp - amount, 0);
       }
     },
   },
 });
 
 export const { removedHP } = hpSlice.actions;
-
-export const causeHpRemoval = (player, amount) => {
-  return async (dispatch) => {
-    dispatch(removedHP({ player, amount }));
-  };
-};
 
 export default hpSlice.reducer;

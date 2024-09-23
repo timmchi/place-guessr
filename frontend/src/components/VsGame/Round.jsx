@@ -3,7 +3,6 @@ import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { calculateHpDamage } from "../../utils/scoreUtils";
 import { calculatePlayerRoundScore } from "../../reducers/roundScoreReducer";
-import { causeHpRemoval } from "../../reducers/hpReducer";
 import { useDispatch, useSelector } from "react-redux";
 import StreetView from "../Map/StreetView";
 import RoundEndScreen from "./RoundEndScreen";
@@ -12,9 +11,7 @@ const Round = ({
   players,
   round,
   handleRoundChange,
-  winner,
-  handleGameWin,
-  handleReset,
+
   roomMapType,
   roomTitle,
   region,
@@ -39,6 +36,7 @@ const Round = ({
   };
 
   // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
+  // Infinite distance bug - possible location !!!
   const calculatePlayerScore = async (distance, player = "p1") => {
     if (player === "p1") {
       const score = await dispatch(calculatePlayerRoundScore("p1", distance));
@@ -55,12 +53,6 @@ const Round = ({
 
   return (
     <>
-      {winner && (
-        <div className="absolute z-20 top-1/2 left-1/2 text-4xl font-bold text-red-500">
-          {winner.name} wins! Fatality
-        </div>
-      )}
-
       <StreetView
         location={vsGameLocation}
         calculateScore={calculatePlayerScore}

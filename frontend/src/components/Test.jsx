@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calculatePlayerRoundScore } from "../reducers/roundScoreReducer";
-import { causeHpRemoval } from "../reducers/hpReducer";
 import { calculateHpDamage } from "../utils/scoreUtils";
 import { Button } from "@material-tailwind/react";
 
@@ -24,7 +23,7 @@ const Test = () => {
       playerRoundScores[0].player1.score
     );
     console.log("player: ", player, "score difference: ", hpRemovalValue);
-    dispatch(causeHpRemoval(player, hpRemovalValue));
+    // dispatch(causeHpRemoval(player, hpRemovalValue));
   };
 
   return (

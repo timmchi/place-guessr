@@ -15,11 +15,8 @@ const VsGame = ({
   roomCode,
 }) => {
   const [round, setRound] = useState(1);
-  const [winner, setWinner] = useState(null);
 
   const handleRoundChange = (round) => setRound(round);
-
-  const handleGameWin = (winner) => setWinner(winner);
 
   return (
     <div>
@@ -27,9 +24,6 @@ const VsGame = ({
         players={players}
         round={round}
         handleRoundChange={handleRoundChange}
-        winner={winner}
-        handleGameWin={handleGameWin}
-        handleReset={() => setWinner(null)}
         region={region}
         roomMapType={roomMapType}
         roomTitle={roomTitle}
