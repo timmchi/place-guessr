@@ -12,7 +12,7 @@ import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-const MAX_RADIUS = 15000;
+const MAX_RADIUS = 17000;
 
 const StreetView = ({
   location,
@@ -119,12 +119,6 @@ const StreetView = ({
 
     calculateScore(distanceResult, player.player);
     onRoundEnd();
-  };
-
-  const handleEndRound = () => {
-    onRoundEnd();
-    // setGuessLocation(null);
-    // setAnswerLocation(null);
   };
 
   const handleStartRound = () => {
