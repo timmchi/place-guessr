@@ -119,36 +119,6 @@ const socketHandler = (server) => {
       const randomPlace = await getLocation(apiType, region);
 
       io.to(roomId).emit("fetched location", randomPlace);
-
-      //   if (apiType === "geolist") {
-      //     try {
-      //       const textByLine = parseText(geolist);
-
-      //       const randomIndex = Math.trunc(Math.random() * textByLine.length);
-
-      //       const randomPlace = textByLine[randomIndex];
-
-      //       io.to(roomId).emit("fetched location", randomPlace);
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-      //   }
-
-      //   if (apiType === "geonames") {
-      //     //   console.log("apitype = geonames, fetching here");
-      //     try {
-      //       const { data } = await axios.get(`${apiURL}=${region}&json=1`);
-      //       //   console.log("data in geonames socket fetching", data);
-      //       const { nearest } = data;
-      //       const { latt, longt } = nearest;
-      //       io.to(roomId).emit("fetched location", {
-      //         lat: Number(latt),
-      //         lng: Number(longt),
-      //       });
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-      //   }
     });
 
     socket.on("room chosen", (roomId, roomRegion) => {

@@ -1,7 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 // I wonder if the vsGameLocation should also be in here...
-let initialState = { vsGameStarted: false, vsRoundEnded: false };
+let initialState = {
+  vsGameStarted: false,
+  vsRoundEnded: false,
+  vsGameWinner: null,
+};
 
 const vsGameSlice = createSlice({
   name: "vsGame",
@@ -19,10 +23,13 @@ const vsGameSlice = createSlice({
     roundEnded(state) {
       state.vsRoundEnded = true;
     },
+    gameWon(state, action) {
+      state.vsGameWinner = action.payload;
+    },
   },
 });
 
-export const { gameStarted, gameEnded, roundStarted, roundEnded } =
+export const { gameStarted, gameEnded, roundStarted, roundEnded, gameWon } =
   vsGameSlice.actions;
 
 export default vsGameSlice.reducer;

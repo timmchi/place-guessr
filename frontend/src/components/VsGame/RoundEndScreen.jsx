@@ -1,12 +1,21 @@
 import Player from "../Player/Player";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { gameWon } from "../../reducers/vsGameReducer";
+import { useEffect } from "react";
 
 const RoundEndScreen = ({ players }) => {
   const playerHealthPoints = useSelector((state) => state.hp);
   const playerRoundScores = useSelector((state) => state.roundScore);
+  const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
+  const dispatch = useDispatch();
 
   return (
     <div className="flex xl:gap-[66rem]">
+      {/* {gameWinner && (
+        <div className="absolute z-20 top-1/2 left-1/2 text-4xl font-bold text-red-500">
+          {gameWinner} wins! Fatality
+        </div>
+      )} */}
       <Player
         key="player1"
         player={players[0]}
