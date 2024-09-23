@@ -86,7 +86,6 @@ function App() {
       dispatch(gameTypeReset());
     };
 
-    // heres the problem :) non-standardized parameter in the backend, lets try and fix it there..
     const onLocationFetched = (location) => {
       console.log("fetching random location...");
       setVsGameLocation(location);
@@ -98,16 +97,17 @@ function App() {
       dispatch(vsGameChosen());
     };
 
-    const onRoundStart = (roomRegion, roomCode) => {
-      console.log("starting round");
-      console.log("joining user room region", roomRegion);
+    const onRoundStart = (location, roomRegion, roomCode) => {
+      console.log("Round starting with location:", location);
+      setVsGameLocation(location);
       dispatch(roundStarted());
-      socket.emit(
-        "fetch location",
-        roomRegion === "random" ? "geolist" : "geonames",
-        roomRegion,
-        roomCode
-      );
+      // HERE IS WHY IT IS FETCHED TWICE!!! Fetched on button click in room lobby, and also fetched here as this is where the initial location is fetched
+      //   socket.emit(
+      //     "fetch location",
+      //     roomRegion === "random" ? "geolist" : "geonames",
+      //     roomRegion,
+      //     roomCode
+      //   );
       dispatch(roundScoresReset());
       dispatch(guessesReset());
     };
@@ -209,6 +209,8 @@ function App() {
     if (player1Score < player2Score) {
       dispatch(causeHpRemoval("p1", hpRemovalValue));
     }
+
+    // hp cant bget lower than 0 - insta game end and win/loss
   };
 
   const loginMutation = useMutation({

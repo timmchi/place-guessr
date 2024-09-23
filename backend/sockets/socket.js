@@ -6,6 +6,36 @@ const geolist = "./geolist.txt";
 
 const apiURL = "https://api.3geonames.org/?randomland";
 
+const getLocation = async (apiType, region) => {
+  if (apiType === "geolist") {
+    try {
+      const textByLine = parseText(geolist);
+
+      const randomIndex = Math.trunc(Math.random() * textByLine.length);
+
+      const randomPlace = textByLine[randomIndex];
+
+      return randomPlace;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (apiType === "geonames") {
+    try {
+      const { data } = await axios.get(`${apiURL}=${region}&json=1`);
+
+      const { nearest } = data;
+      const { latt, longt } = nearest;
+      const randomPlace = { lat: Number(latt), lng: Number(longt) };
+
+      return randomPlace;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
 const socketHandler = (server) => {
   const io = new Server(server, {
     cors: {
@@ -86,36 +116,39 @@ const socketHandler = (server) => {
 
     socket.on("fetch location", async (apiType, region, roomId) => {
       //   console.log("fetching location for", apiType, region, roomId);
+      const randomPlace = await getLocation(apiType, region);
 
-      if (apiType === "geolist") {
-        try {
-          const textByLine = parseText(geolist);
+      io.to(roomId).emit("fetched location", randomPlace);
 
-          const randomIndex = Math.trunc(Math.random() * textByLine.length);
+      //   if (apiType === "geolist") {
+      //     try {
+      //       const textByLine = parseText(geolist);
 
-          const randomPlace = textByLine[randomIndex];
+      //       const randomIndex = Math.trunc(Math.random() * textByLine.length);
 
-          io.to(roomId).emit("fetched location", randomPlace);
-        } catch (error) {
-          console.log(error);
-        }
-      }
+      //       const randomPlace = textByLine[randomIndex];
 
-      if (apiType === "geonames") {
-        //   console.log("apitype = geonames, fetching here");
-        try {
-          const { data } = await axios.get(`${apiURL}=${region}&json=1`);
-          //   console.log("data in geonames socket fetching", data);
-          const { nearest } = data;
-          const { latt, longt } = nearest;
-          io.to(roomId).emit("fetched location", {
-            lat: Number(latt),
-            lng: Number(longt),
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
+      //       io.to(roomId).emit("fetched location", randomPlace);
+      //     } catch (error) {
+      //       console.log(error);
+      //     }
+      //   }
+
+      //   if (apiType === "geonames") {
+      //     //   console.log("apitype = geonames, fetching here");
+      //     try {
+      //       const { data } = await axios.get(`${apiURL}=${region}&json=1`);
+      //       //   console.log("data in geonames socket fetching", data);
+      //       const { nearest } = data;
+      //       const { latt, longt } = nearest;
+      //       io.to(roomId).emit("fetched location", {
+      //         lat: Number(latt),
+      //         lng: Number(longt),
+      //       });
+      //     } catch (error) {
+      //       console.log(error);
+      //     }
+      //   }
     });
 
     socket.on("room chosen", (roomId, roomRegion) => {
@@ -150,13 +183,17 @@ const socketHandler = (server) => {
       //   const clientIds = clients.map((c) => c.id);
       const room = rooms.find((room) => room.roomId === roomId);
 
+      const apiType = room.region === "random" ? "geolist" : "geonames";
+
       if (room.player1 === senderId) room.player1ReadyToStart = true;
 
       if (room.player2 === senderId) room.player2ReadyToStart = true;
 
       if (room.player1ReadyToStart && room.player2ReadyToStart) {
+        const randomLocation = await getLocation(apiType, room.region);
+
         // socket.broadcast.to(roomId).emit("start round", room.region, roomId);
-        io.to(roomId).emit("start round", room.region, roomId);
+        io.to(roomId).emit("start round", randomLocation, room.region, roomId);
         room.player1ReadyToStart = false;
         room.player2ReadyToStart = false;
         room.player1RoundScore = 0;
