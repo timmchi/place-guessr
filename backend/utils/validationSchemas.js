@@ -39,17 +39,17 @@ const RegistrationSchema = v.pipe(
       //     "Your password must have one uppercase letter, one lowercase letter and one number"
       //   )
     ),
-    passwordConfirm: v.pipe(
+    repeatPassword: v.pipe(
       v.string(),
       v.minLength(1, "Please confirm password")
     ),
   }),
   v.forward(
     v.check(
-      (input) => input.password === input.passwordConfirm,
+      (input) => input.password === input.repeatPassword,
       "The two password do not match"
     ),
-    ["passwordConfirm"]
+    ["repeatPassword"]
   )
 );
 

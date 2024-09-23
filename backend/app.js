@@ -1,7 +1,7 @@
 const express = require("express");
 const { createServer } = require("node:http");
 require("express-async-errors");
-const { requestLogger } = require("./middleware/middleware");
+const { requestLogger, errorHandler } = require("./middleware/middleware");
 const { unknownEndpoint } = require("./utils/utils");
 const locationRouter = require("./controllers/locations");
 const usersRouter = require("./controllers/users");
@@ -25,5 +25,6 @@ app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 
 app.use(unknownEndpoint);
+app.use(errorHandler);
 
 module.exports = server;
