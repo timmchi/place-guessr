@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const router = require("express").Router();
+const validationMiddleware = require("../utils/validationMiddleware");
 
 const { User } = require("../models");
 
@@ -8,20 +9,24 @@ router.get("/", async (req, res) => {
   res.json(users);
 });
 
-router.post("/", async (req, res) => {
-  const { username, email, password, repeatPassword } = req.body;
+router.post(
+  "/",
+  validationMiddleware.validateRegistration,
+  async (req, res) => {
+    const { username, email, password } = req.parsedCredentials;
 
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(password, saltRounds);
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
 
-  const user = await User.create({
-    username,
-    email,
-    passwordHash,
-  });
+    const user = await User.create({
+      username,
+      email,
+      passwordHash,
+    });
 
-  res.status(201).json(user);
-});
+    res.status(201).json(user);
+  }
+);
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
