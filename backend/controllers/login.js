@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 const loginRouter = require("express").Router();
 const User = require("../models/user");
 const config = require("../utils/config");
-const { response } = require("express");
+const validationMiddleware = require("../utils/validationMiddleware");
 
-loginRouter.post("/", async (req, res) => {
-  const { email, password } = req.body;
+loginRouter.post("/", validationMiddleware.validateLogin, async (req, res) => {
+  const { email, password } = req.parsedLoginData;
 
   const user = await User.findOne({ where: { email: email } });
 
