@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+
+const CAPTCHA_SITEKEY = import.meta.env.VITE_CAPTCHA_SITEKEY;
 
 const SignUpForm = ({ handleUserCreation }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    if (!captchaValue) return;
+
     console.log(username, email, password, repeatPassword);
     await handleUserCreation({
       username,
@@ -95,10 +102,15 @@ const SignUpForm = ({ handleUserCreation }) => {
             onChange={(e) => setRepeatPassword(e.target.value)}
           />
         </div>
+        <ReCAPTCHA
+          sitekey={CAPTCHA_SITEKEY}
+          onChange={(value) => setCaptchaValue(value)}
+        />
         <Button
           className="mt-6 self-center w-full bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
           fullWidth
           type="submit"
+          disabled={!captchaValue}
         >
           sign up
         </Button>

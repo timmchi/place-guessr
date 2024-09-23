@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Input, Button, Typography } from "@material-tailwind/react";
+import ReCAPTCHA from "react-google-recaptcha";
+
+const CAPTCHA_SITEKEY = import.meta.env.VITE_CAPTCHA_SITEKEY;
 
 const MainPageShield = ({ handlePageUnshield }) => {
-  const [passphrase, setPassphrase] = useState("");
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const pageUnshieldCheck = () => {
-    if (passphrase == "panda228") handlePageUnshield();
-
-    setPassphrase("");
+    if (captchaValue) handlePageUnshield();
   };
 
   return (
@@ -17,22 +18,17 @@ const MainPageShield = ({ handlePageUnshield }) => {
     >
       <div className="bg-indigo-400 p-8 rounded-lg shadow-lg flex flex-col gap-4 items-center">
         <Typography variant="h5" className="-mb-3 text-amber-200">
-          Input the passphrase to unlock the website
+          Prove you are not a robot to access Placeguessr
         </Typography>
-        <Input
-          value={passphrase}
-          onChange={(e) => setPassphrase(e.target.value)}
-          color="amber"
-          className="!text-amber-200 focus:!border-t-amber-400 !border-t-blue-gray-200"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
+        <ReCAPTCHA
+          sitekey={CAPTCHA_SITEKEY}
+          onChange={(value) => setCaptchaValue(value)}
         />
         <Button
           onClick={pageUnshieldCheck}
           className=" bg-amber-200 hover:bg-amber-400 text-indigo-500"
         >
-          Submit the code
+          Access Placeguessr
         </Button>
       </div>
     </div>

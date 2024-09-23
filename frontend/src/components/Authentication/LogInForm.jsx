@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+
+const CAPTCHA_SITEKEY = import.meta.env.VITE_CAPTCHA_SITEKEY;
 
 const LogInForm = ({ handleLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    if (!captchaValue) return;
+
     console.log(email, password);
     await handleLogin({ email, password });
     setEmail("");
@@ -54,10 +61,15 @@ const LogInForm = ({ handleLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <ReCAPTCHA
+          sitekey={CAPTCHA_SITEKEY}
+          onChange={(value) => setCaptchaValue(value)}
+        />
         <Button
           className="mt-6 self-center w-full bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
           fullWidth
           type="submit"
+          disabled={!captchaValue}
         >
           sign in
         </Button>
