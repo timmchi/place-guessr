@@ -2,12 +2,21 @@ import Player from "../Player/Player";
 import { useSelector, useDispatch } from "react-redux";
 import { gameWon } from "../../reducers/vsGameReducer";
 import { useEffect } from "react";
+import { socket } from "../../sockets/socket";
+
+// I DONT USE THIS COMPONENT ANYMORE
 
 const RoundEndScreen = ({ players }) => {
   const playerHealthPoints = useSelector((state) => state.hp);
   const playerRoundScores = useSelector((state) => state.roundScore);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
   const dispatch = useDispatch();
+
+  console.log(
+    "round end screen hps p1 p2",
+    playerHealthPoints[0].player1.hp,
+    playerHealthPoints[1].player2.hp
+  );
 
   return (
     <div className="flex xl:gap-[66rem]">

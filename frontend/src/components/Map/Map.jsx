@@ -25,6 +25,7 @@ const MapElement = ({
   );
   const playerHealthPoints = useSelector((state) => state.hp);
   const playerRoundScores = useSelector((state) => state.roundScore);
+  const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
 
   // here is where the end round map is situated, needs to be fixed for a vs game - smaller map
   // and player profiles on the sides
@@ -45,6 +46,7 @@ const MapElement = ({
     );
   }
 
+  // i dont use the round end screen anymore, this is what gets rendered
   if (isEnded && gameType === "VS") {
     return (
       <div
@@ -76,6 +78,9 @@ const MapElement = ({
             gameType="vs"
           />
         </div>
+        {gameWinner && (
+          <div>game won by {gameWinner === "p1" ? "Player1" : "Player2"}</div>
+        )}
       </div>
     );
   }

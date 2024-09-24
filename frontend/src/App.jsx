@@ -60,7 +60,6 @@ function App() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const playerHealthPoints = useSelector((state) => state.hp);
 
   useEffect(() => {
     const onAnswer = (playerId) => {
@@ -133,6 +132,11 @@ function App() {
       dispatch(gameTypeReset());
     };
 
+    const onGameWon = (winner) => {
+      console.log("game won event", winner);
+      dispatch(gameWon(winner));
+    };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -146,6 +150,7 @@ function App() {
     socket.on("scores set", onScoresSet);
     socket.on("guesses set", onPlayerGuessesReceived);
     socket.on("god reset", onGodReset);
+    socket.on("game won", onGameWon);
 
     return () => {
       socket.off("users", onUsers);
@@ -161,6 +166,7 @@ function App() {
       socket.off("scores set", onScoresSet);
       socket.off("guesses set", onPlayerGuessesReceived);
       socket.off("god reset", onGodReset);
+      socket.off("game won", onGameWon);
     };
   }, []);
 
@@ -206,8 +212,6 @@ function App() {
     if (player1Score < player2Score) {
       dispatch(removedHP({ player: "p1", amount: hpRemovalValue }));
     }
-
-    // hp cant bget lower than 0 - insta game end and win/loss
   };
 
   const loginMutation = useMutation({
