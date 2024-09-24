@@ -103,7 +103,6 @@ const StreetView = ({
     console.log("submitting answer, ending round...");
     const updatedAnswerLocation = panoPosition;
 
-    // emit here maybe?
     socket.emit("guess sent", socket.id, roomCode, guessLocation);
 
     setAnswerLocation(updatedAnswerLocation);
@@ -114,8 +113,6 @@ const StreetView = ({
 
     console.log("guess location in submit guess", guessLocation);
     console.log("answer location in submit guess", updatedAnswerLocation);
-
-    console.log("player in submitguess", player);
 
     calculateScore(distanceResult, player.player);
     onRoundEnd();

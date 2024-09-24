@@ -215,6 +215,18 @@ const socketHandler = (server) => {
       }
     });
 
+    socket.on("winner check", async (roomId, player1HP, player2HP) => {
+      const room = rooms.find((room) => room.roomId === roomId);
+
+      if (!room) return;
+
+      console.log("checking winner, p1 hp, p2 hp", player1HP, player2HP);
+
+      if (player1HP === 0) io.to(roomId).emit("game won", "p2");
+
+      if (player2HP === 0) io.to(roomId).emit("game won", "p1");
+    });
+
     socket.on("god reset", async (roomId) => {
       io.to(roomId).emit("god reset");
     });

@@ -1,8 +1,9 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
+// 1k for testing, 6k for the real thing
 let initialState = [
-  { player1: { id: 1, hp: 5000 } },
-  { player2: { id: 2, hp: 5000 } },
+  { player1: { id: 1, hp: 1000 } },
+  { player2: { id: 2, hp: 1000 } },
 ];
 
 const hpSlice = createSlice({
