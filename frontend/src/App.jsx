@@ -84,8 +84,10 @@ function App() {
 
     const onEndGame = () => {
       console.log("ending game");
+      // need to unite these into one to follow redux tk best practices
       dispatch(gameEnded());
       dispatch(gameTypeReset());
+      dispatch(guessesReset());
     };
 
     const onLocationFetched = (location) => {

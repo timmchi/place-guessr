@@ -20,6 +20,7 @@ const Room = ({ room, vsGameLocation, roomCode }) => {
 
   const goBackToHomePage = () => {
     console.log("navigating back to home page...");
+    socket.emit("end game", roomCode);
     navigate("/");
   };
 

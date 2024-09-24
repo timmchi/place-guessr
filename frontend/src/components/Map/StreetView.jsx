@@ -29,6 +29,7 @@ const StreetView = ({
   const player = useSelector((state) => state.player);
   const gameType = useSelector((state) => state.gameType);
   const roundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
+  const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
 
   let distance;
 
@@ -143,7 +144,7 @@ const StreetView = ({
             </Button>
           </div>
         )}
-        {roundEnded && (
+        {roundEnded && !gameWinner && (
           <div className="absolute z-20 text-white-200 bottom-0 xl:left-[54rem] pb-16 font-bold flex items-center text-white">
             <Button
               className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
@@ -193,6 +194,7 @@ const StreetView = ({
           answerLocation={answerLocation}
           submitGuess={submitGuess}
           isEnded={isEnded}
+          roomCode={roomCode}
         />
       </div>
     </div>
