@@ -1,5 +1,5 @@
 const HealthBar = ({ healthPoints }) => {
-  const healthPercentage = (healthPoints / 5000) * 100;
+  const healthPercentage = (healthPoints / 6000) * 100;
 
   const computeHealthBarBG = () => {
     if (healthPercentage <= 25) return "bg-red-700";
