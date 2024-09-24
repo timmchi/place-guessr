@@ -9,7 +9,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import NavList from "./NavList";
 import { Link, useLocation } from "react-router-dom";
 
-const pathsNotToRender = ["/rooms", "/lobby"];
+const pathsNotToRender = ["/rooms", "/lobby", "/test"];
 
 const NavBar = ({ user, handleLogout }) => {
   const [openNav, setOpenNav] = useState(false);

@@ -88,6 +88,7 @@ function App() {
       dispatch(gameEnded());
       dispatch(gameTypeReset());
       dispatch(guessesReset());
+      navigate("/");
     };
 
     const onLocationFetched = (location) => {

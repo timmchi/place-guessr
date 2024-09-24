@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { socket } from "../../sockets/socket";
 
 const WinnerScreen = ({ player, roomCode }) => {
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
   const handleGameFinish = () => {
     console.log("finish the game");
     socket.emit("end game", roomCode);
-    navigate("/");
+    // navigate("/");
   };
 
   return (
