@@ -4,6 +4,7 @@ import { Button, Avatar } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import EndRoundMap from "./EndRoundMap";
 import Player from "../Player/Player";
+import WinnerScreen from "../Player/WinnerScreen";
 
 const players = [
   { id: 1, name: "Kariz" },
@@ -18,6 +19,7 @@ const MapElement = ({
   answerLocation,
   submitGuess,
   isEnded,
+  roomCode,
 }) => {
   const gameType = useSelector((state) => state.gameType);
   const { player1Guess, player2Guess } = useSelector(
@@ -47,7 +49,7 @@ const MapElement = ({
   }
 
   // i dont use the round end screen anymore, this is what gets rendered
-  if (isEnded && gameType === "VS") {
+  if (isEnded && gameType === "VS" && !gameWinner) {
     return (
       <div
         style={{ transition: "all 0.5s" }}
@@ -78,10 +80,16 @@ const MapElement = ({
             gameType="vs"
           />
         </div>
-        {gameWinner && (
-          <div>game won by {gameWinner === "p1" ? "Player1" : "Player2"}</div>
-        )}
       </div>
+    );
+  }
+
+  if (gameWinner) {
+    return (
+      <WinnerScreen
+        player={gameWinner === "p1" ? players[0] : players[1]}
+        roomCode={roomCode}
+      />
     );
   }
 
