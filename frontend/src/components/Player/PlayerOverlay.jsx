@@ -11,17 +11,23 @@ const PlayerOverlay = ({ player1, player2 }) => {
   const playerHealthPoints = useSelector((state) => state.hp);
 
   return (
-    <div className="flex justify-between pt-2 px-2 text-white text-xl font-bold text-center">
+    <div className="flex flex-col md:flex-row justify-between pt-2 px-2 text-white text-lg font-bold text-center opacity-85">
       <div className="flex flex-col">
-        <div className="flex bg-gradient-to-b from-indigo-400 via-indigo-500 to-indigo-700 text-white shadow-lg p-2 rounded-xl gap-2 justify-center items-center">
+        <div className="flex bg-gradient-to-b from-indigo-400 via-indigo-500 to-indigo-700 text-white shadow-lg py-1 px-2 rounded-xl gap-2 justify-center items-center">
           <Avatar imgLink={player1.avatar} />
-          <HealthBar healthPoints={playerHealthPoints[0].player1.hp} />
+          <HealthBar
+            healthPoints={playerHealthPoints[0].player1.hp}
+            style="overlay"
+          />
         </div>
         {player1.name}
       </div>
       <div className="flex flex-col">
-        <div className="flex bg-gradient-to-b from-indigo-400 via-indigo-500 to-indigo-700 text-white shadow-lg p-2 rounded-xl gap-2 justify-center items-center">
-          <HealthBar healthPoints={playerHealthPoints[1].player2.hp} />
+        <div className="flex bg-gradient-to-b from-indigo-400 via-indigo-500 to-indigo-700 text-white shadow-lg py-1 px-2 rounded-xl gap-2 justify-center items-center">
+          <HealthBar
+            healthPoints={playerHealthPoints[1].player2.hp}
+            style="overlay"
+          />
           <Avatar imgLink={player2.avatar} />
         </div>
         {player2.name}

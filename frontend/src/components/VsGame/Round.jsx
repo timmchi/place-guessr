@@ -5,10 +5,17 @@ import { calculateHpDamage } from "../../utils/scoreUtils";
 import { calculatePlayerRoundScore } from "../../reducers/roundScoreReducer";
 import { useDispatch, useSelector } from "react-redux";
 import StreetView from "../Map/StreetView";
-import RoundEndScreen from "./RoundEndScreen";
+import PlayerOverlay from "../Player/PlayerOverlay";
+import avatar from "../../../test/vavatar.jpg";
+import avatar2 from "../../../test/avatar2.jpg";
+
+const players = [
+  { id: 1, name: "Kariz", avatar: avatar },
+  { id: 2, name: "Sheldon", avatar: avatar2 },
+];
 
 const Round = ({
-  players,
+  //   players,
   round,
   handleRoundChange,
   roomMapType,
@@ -68,7 +75,7 @@ const Round = ({
   };
 
   return (
-    <>
+    <div className="relative">
       <StreetView
         location={vsGameLocation}
         calculateScore={calculatePlayerScore}
@@ -77,7 +84,12 @@ const Round = ({
         isEnded={vsRoundEnded}
         roomCode={roomCode}
       />
-    </>
+      {!vsRoundEnded && (
+        <div className="absolute top-0 left-0 right-0 z-10">
+          <PlayerOverlay player1={players[0]} player2={players[1]} />
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-const HealthBar = ({ healthPoints }) => {
+const HealthBar = ({ healthPoints, style = "default" }) => {
   const healthPercentage = (healthPoints / 6000) * 100;
 
   const computeHealthBarBG = () => {
@@ -10,6 +10,20 @@ const HealthBar = ({ healthPoints }) => {
 
     if (healthPercentage === 100) return "bg-green-700";
   };
+
+  if (style !== "default") {
+    return (
+      <div className="relative w-96 h-10 bg-gray-500 rounded-lg">
+        <div className="absolute flex justify-center items-center text-gray-200 font-bold text-lg z-10 w-full h-full rounded-lg">
+          {healthPoints}
+        </div>
+        <div
+          style={{ width: `${healthPercentage}%`, transition: "all 1s" }}
+          className={`absolute h-10 ${computeHealthBarBG()} flex justify-center items-center rounded-lg`}
+        ></div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-96 h-14 bg-gray-500 rounded-lg">
