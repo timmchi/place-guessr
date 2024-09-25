@@ -27,6 +27,7 @@ const MapElement = ({
   );
   const playerHealthPoints = useSelector((state) => state.hp);
   const playerRoundScores = useSelector((state) => state.roundScore);
+  const roundDistances = useSelector((state) => state.roundDistance);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
 
   // here is where the end round map is situated, needs to be fixed for a vs game - smaller map
@@ -61,6 +62,7 @@ const MapElement = ({
             player={players[0]}
             healthPoints={playerHealthPoints[0].player1.hp}
             score={playerRoundScores[0].player1.score}
+            distance={roundDistances[0].player1.distance}
             gameType="vs"
           />
         </div>
@@ -77,6 +79,7 @@ const MapElement = ({
             player={players[1]}
             healthPoints={playerHealthPoints[1].player2.hp}
             score={playerRoundScores[1].player2.score}
+            distance={roundDistances[1].player2.distance}
             gameType="vs"
           />
         </div>

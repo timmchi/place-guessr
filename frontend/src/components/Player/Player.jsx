@@ -30,13 +30,7 @@ const Player = ({ player, healthPoints, gameType, score, distance }) => {
             <HealthBar healthPoints={healthPoints} />
           </div>
           <div>Score: {score}</div>
-          <div>
-            Distance from location:{" "}
-            {Math.floor(calculateDistance(score)) > 12000
-              ? "Over 12,000"
-              : Math.floor(calculateDistance(score))}{" "}
-            km
-          </div>
+          <div>Distance from location: {distance} km</div>
         </div>
       )}
     </div>

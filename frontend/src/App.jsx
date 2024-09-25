@@ -28,6 +28,10 @@ import {
   guessesReset,
 } from "./reducers/roundGuessesReducer";
 import {
+  roundDistanceReceived,
+  roundDistanceReset,
+} from "./reducers/roundDistanceReducer";
+import {
   vsGameChosen,
   singleGameChosen,
   gameTypeReset,
@@ -109,6 +113,7 @@ function App() {
 
       dispatch(roundScoresReset());
       dispatch(guessesReset());
+      dispatch(roundDistanceReset());
     };
 
     const onRoundEnd = () => {
@@ -116,13 +121,24 @@ function App() {
       dispatch(roundEnded());
     };
 
-    const onScoresSet = (player1Score, player2Score) => {
+    const onScoresSet = (
+      player1Score,
+      player1Distance,
+      player2Score,
+      player2Distance
+    ) => {
       console.log(
         "settings scores for obth players",
         player1Score,
         player2Score
       );
+      console.log(
+        "distances for both players",
+        player1Distance,
+        player2Distance
+      );
       dispatch(roundScoresReceived({ player1Score, player2Score }));
+      dispatch(roundDistanceReceived({ player1Distance, player2Distance }));
       removeHpFromPlayer(player1Score, player2Score);
     };
 
