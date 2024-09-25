@@ -16,7 +16,7 @@ const MAX_RADIUS = 17000;
 
 const StreetView = ({
   location,
-  calculateScore,
+  //   calculateScore,
   onRoundEnd,
   onRoundStart,
   isEnded,
@@ -61,6 +61,7 @@ const StreetView = ({
 
           // console.log("panoLoc", panoLoc);
           setPanoPosition(panoLoc);
+          if (roomCode) socket.emit("panorama set", panoLoc);
           // console.log("panoPosition", panoPosition);
         } else {
           if (radius < MAX_RADIUS) {
@@ -78,7 +79,7 @@ const StreetView = ({
     };
 
     getStreetView(5000);
-  }, [location, streetViewService]);
+  }, [location, streetViewService, roomCode]);
 
   // unmount cleanup
   useEffect(() => {
@@ -105,17 +106,18 @@ const StreetView = ({
     const updatedAnswerLocation = panoPosition;
 
     socket.emit("guess sent", socket.id, roomCode, guessLocation);
+    socket.emit("submit answer", socket.id, roomCode, guessLocation);
 
     setAnswerLocation(updatedAnswerLocation);
 
-    const distanceResult = Math.trunc(
-      haversine_distance(guessLocation, updatedAnswerLocation)
-    );
+    // const distanceResult = Math.trunc(
+    //   haversine_distance(guessLocation, updatedAnswerLocation)
+    // );
 
     console.log("guess location in submit guess", guessLocation);
     console.log("answer location in submit guess", updatedAnswerLocation);
 
-    calculateScore(distanceResult, player.player);
+    // calculateScore(distanceResult, player.player);
     onRoundEnd();
   };
 

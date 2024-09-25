@@ -3,6 +3,7 @@ const axios = require("axios");
 const { parseText } = require("../utils/geolistUtils");
 const { generateRoomCode } = require("../utils/utils");
 const geolist = "./geolist.txt";
+const { haversine_distance, calculateScore } = require("../utils/scoreUtils");
 
 const apiURL = "https://api.3geonames.org/?randomland";
 
@@ -46,6 +47,7 @@ const socketHandler = (server) => {
 
   const users = [];
   let rooms = [];
+  let roundAnswer;
 
   io.on("connection", (socket) => {
     console.log("user connected");
@@ -55,11 +57,6 @@ const socketHandler = (server) => {
     socket.emit("hello");
 
     io.emit("users", users);
-
-    socket.on("submit answer", (player, answer) => {
-      console.log(player, answer);
-      io.emit("submit answer", player, answer, socket.id);
-    });
 
     socket.on("create room", (player) => {
       const roomId = generateRoomCode();
@@ -77,10 +74,61 @@ const socketHandler = (server) => {
           player2RoundScore: 0,
           player1Guess: null,
           player2Guess: null,
+          player1Distance: null,
+          player2Distance: null,
         },
       ];
       console.log("room created by", player, roomId);
       io.to(roomId).emit("room created", roomId);
+    });
+
+    socket.on("submit answer", (senderId, roomId, playerAnswer) => {
+      console.log("player answer", playerAnswer);
+      const distanceFromAnswerLocation = Math.floor(
+        haversine_distance(playerAnswer, roundAnswer)
+      );
+      console.log("distance from location", distanceFromAnswerLocation);
+      // min score is 1 so that 0 doesn't mess with the conditionals
+      const roundScore = Math.max(
+        Math.floor(calculateScore(distanceFromAnswerLocation)),
+        1
+      );
+
+      console.log("round score", roundScore);
+
+      const room = rooms.find((room) => room.roomId === roomId);
+
+      if (room.player1 === senderId) {
+        room.player1Distance = distanceFromAnswerLocation;
+        room.player1RoundScore = roundScore;
+      }
+
+      if (room.player2 === senderId) {
+        room.player2Distance = distanceFromAnswerLocation;
+        room.player2RoundScore = roundScore;
+      }
+
+      if (room.player1RoundScore && room.player2RoundScore) {
+        console.log(
+          "both distances calculated, emitting distances set...",
+          room.player1Distance,
+          room.player2Distance
+        );
+        io.to(roomId).emit(
+          "scores set",
+          room.player1RoundScore,
+          room.player1Distance,
+          room.player2RoundScore,
+          room.player2Distance
+        );
+      }
+
+      //   io.emit("submit answer", distanceFromAnswerLocation, roundScore);
+    });
+
+    // emit from frontend when pano is set in frontend
+    socket.on("panorama set", (location) => {
+      roundAnswer = location;
     });
 
     socket.on("join room", (player, roomId) => {
@@ -170,31 +218,34 @@ const socketHandler = (server) => {
         room.player2RoundScore = 0;
         room.player1Guess = null;
         room.player2Guess = null;
+        room.player1Distance = null;
+        room.player2Distance = null;
+        // roundAnswer = null;
       }
     });
 
-    socket.on("score calculated", async (senderId, roomId, score) => {
-      const room = rooms.find((room) => room.roomId === roomId);
+    // socket.on("score calculated", async (senderId, roomId, score) => {
+    //   const room = rooms.find((room) => room.roomId === roomId);
 
-      if (room.player1 === senderId) {
-        console.log("score of the first player is", score);
-        room.player1RoundScore = score;
-      }
+    //   if (room.player1 === senderId) {
+    //     console.log("score of the first player is", score);
+    //     room.player1RoundScore = score;
+    //   }
 
-      if (room.player2 === senderId) {
-        console.log("score of the second player is", score);
-        room.player2RoundScore = score;
-      }
+    //   if (room.player2 === senderId) {
+    //     console.log("score of the second player is", score);
+    //     room.player2RoundScore = score;
+    //   }
 
-      if (room.player1RoundScore && room.player2RoundScore) {
-        console.log("both scores calculated, emitting scores set...");
-        io.to(roomId).emit(
-          "scores set",
-          room.player1RoundScore,
-          room.player2RoundScore
-        );
-      }
-    });
+    //   if (room.player1RoundScore && room.player2RoundScore) {
+    //     console.log("both scores calculated, emitting scores set...");
+    //     io.to(roomId).emit(
+    //       "scores set",
+    //       room.player1RoundScore,
+    //       room.player2RoundScore
+    //     );
+    //   }
+    // });
 
     socket.on("guess sent", async (senderId, roomId, guess) => {
       const room = rooms.find((room) => room.roomId === roomId);
