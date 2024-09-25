@@ -32,8 +32,14 @@ export const calculateScore = (distance) => {
   return score;
 };
 
+// there is currently a problem in the case where score is 0 :( Distance won't be calculated properly.
+// I dont know if theres a need to come up with a different solution then
+
 export const calculateDistance = (score) => {
-  const distance = -1491.6862 * Math.log(score / 5000);
+  const minimumScore = 1;
+  const cappedScore = Math.max(score, minimumScore);
+
+  const distance = -1491.6862 * Math.log(cappedScore / 5000);
 
   return distance;
 };
