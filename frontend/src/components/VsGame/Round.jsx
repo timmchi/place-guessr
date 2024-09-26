@@ -60,19 +60,19 @@ const Round = ({
 
   // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
   // Infinite distance bug - possible location !!!
-  const calculatePlayerScore = async (distance, player = "p1") => {
-    if (player === "p1") {
-      const score = await dispatch(calculatePlayerRoundScore("p1", distance));
-      console.log("dispatched p1 round score calculation, score is", score);
-      socket.emit("score calculated", socket.id, roomCode, score);
-    }
+  //   const calculatePlayerScore = async (distance, player = "p1") => {
+  //     if (player === "p1") {
+  //       const score = await dispatch(calculatePlayerRoundScore("p1", distance));
+  //       console.log("dispatched p1 round score calculation, score is", score);
+  //       socket.emit("score calculated", socket.id, roomCode, score);
+  //     }
 
-    if (player === "p2") {
-      const score = await dispatch(calculatePlayerRoundScore("p2", distance));
-      console.log("dispatched p2 round score calculation, score is", score);
-      socket.emit("score calculated", socket.id, roomCode, score);
-    }
-  };
+  //     if (player === "p2") {
+  //       const score = await dispatch(calculatePlayerRoundScore("p2", distance));
+  //       console.log("dispatched p2 round score calculation, score is", score);
+  //       socket.emit("score calculated", socket.id, roomCode, score);
+  //     }
+  //   };
 
   return (
     <div className="relative">

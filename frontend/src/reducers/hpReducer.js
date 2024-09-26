@@ -1,7 +1,7 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
 // 1k for testing, 6k for the real thing
-const hpValue = 1000;
+const hpValue = 6000;
 
 let initialState = [
   { player1: { id: 1, hp: hpValue } },
