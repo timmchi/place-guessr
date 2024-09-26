@@ -17,6 +17,7 @@ const vsGameSlice = createSlice({
     gameEnded(state) {
       state.vsGameStarted = false;
       state.vsGameWinner = null;
+      state.vsRoundEnded = false;
     },
     roundStarted(state) {
       state.vsRoundEnded = false;

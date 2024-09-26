@@ -1,9 +1,11 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
 // 1k for testing, 6k for the real thing
+const hpValue = 1000;
+
 let initialState = [
-  { player1: { id: 1, hp: 6000 } },
-  { player2: { id: 2, hp: 6000 } },
+  { player1: { id: 1, hp: hpValue } },
+  { player2: { id: 2, hp: hpValue } },
 ];
 
 const hpSlice = createSlice({
@@ -21,9 +23,13 @@ const hpSlice = createSlice({
         state[1].player2.hp = Math.max(state[1].player2.hp - amount, 0);
       }
     },
+    resetHP(state) {
+      state[0].player1.hp = hpValue;
+      state[1].player2.hp = hpValue;
+    },
   },
 });
 
-export const { removedHP } = hpSlice.actions;
+export const { removedHP, resetHP } = hpSlice.actions;
 
 export default hpSlice.reducer;

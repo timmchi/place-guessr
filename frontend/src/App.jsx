@@ -36,6 +36,7 @@ import {
   singleGameChosen,
   gameTypeReset,
 } from "./reducers/gameTypeReducer";
+import { resetHP } from "./reducers/hpReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -92,6 +93,7 @@ function App() {
       dispatch(gameEnded());
       dispatch(gameTypeReset());
       dispatch(guessesReset());
+      dispatch(resetHP());
       navigate("/");
     };
 
