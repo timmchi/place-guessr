@@ -94,6 +94,7 @@ function App() {
       dispatch(gameTypeReset());
       dispatch(guessesReset());
       dispatch(resetHP());
+      setRoomCode("");
       navigate("/");
     };
 
@@ -155,7 +156,10 @@ function App() {
 
     const onGameWon = (winner) => {
       console.log("game won event", winner);
-      dispatch(gameWon(winner));
+
+      // so that we see the results of the last round
+      setTimeout(() => dispatch(gameWon(winner)), 3000);
+      //   dispatch(gameWon(winner));
     };
 
     socket.on("users", onUsers);
@@ -257,6 +261,7 @@ function App() {
 
   return (
     <div>
+      {/* keep in prod but no need in dev */}
       {pageShielded && (
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
       )}
