@@ -90,12 +90,12 @@ function App() {
     const onEndGame = () => {
       console.log("ending game");
       // need to unite these into one to follow redux tk best practices
+      navigate("/");
       dispatch(gameEnded());
       dispatch(gameTypeReset());
       dispatch(guessesReset());
       dispatch(resetHP());
       setRoomCode("");
-      navigate("/");
     };
 
     const onLocationFetched = (location) => {
@@ -262,9 +262,9 @@ function App() {
   return (
     <div>
       {/* keep in prod but no need in dev */}
-      {pageShielded && (
+      {/* {pageShielded && (
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
-      )}
+      )} */}
 
       <NavBar user={user} handleLogout={handleLogout} />
 
