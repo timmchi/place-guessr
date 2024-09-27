@@ -16,7 +16,7 @@ const MAX_RADIUS = 17000;
 
 const StreetView = ({
   location,
-  //   calculateScore,
+  calculateScore,
   onRoundEnd,
   onRoundStart,
   isEnded,
@@ -100,24 +100,30 @@ const StreetView = ({
     console.log(latLng);
   };
 
-  // HERE IS WHERE WE SEND THE GUESS!
+  // trying to decouple the vs submit guess logic from the single game logic. Perhaps this means there should be 2 separate functions.
+  // need to take a closer look at whats goes in there. Right now there are basically 2 things doing kind of the same thing
   const submitGuess = () => {
     console.log("submitting answer, ending round...");
     const updatedAnswerLocation = panoPosition;
 
-    socket.emit("guess sent", socket.id, roomCode, guessLocation);
-    socket.emit("submit answer", socket.id, roomCode, guessLocation);
+    if (roomCode) {
+      socket.emit("guess sent", socket.id, roomCode, guessLocation);
+      socket.emit("submit answer", socket.id, roomCode, guessLocation);
+    }
 
     setAnswerLocation(updatedAnswerLocation);
 
-    // const distanceResult = Math.trunc(
-    //   haversine_distance(guessLocation, updatedAnswerLocation)
-    // );
+    // in the single game, score can be calculated in the frontend. At least for now
+    if (!roomCode) {
+      const distanceResult = Math.trunc(
+        haversine_distance(guessLocation, updatedAnswerLocation)
+      );
 
-    console.log("guess location in submit guess", guessLocation);
-    console.log("answer location in submit guess", updatedAnswerLocation);
+      console.log("guess location in submit guess", guessLocation);
+      console.log("answer location in submit guess", updatedAnswerLocation);
 
-    // calculateScore(distanceResult, player.player);
+      calculateScore(distanceResult, player.player);
+    }
     onRoundEnd();
   };
 
