@@ -1,10 +1,7 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 import { calculateScore } from "../utils/scoreUtils";
 
-let initialState = [
-  { player1: { id: 1, score: 0 } },
-  { player2: { id: 2, score: 0 } },
-];
+let initialState = { player1RoundScore: 0, player2RoundScore: 0 };
 
 const roundScoreSlice = createSlice({
   name: "roundScore",
@@ -14,22 +11,22 @@ const roundScoreSlice = createSlice({
       const { player, score } = action.payload;
 
       if (player === "p1") {
-        state[0].player1.score = score;
+        state.player1RoundScore = score;
       }
 
       if (player === "p2") {
-        state[1].player2.score = score;
+        state.player1RoundScore = score;
       }
     },
     roundScoresReceived(state, action) {
       const { player1Score, player2Score } = action.payload;
 
-      state[0].player1.score = player1Score;
-      state[1].player2.score = player2Score;
+      state.player1RoundScore = player1Score;
+      state.player2RoundScore = player2Score;
     },
     roundScoresReset(state) {
-      state[0].player1.score = 0;
-      state[1].player2.score = 0;
+      state.player1RoundScore = 0;
+      state.player2RoundScore = 0;
     },
   },
 });
@@ -37,6 +34,7 @@ const roundScoreSlice = createSlice({
 export const { playerScoreCalculated, roundScoresReceived, roundScoresReset } =
   roundScoreSlice.actions;
 
+// i dont remember if i use this still?
 export const calculatePlayerRoundScore = (player, distance) => {
   return async (dispatch) => {
     const score = Math.floor(calculateScore(distance));

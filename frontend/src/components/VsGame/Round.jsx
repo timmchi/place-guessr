@@ -56,7 +56,6 @@ const Round = ({
     <div className="relative">
       <StreetView
         location={vsGameLocation}
-        // calculateScore={calculatePlayerScore}
         onRoundEnd={endRound}
         onRoundStart={startRound}
         isEnded={vsRoundEnded}

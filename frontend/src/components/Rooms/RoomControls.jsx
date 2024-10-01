@@ -62,10 +62,8 @@ const RoomControls = ({
       <RoomLobby
         room={roomRegion}
         roomCode={roomCode}
-        // gameStarted={vsGameStarted}
         handleGoingBack={handleEndGame}
         vsGameLocation={vsGameLocation}
-        // vsRoundEnded={vsRoundEnded}
       />
     );
   }

@@ -61,9 +61,8 @@ const MapElement = ({
             key="player1"
             player={players[0]}
             healthPoints={playerHealthPoints.player1HP}
-            // healthPoints={playerHealthPoints[0].player1.hp}
-            score={playerRoundScores[0].player1.score}
-            distance={roundDistances[0].player1.distance}
+            score={playerRoundScores.player1RoundScore}
+            distance={roundDistances.player1RoundDistance}
             gameType="vs"
           />
         </div>
@@ -79,9 +78,8 @@ const MapElement = ({
             key="player2"
             player={players[1]}
             healthPoints={playerHealthPoints.player2HP}
-            // healthPoints={playerHealthPoints[1].player2.hp}
-            score={playerRoundScores[1].player2.score}
-            distance={roundDistances[1].player2.distance}
+            score={playerRoundScores.player2RoundScore}
+            distance={roundDistances.player2RoundDistance}
             gameType="vs"
           />
         </div>
