@@ -76,8 +76,10 @@ function App() {
       setRoomCode(roomId);
     };
 
-    const onJoiningRoom = (player, roomId) => {
+    const onJoiningRoom = (player, roomId, roomRegion) => {
       console.log(`${player} joined ${roomId}`);
+      setJoiningUserRoomRegion(roomRegion);
+      dispatch(vsGameChosen());
     };
 
     const onUsers = (value) => console.log("users", value);
@@ -103,11 +105,12 @@ function App() {
       setVsGameLocation(location);
     };
 
-    const onRoomChosen = (roomRegion) => {
-      console.log("room is chosen", roomRegion);
-      setJoiningUserRoomRegion(roomRegion);
-      dispatch(vsGameChosen());
-    };
+    // dont need this anymore methinks
+    // const onRoomChosen = (roomRegion) => {
+    //   console.log("room is chosen", roomRegion);
+    //   setJoiningUserRoomRegion(roomRegion);
+    //   dispatch(vsGameChosen());
+    // };
 
     const onRoundStart = (location) => {
       console.log("Round starting with location:", location);

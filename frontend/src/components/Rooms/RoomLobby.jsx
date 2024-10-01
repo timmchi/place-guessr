@@ -24,6 +24,9 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
     );
   };
 
+  // add styling here
+  if (!room) return <div>loading room...</div>;
+
   if (!gameStarted) {
     return (
       <div className="flex bg-indigo-200 min-h-screen justify-center items-center">

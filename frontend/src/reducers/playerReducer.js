@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = { player: null };
 
+// this will need to be changed once I create a moremature player solution
 const playerSlice = createSlice({
   name: "player",
   initialState,

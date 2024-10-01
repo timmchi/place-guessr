@@ -65,6 +65,7 @@ const socketHandler = (server) => {
         ...rooms,
         {
           roomId: roomId,
+          // keep track of room region here?
           player1: socket.id,
           player1ReadyToEnd: false,
           player2ReadyToEnd: false,
@@ -147,7 +148,12 @@ const socketHandler = (server) => {
         }
 
         socket.join(roomId);
-        io.to(roomId).emit("room joined", socket.id, roomId);
+
+        // move this emit here instead of the room chosen event to avoid setting same room for all users on the site
+        // io.to(roomId).emit("room chosen", room.region);
+        console.log("room region in join room", room.region);
+
+        io.to(roomId).emit("room joined", socket.id, roomId, room.region);
       }
     });
 
@@ -174,7 +180,8 @@ const socketHandler = (server) => {
       const room = rooms.find((r) => r.roomId === roomId);
       room.region = roomRegion;
 
-      io.emit("room chosen", roomRegion);
+      // this could lead to a problem where other users on the site will have their room state set to something they didnt sign up for
+      //   io.emit("room chosen", roomRegion);
     });
 
     socket.on("end round", async (senderId, roomId) => {
