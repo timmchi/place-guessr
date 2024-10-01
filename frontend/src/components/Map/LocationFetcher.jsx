@@ -3,6 +3,7 @@ import { Button } from "@material-tailwind/react";
 import StreetView from "./StreetView";
 import useRandomLocation from "../../hooks/useRandomLocation";
 
+// I DONT USE THIS ANYMORE
 const LocationFetcher = ({
   calculateScore,
   roomMapType,

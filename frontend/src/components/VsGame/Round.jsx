@@ -32,17 +32,11 @@ const Round = ({
   // i suppose it would make sense to emit hps here and do the use effect to check for the winner
   // I'm not sure about the way to do this without the effect
   useEffect(() => {
-    console.log(
-      "hps p1 p2",
-      playerHealthPoints[0].player1.hp,
-      playerHealthPoints[1].player2.hp
-    );
-
     socket.emit(
       "winner check",
       roomCode,
-      playerHealthPoints[0].player1.hp,
-      playerHealthPoints[1].player2.hp
+      playerHealthPoints.player1HP,
+      playerHealthPoints.player2HP
     );
   }, [playerHealthPoints, roomCode]);
 
@@ -57,22 +51,6 @@ const Round = ({
   const startRound = () => {
     socket.emit("start round", socket.id, roomCode);
   };
-
-  // on top of this I guess I need a function to remove hp. Perhaps theres a need for another function that calculates score based on a round so that there is no oneshotting
-  // Infinite distance bug - possible location !!!
-  //   const calculatePlayerScore = async (distance, player = "p1") => {
-  //     if (player === "p1") {
-  //       const score = await dispatch(calculatePlayerRoundScore("p1", distance));
-  //       console.log("dispatched p1 round score calculation, score is", score);
-  //       socket.emit("score calculated", socket.id, roomCode, score);
-  //     }
-
-  //     if (player === "p2") {
-  //       const score = await dispatch(calculatePlayerRoundScore("p2", distance));
-  //       console.log("dispatched p2 round score calculation, score is", score);
-  //       socket.emit("score calculated", socket.id, roomCode, score);
-  //     }
-  //   };
 
   return (
     <div className="relative">

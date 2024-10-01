@@ -13,7 +13,7 @@ const WinnerScreen = ({ player, roomCode }) => {
   };
 
   return (
-    <div className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 bg-opacity-80 flex pb-36 xl:py-48">
+    <div className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 bg-opacity-80 flex pb-36 py-24 xl:py-48">
       <div className="flex flex-col mx-auto text-center items-center text-white">
         <Avatar gameType="vs" playerName={player.name} />
         <div className="py-6">

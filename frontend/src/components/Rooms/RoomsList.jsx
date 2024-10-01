@@ -10,7 +10,6 @@ const RoomsList = ({ rooms, roomCode }) => {
 
   return (
     <div className="h-full bg-indigo-200 p-2">
-      {/* <NavBar /> */}
       <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 container mx-auto my-4">
         {rooms.map((room) => (
           <li key={room.id}>

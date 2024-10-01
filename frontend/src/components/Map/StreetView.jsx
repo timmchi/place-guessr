@@ -3,7 +3,7 @@ import useStreetView from "../../hooks/useStreetView";
 import {
   GoogleMap,
   StreetViewPanorama,
-  useJsApiLoader,
+  //   useJsApiLoader,
 } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
 import { haversine_distance } from "../../utils/scoreUtils";
@@ -11,7 +11,7 @@ import MapElement from "./Map";
 import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+// const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAX_RADIUS = 17000;
 
 const StreetView = ({
@@ -39,7 +39,7 @@ const StreetView = ({
   const mapRef = useRef(null);
   const streetViewRef = useRef(null);
 
-  const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
+  //   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
   const containerStyle = {
     height: "100vh",
@@ -90,7 +90,7 @@ const StreetView = ({
     };
   }, []);
 
-  if (!isLoaded) return null;
+  //   if (!isLoaded) return null;
 
   //   console.log("panoPosition outside", panoPosition);
 
@@ -99,33 +99,6 @@ const StreetView = ({
     setGuessLocation(latLng);
     console.log(latLng);
   };
-
-  // trying to decouple the vs submit guess logic from the single game logic. Perhaps this means there should be 2 separate functions.
-  // need to take a closer look at whats goes in there. Right now there are basically 2 things doing kind of the same thing
-  //   const submitGuess = () => {
-  //     console.log("submitting answer, ending round...");
-  //     const updatedAnswerLocation = panoPosition;
-
-  //     if (roomCode) {
-  //       socket.emit("guess sent", socket.id, roomCode, guessLocation);
-  //       socket.emit("submit answer", socket.id, roomCode, guessLocation);
-  //     }
-
-  //     setAnswerLocation(updatedAnswerLocation);
-
-  //     // in the single game, score can be calculated in the frontend. At least for now
-  //     if (calculateScore) {
-  //       const distanceResult = Math.trunc(
-  //         haversine_distance(guessLocation, updatedAnswerLocation)
-  //       );
-
-  //       console.log("guess location in submit guess", guessLocation);
-  //       console.log("answer location in submit guess", updatedAnswerLocation);
-
-  //       calculateScore(distanceResult, player.player);
-  //     }
-  //     onRoundEnd();
-  //   };
 
   const submitSingleGuess = () => {
     console.log("submitting guess in single game");
@@ -145,13 +118,11 @@ const StreetView = ({
   const submitVsGuess = () => {
     console.log("submitting guess in vs game");
 
-    // not sure if i need this here
     const updatedAnswerLocation = panoPosition;
 
     socket.emit("guess sent", socket.id, roomCode, guessLocation);
     socket.emit("submit answer", socket.id, roomCode, guessLocation);
 
-    // not sure if i need this here
     setAnswerLocation(updatedAnswerLocation);
 
     onRoundEnd();
