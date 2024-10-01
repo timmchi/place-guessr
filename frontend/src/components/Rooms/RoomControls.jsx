@@ -21,6 +21,7 @@ const RoomControls = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // here is the problem with the white screen and room being undefined
   const roomRegion = rooms.find(
     (room) => room.region === joiningUserRoomRegion
   );
