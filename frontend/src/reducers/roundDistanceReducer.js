@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let initialState = [
-  { player1: { id: 1, distance: 0 } },
-  { player2: { id: 2, distance: 0 } },
-];
+let initialState = { player1RoundDistance: 0, player2RoundDistance: 0 };
 
 const roundDistanceSlice = createSlice({
   name: "roundDistance",
@@ -12,12 +9,12 @@ const roundDistanceSlice = createSlice({
     roundDistanceReceived(state, action) {
       const { player1Distance, player2Distance } = action.payload;
 
-      state[0].player1.distance = player1Distance;
-      state[1].player2.distance = player2Distance;
+      state.player1RoundDistance = player1Distance;
+      state.player2RoundDistance = player2Distance;
     },
     roundDistanceReset(state) {
-      state[0].player1.distance = 0;
-      state[1].player2.distance = 0;
+      state.player1RoundDistance = 0;
+      state.player2RoundDistance = 0;
     },
   },
 });
