@@ -11,8 +11,12 @@ const About = () => {
       </div>
       <div>
         <Typography variant="h3">You can find me at</Typography>
-        <p>github</p>
-        <p>personal website</p>
+        <a href="https://github.com/timmchi" target="_blank">
+          Github
+        </a>
+        <a href="https://timmchi.github.io" target="_blank">
+          Personal website
+        </a>
       </div>
     </div>
   );

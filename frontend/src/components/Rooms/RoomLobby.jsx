@@ -11,17 +11,8 @@ const players = [
   { id: 2, name: "Sheldon", avatar: avatar },
 ];
 
-const RoomLobby = ({
-  room,
-  //   gameStarted,
-  //   vsRoundEnded,
-  vsGameLocation,
-  //   handleGameStart,
-  handleGoingBack,
-  roomCode,
-}) => {
+const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
   const gameStarted = useSelector((state) => state.vsGame.vsGameStarted);
-  //   console.log("game started in roomLobby", gameStarted);
 
   const handleGameStart = () => {
     socket.emit("start game", roomCode);
@@ -95,7 +86,6 @@ const RoomLobby = ({
       roomTitle={room.title}
       region={room.region}
       vsGameLocation={vsGameLocation}
-      //   vsRoundEnded={vsRoundEnded}
       roomCode={roomCode}
     />
   );

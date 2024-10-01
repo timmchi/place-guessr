@@ -32,8 +32,7 @@ export const calculateScore = (distance) => {
   return score;
 };
 
-// there is currently a problem in the case where score is 0 :( Distance won't be calculated properly.
-// I dont know if theres a need to come up with a different solution then
+// Moved to backend, no longer used
 
 export const calculateDistance = (score) => {
   const minimumScore = 1;

@@ -16,7 +16,7 @@ const PlayerOverlay = ({ player1, player2 }) => {
         <div className="flex bg-gradient-to-b from-indigo-400 via-indigo-500 to-indigo-700 text-white shadow-lg py-1 px-2 rounded-xl gap-2 justify-center items-center">
           <Avatar imgLink={player1.avatar} />
           <HealthBar
-            healthPoints={playerHealthPoints[0].player1.hp}
+            healthPoints={playerHealthPoints.player1HP}
             style="overlay"
           />
         </div>
@@ -25,7 +25,7 @@ const PlayerOverlay = ({ player1, player2 }) => {
       <div className="flex flex-col">
         <div className="flex bg-gradient-to-b from-indigo-400 via-indigo-500 to-indigo-700 text-white shadow-lg py-1 px-2 rounded-xl gap-2 justify-center items-center">
           <HealthBar
-            healthPoints={playerHealthPoints[1].player2.hp}
+            healthPoints={playerHealthPoints.player2HP}
             style="overlay"
           />
           <Avatar imgLink={player2.avatar} />

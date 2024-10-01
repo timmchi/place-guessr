@@ -21,7 +21,6 @@ const RoomControls = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //   const [roomCode, setRoomCode] = useState("");
   const roomRegion = rooms.find(
     (room) => room.region === joiningUserRoomRegion
   );
