@@ -41,6 +41,7 @@ import {
   secondPlayerJoined,
   roomPlayersReset,
 } from "./reducers/roomPlayersReducer";
+import { initializeUser } from "./reducers/userReducer";
 import { resetHP } from "./reducers/hpReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
@@ -271,7 +272,9 @@ function App() {
       console.log("login mutation", data);
       setUser(data);
       saveUser(JSON.stringify(data));
-      usersService.setToken(data.token);
+      // i think i dispatch initializeUser here
+      dispatch(initializeUser(data));
+      //   usersService.setToken(data.token);
       navigate("/");
     },
   });

@@ -68,10 +68,10 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
               maybe make this clickable so that it opens users profile? is there a point?.. 
               clickable so that the profile is opened in a new tab maybe */}
               {playersInLobby.player1 && (
-                <PlayerInLobby player={playersInLobby.player1} />
+                <PlayerInLobby player={playersInLobby.player1.player1Object} />
               )}
               {playersInLobby.player2 && (
-                <PlayerInLobby player={playersInLobby.player2} />
+                <PlayerInLobby player={playersInLobby.player2.player2Object} />
               )}
               {/* <PlayerInLobby player={players[1]} /> */}
             </ul>
