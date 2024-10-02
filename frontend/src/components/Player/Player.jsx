@@ -13,7 +13,9 @@ const Player = ({ player, healthPoints, gameType, score, distance }) => {
       } items-center container mx-auto text-white`}
     >
       {gameType === "vs" && (
-        <h1 className="text-2xl font-bold ">{player.name}</h1>
+        <h1 className="text-2xl font-bold ">
+          {player && player.username ? player.username : "Guest"}
+        </h1>
       )}
       <Avatar />
       {gameType === "single" && (
