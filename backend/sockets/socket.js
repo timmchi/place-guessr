@@ -58,15 +58,20 @@ const socketHandler = (server) => {
 
     io.emit("users", users);
 
-    socket.on("create room", (player) => {
+    socket.on("create room", (playerSocket, playerObject) => {
       const roomId = generateRoomCode();
       socket.join(roomId);
+
+      // I wonder if I should keep the playerObject information here?
+      // It could prove useful if I decide to implement logic where u keep the same room when game ends
       rooms = [
         ...rooms,
         {
           roomId: roomId,
           // keep track of room region here?
           player1: socket.id,
+          player1Object: playerObject,
+          player2Object: null,
           player1ReadyToEnd: false,
           player2ReadyToEnd: false,
           player1ReadyToStart: false,
@@ -79,7 +84,11 @@ const socketHandler = (server) => {
           player2Distance: null,
         },
       ];
-      console.log("room created by", player, roomId);
+      console.log("room created by", playerSocket, roomId);
+
+      // same as in the join room but with p1 this time, aka room creator
+      io.to(roomId).emit("player joined", "p1", playerObject);
+
       io.to(roomId).emit("room created", roomId);
     });
 
@@ -132,15 +141,16 @@ const socketHandler = (server) => {
       roundAnswer = location;
     });
 
-    socket.on("join room", (player, roomId) => {
+    socket.on("join room", (playerSocket, roomId, playerObject) => {
       if (io.sockets.adapter.rooms.get(roomId)) {
-        // console.log(`${player} joining ${roomId}`);
         const room = rooms.find((r) => r.roomId === roomId);
 
+        // playerObject is the actual player data
         if (room) {
           if (!room.player2) {
             room.player2 = socket.id;
-            console.log(`${player} joining ${roomId} as player2`);
+            room.player2Object = playerObject;
+            console.log(`${playerSocket} joining ${roomId} as player2`);
           } else {
             console.log(`Room ${roomId} already has two players`);
             return;
@@ -149,9 +159,15 @@ const socketHandler = (server) => {
 
         socket.join(roomId);
 
-        // move this emit here instead of the room chosen event to avoid setting same room for all users on the site
-        // io.to(roomId).emit("room chosen", room.region);
         console.log("room region in join room", room.region);
+
+        // maybe we should have a separate event with the player object emitted here
+        io.to(roomId).emit(
+          "player joined",
+          "p2",
+          room.player1Object,
+          room.player2Object
+        );
 
         io.to(roomId).emit("room joined", socket.id, roomId, room.region);
       }

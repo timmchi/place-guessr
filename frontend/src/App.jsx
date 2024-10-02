@@ -36,6 +36,12 @@ import {
   singleGameChosen,
   gameTypeReset,
 } from "./reducers/gameTypeReducer";
+import {
+  firstPlayerJoined,
+  secondPlayerJoined,
+  roomPlayersReset,
+} from "./reducers/roomPlayersReducer";
+import { initializeUser } from "./reducers/userReducer";
 import { resetHP } from "./reducers/hpReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
@@ -82,6 +88,21 @@ function App() {
       dispatch(vsGameChosen());
     };
 
+    // here is where we update the players in the room state
+    const onPlayerJoined = (playerIdentifier, player1Object, player2Object) => {
+      console.log(playerIdentifier, player1Object, player2Object);
+
+      // we need the player here as an object because we check for null to see
+      // if the player has joined the room AND is not logged in to then add a guest to the room
+      if (playerIdentifier === "p1")
+        dispatch(firstPlayerJoined({ player1Object }));
+
+      if (playerIdentifier === "p2") {
+        dispatch(secondPlayerJoined({ player2Object }));
+        dispatch(firstPlayerJoined({ player1Object }));
+      }
+    };
+
     const onUsers = (value) => console.log("users", value);
 
     const onStartGame = () => {
@@ -97,6 +118,7 @@ function App() {
       dispatch(gameTypeReset());
       dispatch(guessesReset());
       dispatch(resetHP());
+      dispatch(roomPlayersReset());
       setRoomCode("");
     };
 
@@ -171,7 +193,7 @@ function App() {
     socket.on("start game", onStartGame);
     socket.on("end game", onEndGame);
     socket.on("fetched location", onLocationFetched);
-    socket.on("room chosen", onRoomChosen);
+    // socket.on("room chosen", onRoomChosen);
     socket.on("room created", onCreateRoom);
     socket.on("start round", onRoundStart);
     socket.on("end round", onRoundEnd);
@@ -179,6 +201,7 @@ function App() {
     socket.on("guesses set", onPlayerGuessesReceived);
     socket.on("god reset", onGodReset);
     socket.on("game won", onGameWon);
+    socket.on("player joined", onPlayerJoined);
 
     return () => {
       socket.off("users", onUsers);
@@ -187,7 +210,7 @@ function App() {
       socket.off("start game", onStartGame);
       socket.off("end game", onEndGame);
       socket.off("fetched location", onLocationFetched);
-      socket.off("room chosen", onRoomChosen);
+      //   socket.off("room chosen", onRoomChosen);
       socket.off("room created", onCreateRoom);
       socket.off("start round", onRoundStart);
       socket.off("end round", onRoundEnd);
@@ -195,6 +218,7 @@ function App() {
       socket.off("guesses set", onPlayerGuessesReceived);
       socket.off("god reset", onGodReset);
       socket.off("game won", onGameWon);
+      socket.off("player joined", onPlayerJoined);
     };
   }, []);
 
@@ -248,7 +272,9 @@ function App() {
       console.log("login mutation", data);
       setUser(data);
       saveUser(JSON.stringify(data));
-      usersService.setToken(data.token);
+      // i think i dispatch initializeUser here
+      dispatch(initializeUser(data));
+      //   usersService.setToken(data.token);
       navigate("/");
     },
   });
