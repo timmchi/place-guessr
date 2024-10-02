@@ -8,6 +8,7 @@ import playerReducer from "./playerReducer";
 import vsGameReducer from "./vsGameReducer";
 import gameTypeReducer from "./gameTypeReducer";
 import roundDistanceReducer from "./roundDistanceReducer";
+import roomPlayersReducer from "./roomPlayersReducer";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     vsGame: vsGameReducer,
     gameType: gameTypeReducer,
     roundDistance: roundDistanceReducer,
+    roomPlayers: roomPlayersReducer,
   },
 });
 

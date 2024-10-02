@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Input } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { roomWasCreated, roomWasJoined } from "../../reducers/playerReducer";
 import RoomLobby from "./RoomLobby";
 import RoomsList from "./RoomsList";
@@ -21,6 +21,11 @@ const RoomControls = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // changes between the user who creates the room and who joins the room.
+  // If null (not logged in), will be guest
+  const user = useSelector((state) => state.user);
+  console.log("user in room controls", user);
+
   // here is the problem with the white screen and room being undefined
   const roomRegion = rooms.find(
     (room) => room.region === joiningUserRoomRegion
@@ -31,16 +36,18 @@ const RoomControls = ({
   const joinRoom = (e) => {
     e.preventDefault();
     console.log("joining roooooom....");
-    socket.emit("join room", socket.id, roomCode);
+
+    // here the user will be the one joining the room
+    socket.emit("join room", socket.id, roomCode, user);
     setRoomJoined(true);
     dispatch(roomWasJoined());
   };
 
   const createRoom = () => {
     console.log("creating a room");
-    // const generatedRoomCode = generateRoomCode();
-    // setRoomCode(generatedRoomCode);
-    socket.emit("create room", socket.id);
+
+    // here the user will be the room creator
+    socket.emit("create room", socket.id, user);
     setRoomCreated(true);
     dispatch(roomWasCreated());
   };
