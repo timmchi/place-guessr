@@ -9,10 +9,10 @@ import PlayerOverlay from "../Player/PlayerOverlay";
 import avatar from "../../../test/vavatar.jpg";
 import avatar2 from "../../../test/avatar2.jpg";
 
-const players = [
-  { id: 1, name: "Kariz", avatar: avatar },
-  { id: 2, name: "Sheldon", avatar: avatar2 },
-];
+// const players = [
+//   { id: 1, name: "Kariz", avatar: avatar },
+//   { id: 2, name: "Sheldon", avatar: avatar2 },
+// ];
 
 const Round = ({
   //   players,
@@ -28,6 +28,8 @@ const Round = ({
   const dispatch = useDispatch();
   const vsRoundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
   const playerHealthPoints = useSelector((state) => state.hp);
+
+  const playersInRoom = useSelector((state) => state.roomPlayers);
 
   // i suppose it would make sense to emit hps here and do the use effect to check for the winner
   // I'm not sure about the way to do this without the effect
@@ -63,7 +65,10 @@ const Round = ({
       />
       {!vsRoundEnded && (
         <div className="absolute top-0 left-0 right-0 z-10">
-          <PlayerOverlay player1={players[0]} player2={players[1]} />
+          <PlayerOverlay
+            player1={playersInRoom.player1.player1Object}
+            player2={playersInRoom.player2.player2Object}
+          />
         </div>
       )}
     </div>

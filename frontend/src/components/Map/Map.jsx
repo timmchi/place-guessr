@@ -29,6 +29,7 @@ const MapElement = ({
   const playerRoundScores = useSelector((state) => state.roundScore);
   const roundDistances = useSelector((state) => state.roundDistance);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
+  const playersInRoom = useSelector((state) => state.roomPlayers);
 
   // here is where the end round map is situated, needs to be fixed for a vs game - smaller map
   // and player profiles on the sides
@@ -59,7 +60,7 @@ const MapElement = ({
         <div className="pt-80 px-24">
           <Player
             key="player1"
-            player={players[0]}
+            player={playersInRoom.player1.player1Object}
             healthPoints={playerHealthPoints.player1HP}
             score={playerRoundScores.player1RoundScore}
             distance={roundDistances.player1RoundDistance}
@@ -76,7 +77,7 @@ const MapElement = ({
         <div className="pt-80 px-24">
           <Player
             key="player2"
-            player={players[1]}
+            player={playersInRoom.player1.player2Object}
             healthPoints={playerHealthPoints.player2HP}
             score={playerRoundScores.player2RoundScore}
             distance={roundDistances.player2RoundDistance}
@@ -90,7 +91,11 @@ const MapElement = ({
   if (gameWinner) {
     return (
       <WinnerScreen
-        player={gameWinner === "p1" ? players[0] : players[1]}
+        player={
+          gameWinner === "p1"
+            ? playersInRoom.player1.player1Object
+            : playersInRoom.player1.player2Object
+        }
         roomCode={roomCode}
       />
     );
