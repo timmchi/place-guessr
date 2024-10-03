@@ -1,11 +1,6 @@
 import { useState } from "react";
 import Round from "./Round";
 
-const players = [
-  { id: 1, name: "Kariz" },
-  { id: 2, name: "Sheldon" },
-];
-
 const VsGame = ({
   roomMapType,
   region,
@@ -21,7 +16,6 @@ const VsGame = ({
   return (
     <div>
       <Round
-        players={players}
         round={round}
         handleRoundChange={handleRoundChange}
         region={region}

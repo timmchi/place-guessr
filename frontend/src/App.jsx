@@ -155,16 +155,16 @@ function App() {
       player2Score,
       player2Distance
     ) => {
-      console.log(
-        "settings scores for obth players",
-        player1Score,
-        player2Score
-      );
-      console.log(
-        "distances for both players",
-        player1Distance,
-        player2Distance
-      );
+      //   console.log(
+      //     "settings scores for obth players",
+      //     player1Score,
+      //     player2Score
+      //   );
+      //   console.log(
+      //     "distances for both players",
+      //     player1Distance,
+      //     player2Distance
+      //   );
       dispatch(roundScoresReceived({ player1Score, player2Score }));
       dispatch(roundDistanceReceived({ player1Distance, player2Distance }));
       removeHpFromPlayer(player1Score, player2Score);
@@ -184,7 +184,6 @@ function App() {
 
       // so that we see the results of the last round
       setTimeout(() => dispatch(gameWon(winner)), 3000);
-      //   dispatch(gameWon(winner));
     };
 
     socket.on("users", onUsers);

@@ -1,11 +1,17 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Button } from "@material-tailwind/react";
-import { calculateDistance } from "../../utils/scoreUtils";
+import { useSelector } from "react-redux";
 import HealthBar from "./HealthBar";
 import Avatar from "./Avatar";
 
-const Player = ({ player, healthPoints, gameType, score, distance }) => {
+const Player = ({
+  player,
+  healthPoints,
+  gameType,
+  score,
+  distance,
+  playerVariant,
+}) => {
+  const playerVariantChecker = useSelector((state) => state.player.player);
+
   return (
     <div
       className={`flex ${
@@ -14,7 +20,8 @@ const Player = ({ player, healthPoints, gameType, score, distance }) => {
     >
       {gameType === "vs" && (
         <h1 className="text-2xl font-bold ">
-          {player && player.username ? player.username : "Guest"}
+          {player && player.username ? player.username : "Guest"}{" "}
+          {playerVariant === playerVariantChecker && " (You)"}
         </h1>
       )}
       <Avatar />

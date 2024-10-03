@@ -6,19 +6,9 @@ import { useSelector } from "react-redux";
 import avatar from "../../../test/vavatar.jpg";
 import { socket } from "../../sockets/socket";
 
-const players = [{ id: 1, name: "Kariz", avatar: avatar }, null];
-
 const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
   const gameStarted = useSelector((state) => state.vsGame.vsGameStarted);
-  // we are gonna grab the user from the global user state here
-  // actually, that means that there will only be 1 user
-  // so, I will need to send the room user to the backend with the event,
-  // and then send back the user info
 
-  // Idea 1. Have the room creator as the first user in the lobby right away
-  // then pass the joined user info when joining the room
-  // Idea 2. Pass the user creator info to the backend with the create room event,
-  // pass the 2nd user info with the join room event - This seems better
   const playersInLobby = useSelector((state) => state.roomPlayers);
   console.log("players in lobby from redux state", playersInLobby);
 
