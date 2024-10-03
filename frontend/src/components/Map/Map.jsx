@@ -60,6 +60,7 @@ const MapElement = ({
         <div className="pt-80 px-24">
           <Player
             key="player1"
+            playerVariant="p1"
             player={playersInRoom.player1.player1Object}
             healthPoints={playerHealthPoints.player1HP}
             score={playerRoundScores.player1RoundScore}
@@ -77,6 +78,7 @@ const MapElement = ({
         <div className="pt-80 px-24">
           <Player
             key="player2"
+            playerVariant="p2"
             player={playersInRoom.player1.player2Object}
             healthPoints={playerHealthPoints.player2HP}
             score={playerRoundScores.player2RoundScore}
@@ -94,7 +96,7 @@ const MapElement = ({
         player={
           gameWinner === "p1"
             ? playersInRoom.player1.player1Object
-            : playersInRoom.player1.player2Object
+            : playersInRoom.player2.player2Object
         }
         roomCode={roomCode}
       />

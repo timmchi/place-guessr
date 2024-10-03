@@ -6,8 +6,6 @@ const avatars = [placeholderAvatar1, placeholderAvatar2];
 
 // this will need to be player name, avatar and player profile id to create a clickable link
 const PlayerInLobby = ({ player }) => {
-  console.log("PlayerInLobby", player);
-
   return (
     <div className="border border-gray-400 p-4 rounded-lg flex gap-4 items-center bg-indigo-300 shadow-md">
       <Avatar

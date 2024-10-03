@@ -9,13 +9,7 @@ import PlayerOverlay from "../Player/PlayerOverlay";
 import avatar from "../../../test/vavatar.jpg";
 import avatar2 from "../../../test/avatar2.jpg";
 
-// const players = [
-//   { id: 1, name: "Kariz", avatar: avatar },
-//   { id: 2, name: "Sheldon", avatar: avatar2 },
-// ];
-
 const Round = ({
-  //   players,
   round,
   handleRoundChange,
   roomMapType,
@@ -23,9 +17,7 @@ const Round = ({
   region,
   vsGameLocation,
   roomCode,
-  //   vsRoundEnded,
 }) => {
-  const dispatch = useDispatch();
   const vsRoundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
   const playerHealthPoints = useSelector((state) => state.hp);
 

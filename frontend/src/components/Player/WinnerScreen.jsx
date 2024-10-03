@@ -1,11 +1,16 @@
 import Avatar from "./Avatar";
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { socket } from "../../sockets/socket";
 
+// i want (YOU) here
 const WinnerScreen = ({ player, roomCode }) => {
   //   const navigate = useNavigate();
+  const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
+  const playerVariantChecker = useSelector((state) => state.player.player);
 
+  // this doesnt have to be event based. Both players can press the button themselves and reset their own state. Perhaps this will get rid of the bug?
   const handleGameFinish = () => {
     console.log("finish the game");
     socket.emit("end game", roomCode);
@@ -21,7 +26,8 @@ const WinnerScreen = ({ player, roomCode }) => {
         />
         <div className="py-6">
           <h1 className="text-4xl font-bold ">
-            {player && player.username ? player.username : "Guest"}
+            {player && player.username ? player.username : "Guest"}{" "}
+            {gameWinner === playerVariantChecker && " (You)"}
           </h1>
           <h3 className="text-6xl font-bold ">Victory!</h3>
         </div>
