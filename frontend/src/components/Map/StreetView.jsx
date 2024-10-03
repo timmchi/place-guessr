@@ -90,6 +90,22 @@ const StreetView = ({
     };
   }, []);
 
+  // vs game effect that listens for round start to reset the guess and answer
+  // it will reset these once both of the users decided to start round and should avoid the error
+  // maybe i could emit another event from the backend
+  useEffect(() => {
+    const onRoundStarted = () => {
+      setGuessLocation(null);
+      setAnswerLocation(null);
+    };
+
+    socket.on("start round", onRoundStarted);
+
+    return () => {
+      socket.off("start round", onRoundStarted);
+    };
+  }, []);
+
   //   if (!isLoaded) return null;
 
   //   console.log("panoPosition outside", panoPosition);
@@ -128,10 +144,25 @@ const StreetView = ({
     onRoundEnd();
   };
 
+  // Different handle start round function for vs mode and single mode?
+  // Do i need to set these to null in the vs game?
   const handleStartRound = () => {
     onRoundStart();
-    setGuessLocation(null);
-    setAnswerLocation(null);
+
+    // prolly wont work probably and the answer marker from the last round will still be on the screen.
+    // one way to do this would be to move guesss and answer for vs game to global state, and then set
+    // these to null on an event
+
+    // another way would be to pass some third condition/have it in global state, set it to null
+    // when the start round event happens (both pressed start round) and then somehow pass that value
+    // to guess loc and answer loc
+
+    // another way would be to register a socket event handler in this component, but that would mean
+    // that there is socket and use effect which single player mode does not need at all
+    if (gameType !== "VS") {
+      setGuessLocation(null);
+      setAnswerLocation(null);
+    }
   };
 
   return (
@@ -195,7 +226,6 @@ const StreetView = ({
           answerLocation={answerLocation}
           submitGuess={gameType === "VS" ? submitVsGuess : submitSingleGuess}
           isEnded={isEnded}
-          //   roomCode={roomCode}
         />
       </div>
     </div>

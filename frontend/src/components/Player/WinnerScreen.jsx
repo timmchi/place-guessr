@@ -6,10 +6,7 @@ import { socket } from "../../sockets/socket";
 import { gameEnded } from "../../reducers/vsGameReducer";
 
 // i want (YOU) here
-const WinnerScreen = ({
-  player,
-  //  roomCode
-}) => {
+const WinnerScreen = ({ player }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);

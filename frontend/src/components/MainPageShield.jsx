@@ -23,6 +23,7 @@ const MainPageShield = ({ handlePageUnshield }) => {
         <ReCAPTCHA
           sitekey={CAPTCHA_SITEKEY}
           onChange={(value) => setCaptchaValue(value)}
+          className="pt-2"
         />
         <Button
           onClick={pageUnshieldCheck}
