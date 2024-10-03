@@ -6,11 +6,6 @@ import EndRoundMap from "./EndRoundMap";
 import Player from "../Player/Player";
 import WinnerScreen from "../Player/WinnerScreen";
 
-const players = [
-  { id: 1, name: "Kariz" },
-  { id: 2, name: "Sheldon" },
-];
-
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
 const MapElement = ({
@@ -19,7 +14,7 @@ const MapElement = ({
   answerLocation,
   submitGuess,
   isEnded,
-  roomCode,
+  //   roomCode,
 }) => {
   const gameType = useSelector((state) => state.gameType);
   const { player1Guess, player2Guess } = useSelector(
@@ -98,7 +93,7 @@ const MapElement = ({
             ? playersInRoom.player1.player1Object
             : playersInRoom.player2.player2Object
         }
-        roomCode={roomCode}
+        // roomCode={roomCode}
       />
     );
   }

@@ -195,7 +195,7 @@ const StreetView = ({
           answerLocation={answerLocation}
           submitGuess={gameType === "VS" ? submitVsGuess : submitSingleGuess}
           isEnded={isEnded}
-          roomCode={roomCode}
+          //   roomCode={roomCode}
         />
       </div>
     </div>

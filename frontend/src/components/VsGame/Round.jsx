@@ -16,11 +16,11 @@ const Round = ({
   roomTitle,
   region,
   vsGameLocation,
-  roomCode,
+  //   roomCode,
 }) => {
   const vsRoundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
   const playerHealthPoints = useSelector((state) => state.hp);
-
+  const roomCode = useSelector((state) => state.roomCode);
   const playersInRoom = useSelector((state) => state.roomPlayers);
 
   // i suppose it would make sense to emit hps here and do the use effect to check for the winner

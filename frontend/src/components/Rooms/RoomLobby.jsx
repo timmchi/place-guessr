@@ -63,7 +63,6 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
               {playersInLobby.player2 && (
                 <PlayerInLobby player={playersInLobby.player2.player2Object} />
               )}
-              {/* <PlayerInLobby player={players[1]} /> */}
             </ul>
           </div>
           <div className="flex gap-4 justify-center py-8">
@@ -85,13 +84,13 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
     );
   }
 
+  // No point in passing roomCode here, because VsGame just does nothing with it and passes down to round
   return (
     <VsGame
       roomMapType={room.region === "random" ? "world" : "country"}
       roomTitle={room.title}
       region={room.region}
       vsGameLocation={vsGameLocation}
-      roomCode={roomCode}
     />
   );
 };
