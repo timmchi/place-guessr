@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { gameEnded } from "./vsGameReducer";
 
 let initialState = null;
 
@@ -15,6 +16,9 @@ const gameTypeSlice = createSlice({
     gameTypeReset() {
       return null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(gameEnded, () => null);
   },
 });
 

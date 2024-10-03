@@ -110,30 +110,12 @@ function App() {
       dispatch(gameStarted());
     };
 
-    const onEndGame = () => {
-      console.log("ending game");
-      // need to unite these into one to follow redux tk best practices
-      navigate("/");
-      dispatch(gameEnded());
-      dispatch(gameTypeReset());
-      dispatch(guessesReset());
-      dispatch(resetHP());
-      dispatch(roomPlayersReset());
-      setRoomCode("");
-    };
-
     const onLocationFetched = (location) => {
       console.log("fetching random location...");
       setVsGameLocation(location);
     };
 
-    // dont need this anymore methinks
-    // const onRoomChosen = (roomRegion) => {
-    //   console.log("room is chosen", roomRegion);
-    //   setJoiningUserRoomRegion(roomRegion);
-    //   dispatch(vsGameChosen());
-    // };
-
+    // add builders here
     const onRoundStart = (location) => {
       console.log("Round starting with location:", location);
       setVsGameLocation(location);
@@ -174,6 +156,7 @@ function App() {
       dispatch(playerGuessesReceived({ player1Guess, player2Guess }));
     };
 
+    // add builders here
     const onGodReset = () => {
       dispatch(gameEnded());
       dispatch(gameTypeReset());
@@ -190,9 +173,7 @@ function App() {
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
     socket.on("start game", onStartGame);
-    socket.on("end game", onEndGame);
     socket.on("fetched location", onLocationFetched);
-    // socket.on("room chosen", onRoomChosen);
     socket.on("room created", onCreateRoom);
     socket.on("start round", onRoundStart);
     socket.on("end round", onRoundEnd);
@@ -207,9 +188,7 @@ function App() {
       socket.off("submit answer", onAnswer);
       socket.off("room joined", onJoiningRoom);
       socket.off("start game", onStartGame);
-      socket.off("end game", onEndGame);
       socket.off("fetched location", onLocationFetched);
-      //   socket.off("room chosen", onRoomChosen);
       socket.off("room created", onCreateRoom);
       socket.off("start round", onRoundStart);
       socket.off("end round", onRoundEnd);

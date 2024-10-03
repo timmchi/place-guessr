@@ -1,4 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
+import { gameEnded } from "./vsGameReducer";
 
 // 1k for testing, 6k for the real thing
 const hpValue = 1000;
@@ -24,6 +25,12 @@ const hpSlice = createSlice({
       state.player1HP = hpValue;
       state.player2HP = hpValue;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(gameEnded, (state) => {
+      state.player1HP = hpValue;
+      state.player2HP = hpValue;
+    });
   },
 });
 
