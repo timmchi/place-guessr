@@ -179,9 +179,12 @@ const socketHandler = (server) => {
     });
 
     socket.on("end game", (roomId) => {
-      //   console.log("ending game in", roomId);
+      // this event is now only used for backend cleanup instead of contrlling frontend
+
+      if (!rooms.find((r) => r.id === roomId)) return;
+
       rooms = rooms.filter((room) => room.roomId === roomId);
-      io.to(roomId).emit("end game");
+      //   io.to(roomId).emit("end game");
     });
 
     socket.on("fetch location", async (apiType, region, roomId) => {

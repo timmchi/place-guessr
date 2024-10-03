@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { gameEnded } from "./vsGameReducer";
 
 let initialState = { player1: null, player2: null };
 
@@ -17,6 +18,12 @@ const roomPlayersSlice = createSlice({
       state.player1 = null;
       state.player2 = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(gameEnded, (state) => {
+      state.player1 = null;
+      state.player2 = null;
+    });
   },
 });
 

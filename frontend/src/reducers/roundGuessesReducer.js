@@ -1,4 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
+import { gameEnded } from "./vsGameReducer";
 
 let initialState = { player1Guess: null, player2Guess: null };
 
@@ -27,6 +28,12 @@ const roundGuessSlice = createSlice({
       state.player1Guess = player1Guess;
       state.player2Guess = player2Guess;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(gameEnded, (state) => {
+      state.player1Guess = null;
+      state.player2Guess = null;
+    });
   },
 });
 
