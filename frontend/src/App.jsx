@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { socket } from "./sockets/socket";
 import RoomsList from "./components/Rooms/RoomsList";
 import { APIProvider } from "@vis.gl/react-google-maps";
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useMatch,
-  redirect,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, useMatch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   roundScoresReceived,
