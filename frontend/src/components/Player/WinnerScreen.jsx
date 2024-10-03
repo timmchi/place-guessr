@@ -6,11 +6,15 @@ import { socket } from "../../sockets/socket";
 import { gameEnded } from "../../reducers/vsGameReducer";
 
 // i want (YOU) here
-const WinnerScreen = ({ player, roomCode }) => {
+const WinnerScreen = ({
+  player,
+  //  roomCode
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
   const playerVariantChecker = useSelector((state) => state.player.player);
+  const roomCode = useSelector((state) => state.roomCode);
 
   // maybe this could then have something like "user left" notification
   const handleGameFinish = () => {

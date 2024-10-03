@@ -7,7 +7,7 @@ const VsGame = ({
   roomTitle,
   vsGameLocation,
   //   vsRoundEnded,
-  roomCode,
+  //   roomCode,
 }) => {
   const [round, setRound] = useState(1);
 
@@ -22,7 +22,7 @@ const VsGame = ({
         roomMapType={roomMapType}
         roomTitle={roomTitle}
         vsGameLocation={vsGameLocation}
-        roomCode={roomCode}
+        // roomCode={roomCode}
       />
     </div>
   );

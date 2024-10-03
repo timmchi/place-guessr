@@ -4,22 +4,16 @@ import { socket } from "../../sockets/socket";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { roomWasCreated, roomWasJoined } from "../../reducers/playerReducer";
+import { codeSubmitted } from "../../reducers/roomCodeReducer";
 import RoomLobby from "./RoomLobby";
 import RoomsList from "./RoomsList";
 
-const RoomControls = ({
-  rooms,
-  roomCode,
-  setRoomCode,
-  joiningUserRoomRegion,
-  //   vsGameStarted,
-  vsGameLocation,
-  //   vsRoundEnded,
-}) => {
+const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomJoined, setRoomJoined] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const roomCode = useSelector((state) => state.roomCode);
 
   // changes between the user who creates the room and who joins the room.
   // If null (not logged in), will be guest
@@ -65,6 +59,7 @@ const RoomControls = ({
     );
   }
 
+  // passing roomCode below here is ok cuz RoomLobby uses it
   if (roomJoined) {
     return (
       <RoomLobby
@@ -75,6 +70,10 @@ const RoomControls = ({
       />
     );
   }
+
+  const handleRoomCodeChange = (e) => {
+    dispatch(codeSubmitted(e.target.value));
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-indigo-200">
@@ -97,7 +96,7 @@ const RoomControls = ({
                 color="amber"
                 placeholder="Room code"
                 value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value)}
+                onChange={handleRoomCodeChange}
                 className="!text-amber-200"
               />
               <Button

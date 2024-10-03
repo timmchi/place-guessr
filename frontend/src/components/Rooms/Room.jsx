@@ -5,14 +5,20 @@ import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Room = ({ room, vsGameLocation, roomCode }) => {
+const Room = ({
+  room,
+  vsGameLocation,
+  //   roomCode
+}) => {
   const navigate = useNavigate();
   const gameType = useSelector((state) => state.gameType);
+  const roomCode = useSelector((state) => state.roomCode);
 
   if (!gameType) return <div>No game type chosen</div>;
 
   if (!room) return <div>This room does not exist</div>;
 
+  // these 3 functions need to be changed, especially the backtohomepage and handlendgame - as end game event no longer controls the game state
   const goBackToRoomList = () => {
     console.log("navigating back to room list...");
     navigate("/rooms");

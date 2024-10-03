@@ -9,6 +9,7 @@ import vsGameReducer from "./vsGameReducer";
 import gameTypeReducer from "./gameTypeReducer";
 import roundDistanceReducer from "./roundDistanceReducer";
 import roomPlayersReducer from "./roomPlayersReducer";
+import roomCodeReducer from "./roomCodeReducer";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     gameType: gameTypeReducer,
     roundDistance: roundDistanceReducer,
     roomPlayers: roomPlayersReducer,
+    roomCode: roomCodeReducer,
   },
 });
 

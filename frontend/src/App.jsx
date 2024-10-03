@@ -39,10 +39,9 @@ import {
 import {
   firstPlayerJoined,
   secondPlayerJoined,
-  roomPlayersReset,
 } from "./reducers/roomPlayersReducer";
 import { initializeUser } from "./reducers/userReducer";
-import { resetHP } from "./reducers/hpReducer";
+import { codeSubmitted } from "./reducers/roomCodeReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
 import LogIn from "./components/Authentication/LogIn";
@@ -64,7 +63,6 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
   const [vsGameLocation, setVsGameLocation] = useState(null);
-  const [roomCode, setRoomCode] = useState("");
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
   const [pageShielded, setPageShielded] = useState(true);
   const [user, setUser] = useState(null);
@@ -79,7 +77,9 @@ function App() {
 
     const onCreateRoom = (roomId) => {
       console.log(roomId, "was created");
-      setRoomCode(roomId);
+
+      // ROOM CODE HERE
+      dispatch(codeSubmitted(roomId));
     };
 
     const onJoiningRoom = (player, roomId, roomRegion) => {
@@ -216,13 +216,11 @@ function App() {
     : null;
 
   const playVsGame = () => {
-    // setGameType("VS");
     dispatch(vsGameChosen());
     navigate("/lobby");
   };
 
   const playSingleGame = () => {
-    // setGameType("SINGLE");
     dispatch(singleGameChosen());
     navigate("/rooms");
   };
@@ -286,13 +284,7 @@ function App() {
           <Route path="/rooms" element={<RoomsList rooms={rooms} />} />
           <Route
             path="/rooms/:region"
-            element={
-              <Room
-                room={room}
-                vsGameLocation={vsGameLocation}
-                roomCode={roomCode}
-              />
-            }
+            element={<Room room={room} vsGameLocation={vsGameLocation} />}
           />
           <Route path="/login" element={<LogIn handleLogin={handleLogin} />} />
           <Route path="/register" element={<Registration />} />
@@ -304,8 +296,6 @@ function App() {
             element={
               <RoomControls
                 rooms={rooms}
-                roomCode={roomCode}
-                setRoomCode={setRoomCode}
                 joiningUserRoomRegion={joiningUserRoomRegion}
                 vsGameLocation={vsGameLocation}
               />
