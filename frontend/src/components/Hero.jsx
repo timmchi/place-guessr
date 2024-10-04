@@ -7,7 +7,8 @@ const Hero = ({ playSingleGame, playVsGame }) => {
     <div
       className="bg-cover bg-center min-h-screen flex flex-col"
       style={{
-        backgroundImage: `url(${panorama})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(${panorama})`,
+        backgroundBlendMode: "multiply",
       }}
     >
       <div className="flex flex-grow flex-col items-center justify-center text-gray-200 p-6 rounded-3xl">
