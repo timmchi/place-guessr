@@ -5,6 +5,7 @@ import { calculateScore } from "../../utils/scoreUtils";
 import StreetView from "../Map/StreetView";
 import RoomNameWithScore from "../RoomNameWithScore";
 import useRandomLocation from "../../hooks/useRandomLocation";
+import { useNavigate } from "react-router-dom";
 
 const SingleRound = ({
   player,
@@ -17,13 +18,27 @@ const SingleRound = ({
   const [totalScore, setTotalScore] = useState(0);
   const [roundScore, setRoundScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
+  const navigate = useNavigate();
 
-  const { isLoading, data, refetch } = useRandomLocation(
+  const { isLoading, data, error, isError, refetch } = useRandomLocation(
     roomMapType === "world" ? "geolist" : "geonames",
     region && region
   );
 
   if (isLoading) return <div>Loading...</div>;
+
+  // the geonames API which is responsible for fetching locations for country rooms
+  // tends to not work properly during the EEST day time hours. In the case there is an error,
+  // I want the user to go and play the whole world map
+  if (isError)
+    return (
+      <div>
+        <h2>Error fetching location</h2>
+        <p>Geonames went bust!</p>
+        <p>Error: {error.message}</p>
+        <Button onClick={() => navigate("/")}>Back to the main page</Button>
+      </div>
+    );
 
   const fetchLocation = () => {
     refetch();
