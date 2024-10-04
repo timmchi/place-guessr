@@ -8,10 +8,13 @@ const userSlice = createSlice({
     userSet(state, action) {
       return action.payload;
     },
+    userLoggedOut() {
+      return null;
+    },
   },
 });
 
-export const { userSet } = userSlice.actions;
+export const { userSet, userLoggedOut } = userSlice.actions;
 
 export const initializeUser = (user) => {
   return async (dispatch) => {
