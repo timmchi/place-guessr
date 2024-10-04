@@ -34,7 +34,7 @@ import {
   firstPlayerJoined,
   secondPlayerJoined,
 } from "./reducers/roomPlayersReducer";
-import { initializeUser } from "./reducers/userReducer";
+import { initializeUser, userLoggedOut } from "./reducers/userReducer";
 import { codeSubmitted } from "./reducers/roomCodeReducer";
 import Hero from "./components/Hero";
 import Room from "./components/Rooms/Room";
@@ -50,7 +50,6 @@ import { rooms } from "./data/rooms";
 import { useMutation } from "@tanstack/react-query";
 import loginService from "./services/login";
 import { saveUser, getUser, removeUser } from "./utils/localStorageUtils";
-import usersService from "./services/users";
 import { useSelector } from "react-redux";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -59,7 +58,6 @@ function App() {
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
   const [pageShielded, setPageShielded] = useState(true);
-  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -131,16 +129,6 @@ function App() {
       player2Score,
       player2Distance
     ) => {
-      //   console.log(
-      //     "settings scores for obth players",
-      //     player1Score,
-      //     player2Score
-      //   );
-      //   console.log(
-      //     "distances for both players",
-      //     player1Distance,
-      //     player2Distance
-      //   );
       dispatch(roundScoresReceived({ player1Score, player2Score }));
       dispatch(roundDistanceReceived({ player1Distance, player2Distance }));
       removeHpFromPlayer(player1Score, player2Score);
@@ -198,8 +186,7 @@ function App() {
     const loggedUser = getUser();
     console.log("logged user in app effect", loggedUser);
     if (loggedUser && loggedUser != null) {
-      setUser(loggedUser);
-      usersService.setToken(user?.token);
+      dispatch(initializeUser(JSON.parse(loggedUser)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -240,11 +227,8 @@ function App() {
     mutationFn: loginService.login,
     onSuccess: (data) => {
       console.log("login mutation", data);
-      setUser(data);
       saveUser(JSON.stringify(data));
-      // i think i dispatch initializeUser here
       dispatch(initializeUser(data));
-      //   usersService.setToken(data.token);
       navigate("/");
     },
   });
@@ -253,9 +237,10 @@ function App() {
     loginMutation.mutate(credentials);
   };
 
+  // this will also need to be changed to use redux, which means a logout will need to be added to user slice
   const handleLogout = () => {
     removeUser();
-    setUser(null);
+    dispatch(userLoggedOut());
   };
 
   return (
@@ -265,7 +250,7 @@ function App() {
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
       )} */}
 
-      <NavBar user={user} handleLogout={handleLogout} />
+      <NavBar handleLogout={handleLogout} />
 
       <APIProvider apiKey={API_KEY}>
         <Routes>
