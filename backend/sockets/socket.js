@@ -292,6 +292,8 @@ const socketHandler = (server) => {
       }
     });
 
+    // check whether a winner has been declared, if so, ignore
+    // will this cause problems for the second user?
     socket.on("winner check", async (roomId, player1HP, player2HP) => {
       const room = rooms.find((room) => room.roomId === roomId);
 
@@ -299,9 +301,19 @@ const socketHandler = (server) => {
 
       console.log("checking winner, p1 hp, p2 hp", player1HP, player2HP);
 
-      if (player1HP === 0) io.to(roomId).emit("game won", "p2");
+      if (player1HP === 0) {
+        if (!room.hasWinner) {
+          io.to(roomId).emit("game won", "p2");
+          room.hasWinner = true;
+        }
+      }
 
-      if (player2HP === 0) io.to(roomId).emit("game won", "p1");
+      if (player2HP === 0) {
+        if (!room.hasWinner) {
+          io.to(roomId).emit("game won", "p1");
+          room.hasWinner = true;
+        }
+      }
     });
 
     socket.on("god reset", async (roomId) => {
