@@ -9,6 +9,13 @@ const getRandomLocation = async (apiType, region) => {
       const response = await axios.get(`${geonamesApiUrl}/${region}`);
 
       const { nearest } = response.data;
+
+      // Sometimes geonames is not available and send back the xml which explains it is not available,
+      // so we start dealing with the error here
+      if (!nearest || !nearest.latt || !nearest.longt) {
+        throw new Error("Invalid response format from geonames API");
+      }
+
       const { latt, longt } = nearest;
 
       const place = { lat: Number(latt), lng: Number(longt) };
@@ -27,6 +34,7 @@ const getRandomLocation = async (apiType, region) => {
     throw new Error("Incorrect api apiType");
   } catch (error) {
     console.log("Error during location fetching", apiType, error);
+    throw error;
   }
 };
 
