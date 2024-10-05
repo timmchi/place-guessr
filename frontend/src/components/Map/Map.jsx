@@ -93,7 +93,6 @@ const MapElement = ({
             ? playersInRoom.player1.player1Object
             : playersInRoom.player2.player2Object
         }
-        // roomCode={roomCode}
       />
     );
   }
@@ -101,7 +100,7 @@ const MapElement = ({
   return (
     <div
       style={{ transition: "all 0.5s" }}
-      className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:h-[27rem] hover:w-[36rem] active:h-[27rem] active:w-[36rem] hover:opacity-100 active:opacity-100"
+      className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:h-[27rem] hover:w-[36rem] active:h-[27rem] active:w-[36rem] hover:opacity-100 active:opacity-100 border-8 border-solid border-white rounded-lg shadow-xl"
     >
       <Map
         defaultZoom={2}
@@ -146,7 +145,7 @@ const MapElement = ({
       </Map>
       <Button
         color="green"
-        className="rounded-full mt-2 w-full"
+        className="rounded-full mt-4 w-full"
         onClick={submitGuess}
         disabled={guessLocation ? false : true}
       >
