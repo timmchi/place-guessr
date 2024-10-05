@@ -9,6 +9,7 @@ const useRandomLocation = (apiType, region) => {
     queryFn: async () => await mapsService.getRandomLocation(apiType, region),
     // enabled: false,
     staleTime: Infinity,
+    retry: false,
   });
 
   return { isLoading, data, refetch, error, isError };
