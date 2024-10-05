@@ -10,6 +10,7 @@ import { haversine_distance } from "../../utils/scoreUtils";
 import MapElement from "./Map";
 import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
+import PanoramaErrorScreen from "../PanoramaErrorScreen";
 
 // const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAX_RADIUS = 17000;
@@ -28,6 +29,7 @@ const StreetView = ({
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
+  const [panoramaError, setPanoramaError] = useState(false);
   const player = useSelector((state) => state.player);
   const gameType = useSelector((state) => state.gameType);
   const roundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
@@ -75,6 +77,13 @@ const StreetView = ({
             getStreetView(radius + 1000);
           } else {
             console.log("No street view found within maximum radius");
+            setPanoramaError(true);
+            // so, we probably want to render a component which will notify the user of there being a mistake, and give them an option to fetch a new random location
+            // for single mode, the button to fetch a location will use a refetch, and for vs mode,
+            // both players will need to press the button to send out an event
+            // so, set a condition, render error screen based on the location and game type
+
+            // it could be argued that this error could be hidden from the user and new location should fetch automatically if such an error occurs
           }
         }
       });
@@ -156,6 +165,17 @@ const StreetView = ({
       setAnswerLocation(null);
     }
   };
+
+  // i neeed to somehow get both refetch and some new events here
+  const handleNewLocationFetch = () => {
+    console.log("new location should be fetched here based on game type");
+    setPanoramaError(false);
+  };
+
+  if (panoramaError)
+    return (
+      <PanoramaErrorScreen handleNewLocationFetch={handleNewLocationFetch} />
+    );
 
   return (
     <div className="">
