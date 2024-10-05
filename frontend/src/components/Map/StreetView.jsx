@@ -149,16 +149,6 @@ const StreetView = ({
   const handleStartRound = () => {
     onRoundStart();
 
-    // prolly wont work probably and the answer marker from the last round will still be on the screen.
-    // one way to do this would be to move guesss and answer for vs game to global state, and then set
-    // these to null on an event
-
-    // another way would be to pass some third condition/have it in global state, set it to null
-    // when the start round event happens (both pressed start round) and then somehow pass that value
-    // to guess loc and answer loc
-
-    // another way would be to register a socket event handler in this component, but that would mean
-    // that there is socket and use effect which single player mode does not need at all
     if (gameType !== "VS") {
       setGuessLocation(null);
       setAnswerLocation(null);
