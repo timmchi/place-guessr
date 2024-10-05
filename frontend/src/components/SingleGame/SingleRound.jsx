@@ -6,6 +6,7 @@ import StreetView from "../Map/StreetView";
 import RoomNameWithScore from "../RoomNameWithScore";
 import useRandomLocation from "../../hooks/useRandomLocation";
 import { useNavigate } from "react-router-dom";
+import GeonamesErrorScreen from "../GeonamesErrorScreen";
 
 const SingleRound = ({
   player,
@@ -30,15 +31,7 @@ const SingleRound = ({
   // the geonames API which is responsible for fetching locations for country rooms
   // tends to not work properly during the EEST day time hours. In the case there is an error,
   // I want the user to go and play the whole world map
-  if (isError)
-    return (
-      <div>
-        <h2>Error fetching location</h2>
-        <p>Geonames went bust!</p>
-        <p>Error: {error.message}</p>
-        <Button onClick={() => navigate("/")}>Back to the main page</Button>
-      </div>
-    );
+  if (isError) return <GeonamesErrorScreen error={error} refetch={refetch} />;
 
   const fetchLocation = () => {
     refetch();
@@ -68,26 +61,7 @@ const SingleRound = ({
 
   return (
     <div>
-      {/* {!isEnded && ( */}
       <>
-        {/* uncomment this if u want to check the coordinates fetched by useRandomLocation */}
-        {/* <div className="absolute z-20">
-          <h1 className="text-4xl font-bold">Round {round}</h1>
-          <p>
-            lat: {data?.lat}, lng: {data?.lng}
-          </p>
-          <div className="flex gap-2">
-            <Button
-              onClick={fetchLocation}
-              className="bg-green-800 hover:bg-green-900"
-            >
-              Fetch location
-            </Button>
-            <Button onClick={resetGame} className="bg-red-800 hover:bg-red-900">
-              Reset game
-            </Button>
-          </div>
-        </div> */}
         {data && (
           <>
             <StreetView
@@ -115,24 +89,10 @@ const SingleRound = ({
                 score={roundScore}
                 round={round - 1}
               />
-              {/* <Button
-                onClick={startRound}
-                className="bg-green-700 rounded-full text-lg"
-              >
-                Start next round
-              </Button> */}
             </div>
           </div>
         )}
       </>
-      {/* )} */}
-      {/* {isEnded && (
-        <>
-          <h1 className="text-4xl font-bold">Round {round - 1} results</h1>
-          <Player player={player} gameType="single" score={score} />
-          <Button onClick={startRound}>Next round</Button>
-        </>
-      )} */}
     </div>
   );
 };
