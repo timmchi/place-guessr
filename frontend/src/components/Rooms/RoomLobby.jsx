@@ -69,9 +69,12 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
           <div className="flex gap-4 justify-center py-8">
             <Button
               onClick={handleGameStart}
-              className="bg-green-700 hover:bg-green-800"
+              disabled={!(playersInLobby.player1 && playersInLobby.player2)}
+              className="bg-green-700 hover:bg-green-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
-              Start the game
+              {playersInLobby.player1 && playersInLobby.player2
+                ? "Start the game"
+                : "Waiting for the 2nd player"}
             </Button>
             <Button
               onClick={handleGoingBack}

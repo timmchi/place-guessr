@@ -183,7 +183,9 @@ const socketHandler = (server) => {
 
     socket.on("start game", (roomId) => {
       //   console.log("starting game in", roomId);
-      io.to(roomId).emit("start game");
+      const room = rooms.find((r) => r.roomId === roomId);
+
+      if (room.player1 && room.player2) io.to(roomId).emit("start game");
     });
 
     socket.on("end game", (roomId) => {
