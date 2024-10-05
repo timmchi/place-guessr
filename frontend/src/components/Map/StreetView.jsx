@@ -21,6 +21,8 @@ const StreetView = ({
   onRoundStart,
   isEnded,
   roomCode,
+  score,
+  round,
 }) => {
   const streetViewService = useStreetView();
   const [panoPosition, setPanoPosition] = useState(null);
@@ -160,7 +162,7 @@ const StreetView = ({
       <div className="relative">
         {/* here are the controls for the single game, in the case of the single game here is also where the score is rendered */}
         {distance && gameType !== "VS" && (
-          <div className="absolute z-20 text-white-200 bottom-0 left-[42rem] pb-8 font-bold flex items-center gap-4 text-white">
+          <div className="absolute z-20 text-white-200 bottom-0 left-1/2 transform -translate-x-1/2 pb-8 font-bold flex items-center gap-4 text-white">
             <div>
               <p className="text-4xl">{distance} km</p>
               <p className="text-sm">from location</p>
@@ -172,10 +174,14 @@ const StreetView = ({
             >
               Start Next Round
             </Button>
+            <div className="text-xl font-bold">
+              <p className="text-yellow-700 text-4xl">{Math.trunc(score)}</p>
+              <p className="text-sm">out of 5000 points</p>
+            </div>
           </div>
         )}
         {roundEnded && !gameWinner && (
-          <div className="absolute z-20 text-white-200 bottom-0 xl:left-[54rem] pb-16 font-bold flex items-center text-white">
+          <div className="absolute z-20 text-white-200 bottom-0 left-1/2 transform -translate-x-1/2 pb-16 font-bold flex items-center text-white">
             <Button
               className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
               onClick={handleStartRound}

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Player from "../Player/Player";
-import { Button } from "@material-tailwind/react";
 import { calculateScore } from "../../utils/scoreUtils";
 import StreetView from "../Map/StreetView";
 import RoomNameWithScore from "../RoomNameWithScore";
@@ -9,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import GeonamesErrorScreen from "../GeonamesErrorScreen";
 
 const SingleRound = ({
-  player,
   round,
   handleRoundChange,
   roomMapType,
@@ -70,6 +67,8 @@ const SingleRound = ({
               onRoundEnd={endRound}
               onRoundStart={startRound}
               isEnded={isEnded}
+              score={roundScore}
+              round={round - 1}
             />
             {!isEnded && (
               <RoomNameWithScore
@@ -79,18 +78,6 @@ const SingleRound = ({
               />
             )}
           </>
-        )}
-        {isEnded && (
-          <div className="absolute z-20 bottom-0 left-[66rem]">
-            <div className="flex pb-8 items-center">
-              <Player
-                player={player}
-                gameType="single"
-                score={roundScore}
-                round={round - 1}
-              />
-            </div>
-          </div>
         )}
       </>
     </div>
