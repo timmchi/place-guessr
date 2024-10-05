@@ -12,6 +12,7 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
   const playersInLobby = useSelector((state) => state.roomPlayers);
   console.log("players in lobby from redux state", playersInLobby);
 
+  // This is where we ask for the first location to be fetched when the game starts
   const handleGameStart = () => {
     socket.emit("start game", roomCode);
     socket.emit(

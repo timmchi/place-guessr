@@ -18,7 +18,7 @@ const getLocation = async (apiType, region) => {
 
       return randomPlace;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -27,12 +27,20 @@ const getLocation = async (apiType, region) => {
       const { data } = await axios.get(`${apiURL}=${region}&json=1`);
 
       const { nearest } = data;
-      const { latt, longt } = nearest;
-      const randomPlace = { lat: Number(latt), lng: Number(longt) };
+      // Sometimes geonames is not available and send back the xml which explains it is not available,
+      // so we start dealing with the error here
+      if (!nearest || !nearest.latt || !nearest.longt) {
+        throw new Error("Invalid response format from geonames API");
+      }
 
-      return randomPlace;
+      const { latt, longt } = nearest;
+
+      const place = { lat: Number(latt), lng: Number(longt) };
+
+      return place;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      throw error;
     }
   }
 };
@@ -189,9 +197,13 @@ const socketHandler = (server) => {
 
     socket.on("fetch location", async (apiType, region, roomId) => {
       //   console.log("fetching location for", apiType, region, roomId);
-      const randomPlace = await getLocation(apiType, region);
+      try {
+        const randomPlace = await getLocation(apiType, region);
 
-      io.to(roomId).emit("fetched location", randomPlace);
+        io.to(roomId).emit("fetched location", randomPlace);
+      } catch (error) {
+        io.to(roomId).emit("geonames error", { message: error.message });
+      }
     });
 
     socket.on("room chosen", (roomId, roomRegion) => {
@@ -234,44 +246,32 @@ const socketHandler = (server) => {
       if (room.player2 === senderId) room.player2ReadyToStart = true;
 
       if (room.player1ReadyToStart && room.player2ReadyToStart) {
-        const randomLocation = await getLocation(apiType, room.region);
+        try {
+          // this is where location is fetched everywhere except the start of the vs game
+          // fetch location event is responsible for the location fetch that happens on the vs game start
+          const randomLocation = await getLocation(apiType, room.region);
 
-        // socket.broadcast.to(roomId).emit("start round", room.region, roomId);
-        io.to(roomId).emit("start round", randomLocation, room.region, roomId);
-        room.player1ReadyToStart = false;
-        room.player2ReadyToStart = false;
-        room.player1RoundScore = 0;
-        room.player2RoundScore = 0;
-        room.player1Guess = null;
-        room.player2Guess = null;
-        room.player1Distance = null;
-        room.player2Distance = null;
-        // roundAnswer = null;
+          // socket.broadcast.to(roomId).emit("start round", room.region, roomId);
+          io.to(roomId).emit(
+            "start round",
+            randomLocation,
+            room.region,
+            roomId
+          );
+          room.player1ReadyToStart = false;
+          room.player2ReadyToStart = false;
+          room.player1RoundScore = 0;
+          room.player2RoundScore = 0;
+          room.player1Guess = null;
+          room.player2Guess = null;
+          room.player1Distance = null;
+          room.player2Distance = null;
+          // roundAnswer = null;
+        } catch (error) {
+          io.to(roomId).emit("geonames error", { message: error.message });
+        }
       }
     });
-
-    // socket.on("score calculated", async (senderId, roomId, score) => {
-    //   const room = rooms.find((room) => room.roomId === roomId);
-
-    //   if (room.player1 === senderId) {
-    //     console.log("score of the first player is", score);
-    //     room.player1RoundScore = score;
-    //   }
-
-    //   if (room.player2 === senderId) {
-    //     console.log("score of the second player is", score);
-    //     room.player2RoundScore = score;
-    //   }
-
-    //   if (room.player1RoundScore && room.player2RoundScore) {
-    //     console.log("both scores calculated, emitting scores set...");
-    //     io.to(roomId).emit(
-    //       "scores set",
-    //       room.player1RoundScore,
-    //       room.player2RoundScore
-    //     );
-    //   }
-    // });
 
     socket.on("guess sent", async (senderId, roomId, guess) => {
       const room = rooms.find((room) => room.roomId === roomId);

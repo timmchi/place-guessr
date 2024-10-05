@@ -51,6 +51,7 @@ import { useMutation } from "@tanstack/react-query";
 import loginService from "./services/login";
 import { saveUser, getUser, removeUser } from "./utils/localStorageUtils";
 import { useSelector } from "react-redux";
+import GeonamesErrorScreen from "./components/GeonamesErrorScreen";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -58,6 +59,7 @@ function App() {
   const [vsGameLocation, setVsGameLocation] = useState(null);
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
   const [pageShielded, setPageShielded] = useState(true);
+  const [geonamesError, setGeonamesError] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -102,14 +104,17 @@ function App() {
       dispatch(gameStarted());
     };
 
+    // Here is where we set the location for the vs game. We receive it from the event on the backend
     const onLocationFetched = (location) => {
       console.log("fetching random location...");
+      // so, when the geonames returns the incorrectly formatted data, it will first arrive from backend here and then the incorrect data will go from here to the streetview
       setVsGameLocation(location);
     };
 
     // add builders here
     const onRoundStart = (location) => {
       console.log("Round starting with location:", location);
+      // so, when the geonames returns the incorrectly formatted data, it will first arrive from backend here and then the incorrect data will go from here to the streetview
       setVsGameLocation(location);
       dispatch(roundStarted());
 
@@ -151,6 +156,12 @@ function App() {
       setTimeout(() => dispatch(gameWon(winner)), 3000);
     };
 
+    // we could for example set some state based on this event, and based on that state, we render an error component
+    const onGeonamesError = (error) => {
+      console.log("geonames error procced", error);
+      setGeonamesError(error);
+    };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -164,6 +175,7 @@ function App() {
     socket.on("god reset", onGodReset);
     socket.on("game won", onGameWon);
     socket.on("player joined", onPlayerJoined);
+    socket.on("geonames error", onGeonamesError);
 
     return () => {
       socket.off("users", onUsers);
@@ -179,6 +191,7 @@ function App() {
       socket.off("god reset", onGodReset);
       socket.off("game won", onGameWon);
       socket.off("player joined", onPlayerJoined);
+      socket.off("geonames error", onGeonamesError);
     };
   }, []);
 
@@ -241,7 +254,16 @@ function App() {
   const handleLogout = () => {
     removeUser();
     dispatch(userLoggedOut());
+    navigate("/");
   };
+
+  if (geonamesError)
+    return (
+      <GeonamesErrorScreen
+        error={geonamesError}
+        setGeonamesError={setGeonamesError}
+      />
+    );
 
   return (
     <div>
@@ -250,9 +272,8 @@ function App() {
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
       )} */}
 
-      <NavBar handleLogout={handleLogout} />
-
       <APIProvider apiKey={API_KEY}>
+        <NavBar handleLogout={handleLogout} />
         <Routes>
           <Route
             path="/"
