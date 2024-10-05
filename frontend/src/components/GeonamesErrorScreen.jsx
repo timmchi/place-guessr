@@ -1,11 +1,12 @@
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-const GeonamesErrorScreen = ({ error, refetch, setGeonamesError }) => {
+const GeonamesErrorScreen = ({ error, refetch, handleGeonamesError }) => {
   const navigate = useNavigate();
 
   const goToMainPage = () => {
-    if (setGeonamesError) setGeonamesError(null);
+    // this part is only for vsGame, we need extra steps to reset its complex state
+    if (handleGeonamesError) handleGeonamesError(null);
     navigate("/");
   };
   return (

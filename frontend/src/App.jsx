@@ -257,11 +257,17 @@ function App() {
     navigate("/");
   };
 
+  const handleGeonamesError = () => {
+    setGeonamesError(null);
+    dispatch(gameEnded());
+  };
+
+  // game state needs to be reset also, prolly should be done in the setgeonameserror that we are passing
   if (geonamesError)
     return (
       <GeonamesErrorScreen
         error={geonamesError}
-        setGeonamesError={setGeonamesError}
+        handleGeonamesError={handleGeonamesError}
       />
     );
 
