@@ -10,6 +10,7 @@ import gameTypeReducer from "./gameTypeReducer";
 import roundDistanceReducer from "./roundDistanceReducer";
 import roomPlayersReducer from "./roomPlayersReducer";
 import roomCodeReducer from "./roomCodeReducer";
+import panoramaErrorReducer from "./panoramaErrorReducer";
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     roundDistance: roundDistanceReducer,
     roomPlayers: roomPlayersReducer,
     roomCode: roomCodeReducer,
+    panoramaError: panoramaErrorReducer,
   },
 });
 

@@ -5,16 +5,20 @@ import {
   StreetViewPanorama,
   //   useJsApiLoader,
 } from "@react-google-maps/api";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { haversine_distance } from "../../utils/scoreUtils";
 import MapElement from "./Map";
 import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import PanoramaErrorScreen from "../PanoramaErrorScreen";
+import {
+  errorHappened,
+  newLocationFetched,
+} from "../../reducers/panoramaErrorReducer";
 
-// const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const MAX_RADIUS = 17000;
 
+// I think this component should be renamed to something different, e.g. street view controller, and the actual maps with streetview should be separated into a child
 const StreetView = ({
   location,
   calculateScore,
@@ -23,17 +27,19 @@ const StreetView = ({
   isEnded,
   roomCode,
   score,
-  round,
+  refetch,
+  roomRegion,
 }) => {
   const streetViewService = useStreetView();
+  const dispatch = useDispatch();
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
-  const [panoramaError, setPanoramaError] = useState(false);
   const player = useSelector((state) => state.player);
   const gameType = useSelector((state) => state.gameType);
   const roundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
+  const panoramaError = useSelector((state) => state.panoramaError);
 
   let distance;
 
@@ -42,8 +48,6 @@ const StreetView = ({
 
   const mapRef = useRef(null);
   const streetViewRef = useRef(null);
-
-  //   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
   const containerStyle = {
     height: "100vh",
@@ -77,20 +81,22 @@ const StreetView = ({
             getStreetView(radius + 1000);
           } else {
             console.log("No street view found within maximum radius");
-            setPanoramaError(true);
+            // setPanoramaError(true);
+            dispatch(errorHappened());
+
             // so, we probably want to render a component which will notify the user of there being a mistake, and give them an option to fetch a new random location
             // for single mode, the button to fetch a location will use a refetch, and for vs mode,
             // both players will need to press the button to send out an event
             // so, set a condition, render error screen based on the location and game type
 
-            // it could be argued that this error could be hidden from the user and new location should fetch automatically if such an error occurs
+            // it could be argued that this error could be hidden from the user and new location should fetch automatically if such an error occurs. Not sure which approach is best
           }
         }
       });
     };
 
     getStreetView(5000);
-  }, [location, streetViewService, roomCode]);
+  }, [location, streetViewService, roomCode, dispatch]);
 
   // unmount cleanup
   useEffect(() => {
@@ -167,9 +173,27 @@ const StreetView = ({
   };
 
   // i neeed to somehow get both refetch and some new events here
+  // SO, we need a refetch here, and also event emit (just one player doing it is fine)
+  // whatever is called will depend on the game type
   const handleNewLocationFetch = () => {
     console.log("new location should be fetched here based on game type");
-    setPanoramaError(false);
+    // setPanoramaError(false);
+
+    if (gameType === "SINGLE") {
+      // single game location is fetched using react query, the refetch comes from there
+      dispatch(newLocationFetched());
+      refetch();
+      // for some reason, 2 locations are refetched...
+    }
+
+    if (gameType === "VS") {
+      socket.emit(
+        "fetch location",
+        roomRegion === "random" ? "geolist" : "geonames",
+        roomRegion,
+        roomCode
+      );
+    }
   };
 
   if (panoramaError)

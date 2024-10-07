@@ -34,6 +34,7 @@ import {
   firstPlayerJoined,
   secondPlayerJoined,
 } from "./reducers/roomPlayersReducer";
+import { newLocationFetched } from "./reducers/panoramaErrorReducer";
 import { initializeUser, userLoggedOut } from "./reducers/userReducer";
 import { codeSubmitted } from "./reducers/roomCodeReducer";
 import Hero from "./components/Hero";
@@ -109,6 +110,11 @@ function App() {
       console.log("fetching random location...");
       // so, when the geonames returns the incorrectly formatted data, it will first arrive from backend here and then the incorrect data will go from here to the streetview
       setVsGameLocation(location);
+
+      // this controls the panoramaError which happens in StreetView if the panorama is not found
+      // for the location
+      // the issue is that this makes it difficult to test
+      dispatch(newLocationFetched());
     };
 
     // add builders here
@@ -274,9 +280,9 @@ function App() {
   return (
     <div>
       {/* keep in prod but no need in dev */}
-      {pageShielded && (
+      {/* {pageShielded && (
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
-      )}
+      )} */}
 
       <APIProvider apiKey={API_KEY}>
         <NavBar handleLogout={handleLogout} />
