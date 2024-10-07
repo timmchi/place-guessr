@@ -22,6 +22,7 @@ const Round = ({
   const playerHealthPoints = useSelector((state) => state.hp);
   const roomCode = useSelector((state) => state.roomCode);
   const playersInRoom = useSelector((state) => state.roomPlayers);
+  const playerId = useSelector((state) => state.playerId);
 
   // i suppose it would make sense to emit hps here and do the use effect to check for the winner
   // I'm not sure about the way to do this without the effect
@@ -39,11 +40,13 @@ const Round = ({
   const endRound = () => {
     handleRoundChange(round + 1);
 
-    socket.emit("end round", socket.id, roomCode);
+    // socket.emit("end round", socket.id, roomCode);
+    socket.emit("end round", playerId, roomCode);
   };
 
   const startRound = () => {
-    socket.emit("start round", socket.id, roomCode);
+    // socket.emit("start round", socket.id, roomCode);
+    socket.emit("start round", playerId, roomCode);
   };
 
   return (

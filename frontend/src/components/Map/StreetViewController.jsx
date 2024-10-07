@@ -34,6 +34,7 @@ const StreetViewController = ({
   const roundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
   const panoramaError = useSelector((state) => state.panoramaError);
+  const playerId = useSelector((state) => state.playerId);
 
   let distance;
 
@@ -130,12 +131,51 @@ const StreetViewController = ({
 
     const updatedAnswerLocation = panoPosition;
 
-    socket.emit("guess sent", socket.id, roomCode, guessLocation);
-    socket.emit("submit answer", socket.id, roomCode, guessLocation);
+    // this is for syncing the locations of guesses by players
+    // socket.emit("guess sent", socket.id, roomCode, guessLocation, (ack) => {
+    //   if (ack) {
+    //     console.log("Guess successfully sent and acknowledge by server");
+    //   } else {
+    //     console.log("Failed to send guess to server, retrying...");
+    //     submitVsGuess();
+    //   }
+    // });
+    socket.emit("guess sent", playerId, roomCode, guessLocation, (ack) => {
+      if (ack) {
+        console.log("Guess successfully sent and acknowledge by server");
+      } else {
+        console.log("Failed to send guess to server, retrying...");
+        submitVsGuess();
+      }
+    });
 
-    setAnswerLocation(updatedAnswerLocation);
+    // this is for syncing scores of players and distances between answer and their guess
+    // socket.emit("submit answer", socket.id, roomCode, guessLocation, (ack) => {
+    //   if (ack) {
+    //     ("Answer successfully submitted and acknowledged by server");
+    //     setAnswerLocation(updatedAnswerLocation);
 
-    onRoundEnd();
+    //     onRoundEnd();
+    //   } else {
+    //     console.log("Failed to submit answer to server, retrying...");
+    //     submitVsGuess();
+    //   }
+    // });
+    socket.emit("submit answer", playerId, roomCode, guessLocation, (ack) => {
+      if (ack) {
+        ("Answer successfully submitted and acknowledged by server");
+        setAnswerLocation(updatedAnswerLocation);
+
+        onRoundEnd();
+      } else {
+        console.log("Failed to submit answer to server, retrying...");
+        submitVsGuess();
+      }
+    });
+
+    // setAnswerLocation(updatedAnswerLocation);
+
+    // onRoundEnd();
   };
 
   // Different handle start round function for vs mode and single mode?
