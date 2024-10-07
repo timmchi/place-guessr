@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { calculateScore } from "../../utils/scoreUtils";
-import StreetView from "../Map/StreetView";
+import StreetViewController from "../Map/StreetViewController";
 import RoomNameWithScore from "../RoomNameWithScore";
 import useRandomLocation from "../../hooks/useRandomLocation";
 import { useNavigate } from "react-router-dom";
@@ -61,7 +61,7 @@ const SingleRound = ({
       <>
         {data && (
           <>
-            <StreetView
+            <StreetViewController
               location={{ lat: data.lat, lng: data.lng }}
               calculateScore={calculateGameScore}
               onRoundEnd={endRound}
