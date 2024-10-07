@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import EndRoundMap from "./EndRoundMap";
 import Player from "../Player/Player";
 import WinnerScreen from "../Player/WinnerScreen";
+import avatar from "../../../test/vavatar.jpg";
+import avatar2 from "../../../test/avatar2.jpg";
 
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
@@ -61,6 +63,7 @@ const MapElement = ({
             score={playerRoundScores.player1RoundScore}
             distance={roundDistances.player1RoundDistance}
             gameType="vs"
+            placeholderAvatarSrc={avatar}
           />
         </div>
         <EndRoundMap
@@ -79,6 +82,7 @@ const MapElement = ({
             score={playerRoundScores.player2RoundScore}
             distance={roundDistances.player2RoundDistance}
             gameType="vs"
+            placeholderAvatarSrc={avatar2}
           />
         </div>
       </div>

@@ -13,7 +13,6 @@ import StreetView from "./StreetView";
 
 const MAX_RADIUS = 10000;
 
-// submitGuess={gameType === "VS" ? submitVsGuess : submitSingleGuess}
 const StreetViewController = ({
   location,
   calculateScore,
