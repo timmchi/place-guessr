@@ -4,6 +4,7 @@ const { parseText } = require("../utils/geolistUtils");
 const { generateRoomCode } = require("../utils/utils");
 const geolist = "./geolist.txt";
 const { haversine_distance, calculateScore } = require("../utils/scoreUtils");
+const { v4: uuidv4 } = require("uuid");
 
 const apiURL = "https://api.3geonames.org/?randomland";
 
@@ -47,16 +48,23 @@ const getLocation = async (apiType, region) => {
   }
 };
 
+const users = [];
+let rooms = [];
+
 const socketHandler = (server) => {
   const io = new Server(server, {
     cors: {
       origin: "http://localhost:5173",
     },
-    connectionStateRecovery: {},
+    connectionStateRecovery: {
+      maxDisconnectionDuration: 2 * 60 * 1000,
+      // no middlewares as of now but perhaps some will be added e.g. auth
+      skipMiddlewares: true,
+    },
   });
 
-  const users = [];
-  let rooms = [];
+  //   const users = [];
+  //   let rooms = [];
   let roundAnswer;
 
   io.on("connection", (socket) => {
@@ -69,6 +77,17 @@ const socketHandler = (server) => {
     io.emit("users", users);
 
     socket.on("create room", (playerSocket, playerObject) => {
+      // ok then, if playerObject is null (user is guest - not logged in),
+      // then we just assign them some random id which will be then emitted to the frontend,
+      // set in the global state and then emitted back with guesses, so that we can identify
+      // the user properly and continue the game properly
+
+      let playerId;
+
+      if (!playerObject) playerId = uuidv4();
+
+      if (playerObject) playerId = playerObject.id;
+
       const roomId = generateRoomCode();
       socket.join(roomId);
 
@@ -79,7 +98,8 @@ const socketHandler = (server) => {
         {
           roomId: roomId,
           // keep track of room region here?
-          player1: socket.id,
+          //   player1: socket.id,
+          player1: playerId,
           player1Object: playerObject,
           player2Object: null,
           player1ReadyToEnd: false,
@@ -99,15 +119,24 @@ const socketHandler = (server) => {
       // same as in the join room but with p1 this time, aka room creator
       io.to(roomId).emit("player joined", "p1", playerObject);
 
+      socket.emit("playerId set", playerId);
+
       io.to(roomId).emit("room created", roomId);
     });
 
-    socket.on("submit answer", (senderId, roomId, playerAnswer) => {
+    socket.on("submit answer", (senderId, roomId, playerAnswer, callback) => {
       console.log("player answer", playerAnswer);
       const distanceFromAnswerLocation = Math.floor(
         haversine_distance(playerAnswer, roundAnswer)
       );
       console.log("distance from location", distanceFromAnswerLocation);
+
+      const isInRoom = socket.rooms.has(roomId);
+
+      // If not in the room, join the room
+      if (!isInRoom) {
+        socket.join(roomId);
+      }
 
       // min score is 1 so that 0 doesn't mess with the conditionals
       const roundScore = Math.max(
@@ -144,7 +173,7 @@ const socketHandler = (server) => {
         );
       }
 
-      //   io.emit("submit answer", distanceFromAnswerLocation, roundScore);
+      callback(true);
     });
 
     // emit from frontend when pano is set in frontend
@@ -156,10 +185,17 @@ const socketHandler = (server) => {
       if (io.sockets.adapter.rooms.get(roomId)) {
         const room = rooms.find((r) => r.roomId === roomId);
 
+        let playerId;
+
+        if (!playerObject) playerId = uuidv4();
+
+        if (playerObject) playerId = playerObject.id;
+
         // playerObject is the actual player data
         if (room) {
           if (!room.player2) {
-            room.player2 = socket.id;
+            // room.player2 = socket.id;
+            room.player2 = playerId;
             room.player2Object = playerObject;
             console.log(`${playerSocket} joining ${roomId} as player2`);
           } else {
@@ -178,8 +214,14 @@ const socketHandler = (server) => {
           "p2",
           room.player1Object,
           room.player2Object
+          //   playerId
         );
 
+        socket.emit("playerId set", playerId);
+
+        console.log("player1 id, player2 id", room.player1, room.player2);
+
+        // this controls state on the frontend which is used to render proper room
         io.to(roomId).emit("room joined", socket.id, roomId, room.region);
       }
     });
@@ -220,9 +262,6 @@ const socketHandler = (server) => {
     });
 
     socket.on("end round", async (senderId, roomId) => {
-      //     this might be required to check if a user is actually in a room
-      //   const clients = await io.in(roomId).fetchSockets();
-      //   const clientIds = clients.map((c) => c.id);
       const room = rooms.find((room) => room.roomId === roomId);
 
       if (room.player1 === senderId) room.player1ReadyToEnd = true;
@@ -230,18 +269,20 @@ const socketHandler = (server) => {
       if (room.player2 === senderId) room.player2ReadyToEnd = true;
 
       if (room.player1ReadyToEnd && room.player2ReadyToEnd) {
-        // socket.broadcast.to(roomId).emit("end round");
-        io.to(roomId).emit("end round");
+        if (!room.roundEnded) {
+          io.to(roomId).emit("end round");
+          room.roundEnded = true;
+        }
+
         room.player1ReadyToEnd = false;
         room.player2ReadyToEnd = false;
       }
     });
 
     socket.on("start round", async (senderId, roomId) => {
-      //     this might be required to check if a user is actually in a room
-      //   const clients = await io.in(roomId).fetchSockets();
-      //   const clientIds = clients.map((c) => c.id);
       const room = rooms.find((room) => room.roomId === roomId);
+
+      room.roundEnded = false;
 
       const apiType = room.region === "random" ? "geolist" : "geonames";
 
@@ -277,8 +318,15 @@ const socketHandler = (server) => {
       }
     });
 
-    socket.on("guess sent", async (senderId, roomId, guess) => {
+    socket.on("guess sent", async (senderId, roomId, guess, callback) => {
       const room = rooms.find((room) => room.roomId === roomId);
+
+      const isInRoom = socket.rooms.has(roomId);
+
+      // If not in the room, join the room
+      if (!isInRoom) {
+        socket.join(roomId);
+      }
 
       if (room.player1 === senderId) {
         console.log("guess of the first player is", guess);
@@ -294,6 +342,7 @@ const socketHandler = (server) => {
         console.log("both guesses received, emitting guesses set...");
         io.to(roomId).emit("guesses set", room.player1Guess, room.player2Guess);
       }
+      callback(true);
     });
 
     // check whether a winner has been declared, if so, ignore

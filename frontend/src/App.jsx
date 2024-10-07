@@ -34,6 +34,7 @@ import {
   firstPlayerJoined,
   secondPlayerJoined,
 } from "./reducers/roomPlayersReducer";
+import { playerIdReceived } from "./reducers/playerIdReducer";
 import { newLocationFetched } from "./reducers/panoramaErrorReducer";
 import { initializeUser, userLoggedOut } from "./reducers/userReducer";
 import { codeSubmitted } from "./reducers/roomCodeReducer";
@@ -84,11 +85,14 @@ function App() {
     };
 
     // here is where we update the players in the room state
-    const onPlayerJoined = (playerIdentifier, player1Object, player2Object) => {
+    const onPlayerJoined = (
+      // playerIdentifier is either p1 or p2 and is used in game logic mostly in frontend
+      playerIdentifier,
+      player1Object,
+      player2Object
+    ) => {
       console.log(playerIdentifier, player1Object, player2Object);
 
-      // we need the player here as an object because we check for null to see
-      // if the player has joined the room AND is not logged in to then add a guest to the room
       if (playerIdentifier === "p1")
         dispatch(firstPlayerJoined({ player1Object }));
 
@@ -99,6 +103,16 @@ function App() {
     };
 
     const onUsers = (value) => console.log("users", value);
+
+    const onPlayerIdSet = (playerId) => {
+      console.log("player id set", playerId);
+      // what do we do with the playerId here?
+      // playerId will need to be set in the global state and then used on guess submissions and continuing round, basically in all events which backend checks against its room data
+
+      // we need the player here as an object because we check for null to see
+      // if the player has joined the room AND is not logged in to then add a guest to the room
+      dispatch(playerIdReceived(playerId));
+    };
 
     const onStartGame = () => {
       console.log("starting game");
@@ -182,6 +196,7 @@ function App() {
     socket.on("game won", onGameWon);
     socket.on("player joined", onPlayerJoined);
     socket.on("geonames error", onGeonamesError);
+    socket.on("playerId set", onPlayerIdSet);
 
     return () => {
       socket.off("users", onUsers);
@@ -198,6 +213,7 @@ function App() {
       socket.off("game won", onGameWon);
       socket.off("player joined", onPlayerJoined);
       socket.off("geonames error", onGeonamesError);
+      socket.off("playerId set", onPlayerIdSet);
     };
   }, []);
 
@@ -280,9 +296,9 @@ function App() {
   return (
     <div>
       {/* keep in prod but no need in dev */}
-      {/* {pageShielded && (
+      {pageShielded && (
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
-      )} */}
+      )}
 
       <APIProvider apiKey={API_KEY}>
         <NavBar handleLogout={handleLogout} />
