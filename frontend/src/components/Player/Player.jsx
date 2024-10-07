@@ -9,6 +9,7 @@ const Player = ({
   score,
   distance,
   playerVariant,
+  placeholderAvatarSrc,
 }) => {
   const playerVariantChecker = useSelector((state) => state.player.player);
 
@@ -19,7 +20,7 @@ const Player = ({
         {playerVariant === playerVariantChecker && " (You)"}
       </h1>
 
-      <Avatar />
+      <Avatar imgLink={placeholderAvatarSrc} />
 
       <div className="text-center text-white flex flex-col gap-1 text-xl">
         <HealthBar healthPoints={healthPoints} />

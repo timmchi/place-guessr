@@ -3,8 +3,11 @@ import { Button, Typography, Avatar } from "@material-tailwind/react";
 import VsGame from "../VsGame/VsGame";
 import PlayerInLobby from "../Player/PlayerInLobby";
 import { useSelector } from "react-redux";
-import avatar from "../../../test/vavatar.jpg";
+import placeholderAvatar2 from "../../../test/avatar2.jpg";
+import placeholderAvatar1 from "../../../test/vavatar.jpg";
 import { socket } from "../../sockets/socket";
+
+const avatars = [placeholderAvatar1, placeholderAvatar2];
 
 const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
   const gameStarted = useSelector((state) => state.vsGame.vsGameStarted);
@@ -59,10 +62,18 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
               maybe make this clickable so that it opens users profile? is there a point?.. 
               clickable so that the profile is opened in a new tab maybe */}
               {playersInLobby.player1 && (
-                <PlayerInLobby player={playersInLobby.player1.player1Object} />
+                <PlayerInLobby
+                  player={playersInLobby.player1.player1Object}
+                  placeholderAvatarSrc={avatars[0]}
+                  playerVariant="p1"
+                />
               )}
               {playersInLobby.player2 && (
-                <PlayerInLobby player={playersInLobby.player2.player2Object} />
+                <PlayerInLobby
+                  player={playersInLobby.player2.player2Object}
+                  placeholderAvatarSrc={avatars[1]}
+                  playerVariant="p2"
+                />
               )}
             </ul>
           </div>
