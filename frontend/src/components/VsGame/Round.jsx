@@ -4,7 +4,7 @@ import { socket } from "../../sockets/socket";
 import { calculateHpDamage } from "../../utils/scoreUtils";
 import { calculatePlayerRoundScore } from "../../reducers/roundScoreReducer";
 import { useDispatch, useSelector } from "react-redux";
-import StreetView from "../Map/StreetView";
+import StreetViewController from "../Map/StreetViewController";
 import PlayerOverlay from "../Player/PlayerOverlay";
 import avatar from "../../../test/vavatar.jpg";
 import avatar2 from "../../../test/avatar2.jpg";
@@ -48,7 +48,7 @@ const Round = ({
 
   return (
     <div className="relative">
-      <StreetView
+      <StreetViewController
         location={vsGameLocation}
         onRoundEnd={endRound}
         onRoundStart={startRound}
