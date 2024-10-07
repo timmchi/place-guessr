@@ -8,6 +8,8 @@ const { haversine_distance, calculateScore } = require("../utils/scoreUtils");
 const apiURL = "https://api.3geonames.org/?randomland";
 
 const getLocation = async (apiType, region) => {
+  console.log("getLocation log", apiType, region);
+
   if (apiType === "geolist") {
     try {
       const textByLine = parseText(geolist);
@@ -106,6 +108,7 @@ const socketHandler = (server) => {
         haversine_distance(playerAnswer, roundAnswer)
       );
       console.log("distance from location", distanceFromAnswerLocation);
+
       // min score is 1 so that 0 doesn't mess with the conditionals
       const roundScore = Math.max(
         Math.floor(calculateScore(distanceFromAnswerLocation)),
@@ -197,8 +200,10 @@ const socketHandler = (server) => {
       //   io.to(roomId).emit("end game");
     });
 
+    // do we need to pass api type from frontend everywhere? Or could we pass it once
+    // on room creation, and then have backend room object track it...
     socket.on("fetch location", async (apiType, region, roomId) => {
-      //   console.log("fetching location for", apiType, region, roomId);
+      console.log("fetch location event", apiType, region, roomId);
       try {
         const randomPlace = await getLocation(apiType, region);
 
@@ -212,9 +217,6 @@ const socketHandler = (server) => {
       //   console.log("room chosen in", roomId, roomRegion);
       const room = rooms.find((r) => r.roomId === roomId);
       room.region = roomRegion;
-
-      // this could lead to a problem where other users on the site will have their room state set to something they didnt sign up for
-      //   io.emit("room chosen", roomRegion);
     });
 
     socket.on("end round", async (senderId, roomId) => {

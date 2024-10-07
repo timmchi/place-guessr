@@ -69,6 +69,8 @@ const SingleRound = ({
               isEnded={isEnded}
               score={roundScore}
               round={round - 1}
+              // refetch is passed here because it will need to be called in case of a panorama not being found for a location
+              refetch={refetch}
             />
             {!isEnded && (
               <RoomNameWithScore
