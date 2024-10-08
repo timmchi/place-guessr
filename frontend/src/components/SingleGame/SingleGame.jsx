@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SingleRound from "./SingleRound";
 
-const SingleGame = ({ roomMapType, region, roomTitle }) => {
+const SingleGame = ({ room }) => {
   const [round, setRound] = useState(1);
 
   const handleRoundChange = (round) => setRound(round);
@@ -11,9 +11,8 @@ const SingleGame = ({ roomMapType, region, roomTitle }) => {
       <SingleRound
         round={round}
         handleRoundChange={handleRoundChange}
-        roomMapType={roomMapType}
-        region={region}
-        roomTitle={roomTitle}
+        roomMapType={room.region === "random" ? "world" : "country"}
+        room={room}
       />
     </div>
   );

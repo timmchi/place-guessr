@@ -61,11 +61,7 @@ const Room = ({
           vsGameLocation={vsGameLocation}
         />
       ) : (
-        <SingleGame
-          roomMapType={room.region === "random" ? "world" : "country"}
-          region={room.region !== "random" && room.region}
-          roomTitle={room.title}
-        />
+        <SingleGame room={room} />
       )}
     </div>
   );
