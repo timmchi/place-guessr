@@ -29,6 +29,7 @@ const StreetViewController = ({
   const [panoPosition, setPanoPosition] = useState(null);
   const [guessLocation, setGuessLocation] = useState(null);
   const [answerLocation, setAnswerLocation] = useState(null);
+  const [guessSubmitted, setGuessSubmitted] = useState(false);
   const player = useSelector((state) => state.player);
   const gameType = useSelector((state) => state.gameType);
   const roundEnded = useSelector((state) => state.vsGame.vsRoundEnded);
@@ -132,14 +133,7 @@ const StreetViewController = ({
     const updatedAnswerLocation = panoPosition;
 
     // this is for syncing the locations of guesses by players
-    // socket.emit("guess sent", socket.id, roomCode, guessLocation, (ack) => {
-    //   if (ack) {
-    //     console.log("Guess successfully sent and acknowledge by server");
-    //   } else {
-    //     console.log("Failed to send guess to server, retrying...");
-    //     submitVsGuess();
-    //   }
-    // });
+
     socket.emit("guess sent", playerId, roomCode, guessLocation, (ack) => {
       if (ack) {
         console.log("Guess successfully sent and acknowledge by server");
@@ -147,20 +141,12 @@ const StreetViewController = ({
         console.log("Failed to send guess to server, retrying...");
         submitVsGuess();
       }
+
+      setGuessSubmitted(true);
     });
 
     // this is for syncing scores of players and distances between answer and their guess
-    // socket.emit("submit answer", socket.id, roomCode, guessLocation, (ack) => {
-    //   if (ack) {
-    //     ("Answer successfully submitted and acknowledged by server");
-    //     setAnswerLocation(updatedAnswerLocation);
 
-    //     onRoundEnd();
-    //   } else {
-    //     console.log("Failed to submit answer to server, retrying...");
-    //     submitVsGuess();
-    //   }
-    // });
     socket.emit("submit answer", playerId, roomCode, guessLocation, (ack) => {
       if (ack) {
         ("Answer successfully submitted and acknowledged by server");
@@ -172,17 +158,13 @@ const StreetViewController = ({
         submitVsGuess();
       }
     });
-
-    // setAnswerLocation(updatedAnswerLocation);
-
-    // onRoundEnd();
   };
 
   // Different handle start round function for vs mode and single mode?
   // Do i need to set these to null in the vs game?
   const handleStartRound = () => {
     onRoundStart();
-
+    setGuessSubmitted(false);
     if (gameType !== "VS") {
       setGuessLocation(null);
       setAnswerLocation(null);
@@ -194,7 +176,6 @@ const StreetViewController = ({
   // whatever is called will depend on the game type
   const handleNewLocationFetch = () => {
     console.log("new location should be fetched here based on game type");
-    // setPanoramaError(false);
 
     if (gameType === "SINGLE") {
       // single game location is fetched using react query, the refetch comes from there
@@ -258,6 +239,7 @@ const StreetViewController = ({
           guessLocation={guessLocation}
           answerLocation={answerLocation}
           submitGuess={gameType === "VS" ? submitVsGuess : submitSingleGuess}
+          guessSubmitted={guessSubmitted}
         />
       </div>
     </div>
