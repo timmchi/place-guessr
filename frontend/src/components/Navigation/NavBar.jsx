@@ -33,7 +33,7 @@ const NavBar = ({ handleLogout }) => {
 
   return (
     <div className="max-h-[768px] w-screen">
-      <Navbar className="fixed top-0 z-10 h-max max-w-full rounded-none py-2 lg:px-8 lg:py-4 bg-indigo-400 border-none bg-opacity-100">
+      <Navbar className="fixed top-0 z-10 h-max max-w-full rounded-none py-2 lg:px-8 bg-indigo-400 border-none bg-opacity-100">
         <div className="flex items-center justify-between text-amber-300">
           <Typography
             variant="h5"
