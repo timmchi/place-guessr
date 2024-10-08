@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { socket } from "../../sockets/socket";
 import { gameEnded } from "../../reducers/vsGameReducer";
+import avatar from "../../../test/vavatar.jpg";
+import avatar2 from "../../../test/avatar2.jpg";
 
-// i want (YOU) here
 const WinnerScreen = ({ player }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const WinnerScreen = ({ player }) => {
   const handleGameFinish = () => {
     console.log("finish the game");
 
-    // theres still issue of room code now not resetting
     // this event is used to clean up the room from the backend
     socket.emit("end game", roomCode);
     dispatch(gameEnded());
@@ -30,6 +30,7 @@ const WinnerScreen = ({ player }) => {
         <Avatar
           gameType="vs"
           playerName={player && player.username ? player.username : "Guest"}
+          imgLink={gameWinner === "p1" ? avatar : avatar2}
         />
         <div className="py-6">
           <h1 className="text-4xl font-bold ">
