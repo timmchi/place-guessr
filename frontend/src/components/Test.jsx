@@ -10,7 +10,7 @@ const players = [
 const Test = () => {
   return (
     <div className="bg-indigo-300 h-screen">
-      <PlayerOverlay player1={players[0]} player2={players[1]} />
+      {/* <PlayerOverlay player1={players[0]} player2={players[1]} /> */}
     </div>
   );
 };
