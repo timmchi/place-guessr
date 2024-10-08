@@ -6,13 +6,7 @@ import useRandomLocation from "../../hooks/useRandomLocation";
 import { useNavigate } from "react-router-dom";
 import GeonamesErrorScreen from "../GeonamesErrorScreen";
 
-const SingleRound = ({
-  round,
-  handleRoundChange,
-  roomMapType,
-  region,
-  roomTitle,
-}) => {
+const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
   const [totalScore, setTotalScore] = useState(0);
   const [roundScore, setRoundScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
@@ -20,7 +14,7 @@ const SingleRound = ({
 
   const { isLoading, data, error, isError, refetch } = useRandomLocation(
     roomMapType === "world" ? "geolist" : "geonames",
-    region && region
+    room.region && room.region
   );
 
   if (isLoading) return <div>Loading...</div>;
@@ -49,8 +43,11 @@ const SingleRound = ({
     handleRoundChange(1);
   };
 
+  // we need to plug in the map size here
   const calculateGameScore = (distance) => {
-    const calculatedScore = calculateScore(distance);
+    // console.log("map size for game score", room.mapSize);
+    const calculatedScore = calculateScore(distance, room.mapSize);
+    // console.log("score calculated based on mapSize", calculatedScore);
     const newTotalScore = totalScore + calculatedScore;
     setRoundScore(calculatedScore);
     setTotalScore(newTotalScore);
@@ -74,7 +71,8 @@ const SingleRound = ({
             />
             {!isEnded && (
               <RoomNameWithScore
-                name={roomTitle}
+                // name={roomTitle}
+                name={room.title}
                 round={round}
                 score={totalScore}
               />
