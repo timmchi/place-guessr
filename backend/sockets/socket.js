@@ -138,15 +138,17 @@ const socketHandler = (server) => {
         socket.join(roomId);
       }
 
+      const room = rooms.find((room) => room.roomId === roomId);
+
+      console.log("room mapSize in submit answer event", room.mapSize);
+
       // min score is 1 so that 0 doesn't mess with the conditionals
       const roundScore = Math.max(
-        Math.floor(calculateScore(distanceFromAnswerLocation)),
+        Math.floor(calculateScore(distanceFromAnswerLocation, room.mapSize)),
         1
       );
 
       console.log("round score", roundScore);
-
-      const room = rooms.find((room) => room.roomId === roomId);
 
       if (room.player1 === senderId) {
         room.player1Distance = distanceFromAnswerLocation;
@@ -226,9 +228,10 @@ const socketHandler = (server) => {
       }
     });
 
-    socket.on("start game", (roomId) => {
+    socket.on("start game", (roomId, roomMapSize) => {
       //   console.log("starting game in", roomId);
       const room = rooms.find((r) => r.roomId === roomId);
+      room.mapSize = roomMapSize;
 
       if (room.player1 && room.player2) io.to(roomId).emit("start game");
     });
@@ -239,6 +242,7 @@ const socketHandler = (server) => {
       if (!rooms.find((r) => r.id === roomId)) return;
 
       rooms = rooms.filter((room) => room.roomId === roomId);
+      console.log("room removed successfully");
       //   io.to(roomId).emit("end game");
     });
 

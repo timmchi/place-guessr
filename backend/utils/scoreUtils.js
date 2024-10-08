@@ -26,8 +26,8 @@ const haversine_distance = (mk1, mk2) => {
 // score = 5000 * e ^ ( -10 * distance / mapsize )
 // 14916.862 KM mapsize, world map
 // 2.71828 e
-const calculateScore = (distance) => {
-  const score = 5000 * 2.71828 ** ((-10 * distance) / 14916.862);
+const calculateScore = (distance, mapSize = 14916.862) => {
+  const score = 5000 * 2.71828 ** ((-10 * distance) / mapSize);
 
   return score;
 };

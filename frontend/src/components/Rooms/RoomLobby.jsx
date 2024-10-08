@@ -17,7 +17,9 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
 
   // This is where we ask for the first location to be fetched when the game starts
   const handleGameStart = () => {
-    socket.emit("start game", roomCode);
+    // we will also send the mapSize here that will be used to calculate the score properly
+    // this place seems like the most appropriate due to how the architecture is set up atm
+    socket.emit("start game", roomCode, room.mapSize);
     socket.emit(
       "fetch location",
       room.region === "random" ? "geolist" : "geonames",
