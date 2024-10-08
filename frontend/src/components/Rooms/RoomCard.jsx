@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../sockets/socket";
 
+import CountryRoomPopover from "./CountryRoomPopover";
+
 const RoomCard = ({ room, roomCode = null }) => {
   const navigate = useNavigate();
 
@@ -39,19 +41,25 @@ const RoomCard = ({ room, roomCode = null }) => {
         >
           {room.title}
         </Typography>
-        <Avatar
-          size="xl"
-          variant="circular"
-          alt={`flag of ${room.region !== "random" ? room.title : "the world"}`}
-          className="border-2 border-indigo-700"
-          src={room.flag}
-        />
-        <Button
-          onClick={chooseRoom}
-          className="bg-indigo-500 ml-2 hover:bg-indigo-700"
-        >
-          Select room
-        </Button>
+
+        {room.region !== "random" && <CountryRoomPopover />}
+        <div>
+          <Avatar
+            size="xl"
+            variant="circular"
+            alt={`flag of ${
+              room.region !== "random" ? room.title : "the world"
+            }`}
+            className="border-2 border-indigo-700"
+            src={room.flag}
+          />
+          <Button
+            onClick={chooseRoom}
+            className="bg-indigo-500 ml-2 hover:bg-indigo-700"
+          >
+            Select room
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );
