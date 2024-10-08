@@ -24,6 +24,7 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
   const roomRegion = rooms.find(
     (room) => room.region === joiningUserRoomRegion
   );
+
   console.log("room region", roomRegion);
   console.log("joining room region", joiningUserRoomRegion);
 
