@@ -2,6 +2,7 @@ import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { Polyline } from "./Polyline";
 import { Button, Avatar } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import EndRoundMap from "./EndRoundMap";
 import Player from "../Player/Player";
 import WinnerScreen from "../Player/WinnerScreen";
@@ -16,6 +17,7 @@ const MapElement = ({
   answerLocation,
   submitGuess,
   isEnded,
+  guessSubmitted,
   //   roomCode,
 }) => {
   const gameType = useSelector((state) => state.gameType);
@@ -27,6 +29,14 @@ const MapElement = ({
   const roundDistances = useSelector((state) => state.roundDistance);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
   const playersInRoom = useSelector((state) => state.roomPlayers);
+  //   const [guessSubmitted, setGuessSubmitted] = useState(false);
+
+  //   const handleLocationGuess = () => {
+  //     if (!guessSubmitted) {
+  //       submitGuess();
+  //       setGuessSubmitted(true);
+  //     }
+  //   };
 
   // here is where the end round map is situated, needs to be fixed for a vs game - smaller map
   // and player profiles on the sides
@@ -111,7 +121,7 @@ const MapElement = ({
         defaultCenter={{ lat: 0, lng: 0 }}
         disableDefaultUI={true}
         clickableIcons={false}
-        onClick={placeGuessMarker}
+        onClick={!guessSubmitted ? placeGuessMarker : undefined}
         reuseMaps={true}
         mapId={MAP_ID}
       >
@@ -150,10 +160,14 @@ const MapElement = ({
       <Button
         color="green"
         className="rounded-full mt-4 w-full"
-        onClick={submitGuess}
-        disabled={guessLocation ? false : true}
+        onClick={!guessSubmitted ? submitGuess : undefined}
+        disabled={guessLocation && !guessSubmitted ? false : true}
       >
-        {guessLocation ? "Submit Guess" : "Place your pin on the map"}
+        {guessLocation
+          ? guessSubmitted
+            ? "Waiting for the other player"
+            : "Submit Guess"
+          : "Place your pin on the map"}
       </Button>
     </div>
   );

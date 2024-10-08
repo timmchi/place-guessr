@@ -13,6 +13,7 @@ const StreetView = ({
   guessLocation,
   answerLocation,
   submitGuess,
+  guessSubmitted,
 }) => {
   const mapRef = useRef(null);
   const streetViewRef = useRef(null);
@@ -65,6 +66,7 @@ const StreetView = ({
         answerLocation={answerLocation}
         submitGuess={submitGuess}
         isEnded={isEnded}
+        guessSubmitted={guessSubmitted}
       />
     </>
   );
