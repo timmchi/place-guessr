@@ -107,6 +107,7 @@ const StreetViewController = ({
   //   console.log("panoPosition outside", panoPosition);
 
   const placeGuessMarker = (e) => {
+    console.log(e.detail);
     const { latLng } = e.detail;
     setGuessLocation(latLng);
     console.log(latLng);

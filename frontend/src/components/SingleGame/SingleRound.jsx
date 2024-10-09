@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 import GeonamesErrorScreen from "../GeonamesErrorScreen";
 import SingleGameEndScreen from "./SingleGameEndScreen";
 import LoadingScreen from "../LoadingScreen";
+import useNotification from "../../hooks/useNotification";
 
 const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
   const [totalScore, setTotalScore] = useState(0);
   const [roundScore, setRoundScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
+  const { displayNotification } = useNotification();
   const navigate = useNavigate();
 
   const { isLoading, data, error, isError, refetch } = useRandomLocation(
@@ -58,12 +60,19 @@ const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
   // so, to limit the amount of rounds to 5 in a country based map, we first check the room map type,
   // then if the type is not random, we proceed
   // when the round reaches more than 5, which will happen once we start the round after seeing the result, (also could be done automatically/change button text dynamically based on round #), render a end game screen with the score out of maximum score, player avatar and player name, button to go to room selection/main page and reset some relevant state
-  if (roomMapType !== "world" && round >= 6)
+
+  const handleSingleGameEnd = () => {
+    navigate("/");
+    // will be used later to record game in user profile
+    displayNotification("success", "Game ended successfully");
+  };
+
+  if (roomMapType !== "world" && round > 5)
     return (
       <SingleGameEndScreen
         room={room}
         totalScore={totalScore}
-        handleGameEnd={() => navigate("/")}
+        handleGameEnd={handleSingleGameEnd}
       />
     );
 
