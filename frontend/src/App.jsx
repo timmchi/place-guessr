@@ -268,12 +268,19 @@ function App() {
       saveUser(JSON.stringify(data));
       dispatch(initializeUser(data));
       navigate("/");
+      displayNotification("success", "Successfully logged in");
+    },
+    onError: (error) => {
+      console.log(error.message);
+      displayNotification(
+        "error",
+        "Incorrect credentials or user does not exist."
+      );
     },
   });
 
   const handleLogin = async (credentials) => {
     loginMutation.mutate(credentials);
-    displayNotification("success", "Successfully logged in");
   };
 
   // this will also need to be changed to use redux, which means a logout will need to be added to user slice

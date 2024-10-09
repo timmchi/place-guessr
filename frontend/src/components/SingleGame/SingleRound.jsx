@@ -6,6 +6,7 @@ import useRandomLocation from "../../hooks/useRandomLocation";
 import { useNavigate } from "react-router-dom";
 import GeonamesErrorScreen from "../GeonamesErrorScreen";
 import SingleGameEndScreen from "./SingleGameEndScreen";
+import LoadingScreen from "../LoadingScreen";
 
 const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
   const [totalScore, setTotalScore] = useState(0);
@@ -18,7 +19,7 @@ const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
     room.region && room.region
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingScreen />;
 
   // the geonames API which is responsible for fetching locations for country rooms
   // tends to not work properly during the EEST day time hours. In the case there is an error,
