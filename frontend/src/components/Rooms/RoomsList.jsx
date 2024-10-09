@@ -10,7 +10,7 @@ const RoomsList = ({ rooms, roomCode }) => {
 
   return (
     <div className="h-full bg-indigo-200 p-2">
-      <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 container mx-auto my-4">
+      <ul className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 container mx-auto my-4">
         {rooms.map((room) => (
           <li key={room.id}>
             <div>
