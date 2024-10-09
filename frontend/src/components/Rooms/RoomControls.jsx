@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { roomWasCreated, roomWasJoined } from "../../reducers/playerReducer";
 import { codeSubmitted } from "../../reducers/roomCodeReducer";
+import useNotification from "../../hooks/useNotification";
 import RoomLobby from "./RoomLobby";
 import RoomsList from "./RoomsList";
 
@@ -14,6 +15,7 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const roomCode = useSelector((state) => state.roomCode);
+  const { displayNotification } = useNotification();
 
   // changes between the user who creates the room and who joins the room.
   // If null (not logged in), will be guest
