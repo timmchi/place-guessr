@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Alert } from "@material-tailwind/react";
-import useNotification from "../hooks/useNotification";
+import useNotification from "../../hooks/useNotification";
 
 const Notification = () => {
   const { clearNotification } = useNotification();

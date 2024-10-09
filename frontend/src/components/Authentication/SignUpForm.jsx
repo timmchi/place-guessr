@@ -105,9 +105,10 @@ const SignUpForm = ({ handleUserCreation }) => {
         <ReCAPTCHA
           sitekey={CAPTCHA_SITEKEY}
           onChange={(value) => setCaptchaValue(value)}
+          className="pt-3"
         />
         <Button
-          className="mt-6 self-center w-full bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
+          className="mt-3 self-center w-full bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
           fullWidth
           type="submit"
           disabled={!captchaValue}

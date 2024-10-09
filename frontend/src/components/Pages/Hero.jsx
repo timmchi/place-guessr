@@ -1,6 +1,6 @@
 import Home from "./Home";
 import { Typography } from "@material-tailwind/react";
-import panorama from "../helsinki-panorama-test-min.png";
+import panorama from "../../helsinki-panorama-test-min.png";
 
 const Hero = ({ playSingleGame, playVsGame }) => {
   return (

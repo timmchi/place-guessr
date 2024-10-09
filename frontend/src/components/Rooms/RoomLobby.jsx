@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import placeholderAvatar2 from "../../../test/avatar2.jpg";
 import placeholderAvatar1 from "../../../test/vavatar.jpg";
 import { socket } from "../../sockets/socket";
-import LoadingScreen from "../LoadingScreen";
+import LoadingScreen from "../Screens/LoadingScreen";
 
 const avatars = [placeholderAvatar1, placeholderAvatar2];
 

@@ -131,6 +131,7 @@ const MapElement = ({
               <AdvancedMarker
                 position={guessLocation}
                 draggable={true}
+                onDragEnd={placeGuessMarker}
                 title="Your guess"
               />
             )}
@@ -150,7 +151,8 @@ const MapElement = ({
             {guessLocation && (
               <AdvancedMarker
                 position={guessLocation}
-                draggable={true}
+                draggable={!guessSubmitted}
+                onDragEnd={placeGuessMarker}
                 title="Your guess"
               />
             )}
