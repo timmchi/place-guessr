@@ -12,6 +12,7 @@ import roomPlayersReducer from "./roomPlayersReducer";
 import roomCodeReducer from "./roomCodeReducer";
 import panoramaErrorReducer from "./panoramaErrorReducer";
 import playerIdReducer from "./playerIdReducer";
+import notificationReducer from "./notificationReducer";
 
 const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ const store = configureStore({
     roomCode: roomCodeReducer,
     panoramaError: panoramaErrorReducer,
     playerId: playerIdReducer,
+    notification: notificationReducer,
   },
 });
 

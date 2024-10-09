@@ -54,6 +54,8 @@ import loginService from "./services/login";
 import { saveUser, getUser, removeUser } from "./utils/localStorageUtils";
 import { useSelector } from "react-redux";
 import GeonamesErrorScreen from "./components/GeonamesErrorScreen";
+import Notification from "./components/Notification";
+import useNotification from "./hooks/useNotification";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -62,6 +64,7 @@ function App() {
   const [joiningUserRoomRegion, setJoiningUserRoomRegion] = useState("");
   const [pageShielded, setPageShielded] = useState(true);
   const [geonamesError, setGeonamesError] = useState(null);
+  const { displayNotification } = useNotification();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -270,6 +273,7 @@ function App() {
 
   const handleLogin = async (credentials) => {
     loginMutation.mutate(credentials);
+    displayNotification("success", "Successfully logged in");
   };
 
   // this will also need to be changed to use redux, which means a logout will need to be added to user slice
@@ -277,6 +281,7 @@ function App() {
     removeUser();
     dispatch(userLoggedOut());
     navigate("/");
+    displayNotification("success", "Successfully logged out");
   };
 
   const handleGeonamesError = () => {
@@ -330,6 +335,7 @@ function App() {
             }
           />
         </Routes>
+        <Notification />
       </APIProvider>
     </div>
   );

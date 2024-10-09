@@ -1,6 +1,8 @@
 import PlayerOverlay from "./Player/PlayerOverlay";
 import avatar from "../../test/vavatar.jpg";
 import avatar2 from "../../test/avatar2.jpg";
+import { Button } from "@material-tailwind/react";
+import useNotification from "../hooks/useNotification";
 
 const players = [
   { id: 1, name: "Kariz", avatar: avatar },
@@ -8,9 +10,25 @@ const players = [
 ];
 
 const Test = () => {
+  const { displayNotification } = useNotification();
+
+  const showError = () => {
+    displayNotification("error", "Showing error");
+  };
+
+  const showInfo = () => {
+    displayNotification("info", "Showing info");
+  };
+
+  const showSuccess = () => {
+    displayNotification("success", "Showing success");
+  };
+
   return (
     <div className="bg-indigo-300 h-screen">
-      {/* <PlayerOverlay player1={players[0]} player2={players[1]} /> */}
+      <Button onClick={showError}>Error button</Button>
+      <Button onClick={showInfo}>Info button</Button>
+      <Button onClick={showSuccess}>Success button</Button>
     </div>
   );
 };
