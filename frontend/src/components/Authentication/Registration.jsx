@@ -3,13 +3,24 @@ import SignUpForm from "./SignUpForm";
 import usersService from "../../services/users";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import useNotification from "../../hooks/useNotification";
 
 const Registration = () => {
+  const navigate = useNavigate();
+  const { displayNotification } = useNotification();
+
   const newUserMutation = useMutation({
     mutationFn: usersService.createUser,
-    onSuccess: () => navigate("/login"),
+    onSuccess: () => {
+      navigate("/login");
+      displayNotification("success", "Successfully signed up, please log in.");
+    },
+    onError: (error) => {
+      console.log(error.message);
+      // Idk if I should have the error message or generic info about necessary validation things
+      displayNotification("error", error.message);
+    },
   });
-  const navigate = useNavigate();
 
   const handleUserCreation = async (userData) => {
     newUserMutation.mutate(userData);

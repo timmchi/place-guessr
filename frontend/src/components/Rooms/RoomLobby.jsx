@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import placeholderAvatar2 from "../../../test/avatar2.jpg";
 import placeholderAvatar1 from "../../../test/vavatar.jpg";
 import { socket } from "../../sockets/socket";
+import LoadingScreen from "../LoadingScreen";
 
 const avatars = [placeholderAvatar1, placeholderAvatar2];
 
@@ -29,7 +30,7 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
   };
 
   // add styling here
-  if (!room) return <div>loading room...</div>;
+  if (!room) return <LoadingScreen />;
 
   if (!gameStarted) {
     return (
