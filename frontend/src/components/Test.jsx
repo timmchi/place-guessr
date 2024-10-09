@@ -2,7 +2,7 @@ import PlayerOverlay from "./Player/PlayerOverlay";
 import avatar from "../../test/vavatar.jpg";
 import avatar2 from "../../test/avatar2.jpg";
 import { Button } from "@material-tailwind/react";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "./Screens/LoadingScreen";
 import useNotification from "../hooks/useNotification";
 
 const players = [

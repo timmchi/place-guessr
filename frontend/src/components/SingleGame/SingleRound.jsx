@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { calculateScore } from "../../utils/scoreUtils";
 import StreetViewController from "../Map/StreetViewController";
-import RoomNameWithScore from "../RoomNameWithScore";
+import RoomNameWithScore from "../Rooms/RoomNameWithScore";
 import useRandomLocation from "../../hooks/useRandomLocation";
 import { useNavigate } from "react-router-dom";
-import GeonamesErrorScreen from "../GeonamesErrorScreen";
+import GeonamesErrorScreen from "../Screens/GeonamesErrorScreen";
 import SingleGameEndScreen from "./SingleGameEndScreen";
-import LoadingScreen from "../LoadingScreen";
+import LoadingScreen from "../Screens/LoadingScreen";
 import useNotification from "../../hooks/useNotification";
 
 const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {

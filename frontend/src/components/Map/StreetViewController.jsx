@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { haversine_distance } from "../../utils/scoreUtils";
 import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
-import PanoramaErrorScreen from "../PanoramaErrorScreen";
+import PanoramaErrorScreen from "../Screens/PanoramaErrorScreen";
 import {
   errorHappened,
   newLocationFetched,

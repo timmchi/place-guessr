@@ -1,4 +1,4 @@
-import CtaButton from "./CtaButton";
+import CtaButton from "../SmallComponents/CtaButton";
 
 const Home = ({ playSingleGame, playVsGame }) => {
   return (
