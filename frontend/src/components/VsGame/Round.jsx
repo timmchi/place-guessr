@@ -1,19 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
-import { calculateHpDamage } from "../../utils/scoreUtils";
-import { calculatePlayerRoundScore } from "../../reducers/roundScoreReducer";
 import { useDispatch, useSelector } from "react-redux";
 import StreetViewController from "../Map/StreetViewController";
 import PlayerOverlay from "../Player/PlayerOverlay";
-import avatar from "../../../test/vavatar.jpg";
-import avatar2 from "../../../test/avatar2.jpg";
 
 const Round = ({
   round,
   handleRoundChange,
-  roomMapType,
-  roomTitle,
   region,
   vsGameLocation,
   //   roomCode,

@@ -62,9 +62,9 @@ const MapElement = ({
     return (
       <div
         style={{ transition: "all 0.5s" }}
-        className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 bg-opacity-80 flex pb-36 xl:py-48"
+        className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 bg-opacity-80 flex pb-36 xl:py-48 "
       >
-        <div className="pt-80 px-24">
+        <div className="pt-96 xl:pt-36 px-24">
           <Player
             key="player1"
             playerVariant="p1"
@@ -76,6 +76,7 @@ const MapElement = ({
             placeholderAvatarSrc={avatar}
           />
         </div>
+
         <EndRoundMap
           gameType={gameType}
           guessLocation={guessLocation}
@@ -83,7 +84,8 @@ const MapElement = ({
           player1Guess={player1Guess}
           player2Guess={player2Guess}
         />
-        <div className="pt-80 px-24">
+
+        <div className="pt-96 xl:pt-36 px-24">
           <Player
             key="player2"
             playerVariant="p2"

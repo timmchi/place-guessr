@@ -26,7 +26,7 @@ const HealthBar = ({ healthPoints, style = "default" }) => {
   }
 
   return (
-    <div className="relative w-96 h-14 bg-gray-500 rounded-lg">
+    <div className="relative w-80 h-14 bg-gray-500 rounded-lg">
       <div className="absolute flex justify-center items-center text-gray-200 font-bold text-xl z-10 w-full h-full rounded-lg">
         {healthPoints}
       </div>

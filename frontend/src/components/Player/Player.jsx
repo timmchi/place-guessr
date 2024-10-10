@@ -5,7 +5,6 @@ import Avatar from "./Avatar";
 const Player = ({
   player,
   healthPoints,
-  gameType,
   score,
   distance,
   playerVariant,
@@ -14,7 +13,7 @@ const Player = ({
   const playerVariantChecker = useSelector((state) => state.player.player);
 
   return (
-    <div className="flex flex-col items-center container mx-auto text-white gap-2">
+    <div className="flex flex-col items-center container mx-auto text-amber-300 gap-2 bg-indigo-400 rounded-xl py-14 px-4 shadow-xl border-2 border-amber-500 bg-opacity-85">
       <h1 className="text-2xl font-bold ">
         {player && player.username ? player.username : "Guest"}{" "}
         {playerVariant === playerVariantChecker && " (You)"}
@@ -22,10 +21,12 @@ const Player = ({
 
       <Avatar imgLink={placeholderAvatarSrc} />
 
-      <div className="text-center text-white flex flex-col gap-1 text-xl">
+      <div className="text-center flex flex-col gap-1 text-xl">
         <HealthBar healthPoints={healthPoints} />
-        <div>Score: {score}</div>
-        <div>Distance from location: {distance} km</div>
+        <div className="pt-12 text-xl">
+          <div>Score: {score}</div>
+          <div>Distance from location: {distance} km</div>
+        </div>
       </div>
     </div>
   );

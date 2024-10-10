@@ -14,7 +14,7 @@ const EndRoundMap = ({
   player2Guess,
 }) => {
   return (
-    <>
+    <div className="h-full w-full border-2 shadow-xl rounded border-amber-300">
       <Map
         defaultZoom={5}
         defaultCenter={answerLocation}
@@ -40,7 +40,7 @@ const EndRoundMap = ({
           />
         )}
       </Map>
-    </>
+    </div>
   );
 };
 
