@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input } from "@material-tailwind/react";
 import { socket } from "../../sockets/socket";
 import { useNavigate } from "react-router-dom";
@@ -20,15 +20,24 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
   // changes between the user who creates the room and who joins the room.
   // If null (not logged in), will be guest
   const user = useSelector((state) => state.user);
-  console.log("user in room controls", user);
+
+  useEffect(() => {
+    const onRoomDoesntExist = (roomCode) => {
+      displayNotification("error", `Room "${roomCode}" does not exist.`);
+      setRoomJoined(false);
+    };
+
+    socket.on("room doesnt exist", onRoomDoesntExist);
+
+    return () => {
+      socket.off("room doesnt exist", onRoomDoesntExist);
+    };
+  }, []);
 
   // here is the problem with the white screen and room being undefined
   const roomRegion = rooms.find(
     (room) => room.region === joiningUserRoomRegion
   );
-
-  console.log("room region", roomRegion);
-  console.log("joining room region", joiningUserRoomRegion);
 
   const joinRoom = (e) => {
     e.preventDefault();
@@ -105,6 +114,8 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
               <Button
                 className="w-full mt-2 bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
                 type="submit"
+                // ok for now, but a better validation is needed. What happens if the room with the room code is not found on the backend? Currently it's gonna be a loading screen forever
+                disabled={roomCode.length !== 4}
               >
                 Join a room
               </Button>

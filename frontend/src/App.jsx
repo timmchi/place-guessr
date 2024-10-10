@@ -185,6 +185,10 @@ function App() {
       setGeonamesError(error);
     };
 
+    // const onRoomDoesntExist = (roomCode) => {
+    //   displayNotification("error", `Room "${roomCode}" does not exist.`);
+    // };
+
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
     socket.on("room joined", onJoiningRoom);
@@ -200,6 +204,7 @@ function App() {
     socket.on("player joined", onPlayerJoined);
     socket.on("geonames error", onGeonamesError);
     socket.on("playerId set", onPlayerIdSet);
+    // socket.on("room doesnt exist", onRoomDoesntExist);
 
     return () => {
       socket.off("users", onUsers);
@@ -217,6 +222,7 @@ function App() {
       socket.off("player joined", onPlayerJoined);
       socket.off("geonames error", onGeonamesError);
       socket.off("playerId set", onPlayerIdSet);
+      //   socket.off("room doesnt exist", onRoomDoesntExist);
     };
   }, []);
 
