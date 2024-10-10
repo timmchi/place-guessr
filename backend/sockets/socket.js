@@ -339,11 +339,19 @@ const socketHandler = (server) => {
       if (room.player1 === senderId) {
         console.log("guess of the first player is", guess);
         room.player1Guess = guess;
+
+        // to let the opponent know the player made a guess
+        if (!room.player2Guess)
+          socket.broadcast.to(roomId).emit("opponent guessed", roomId);
       }
 
       if (room.player2 === senderId) {
         console.log("guess of the second player is", guess);
         room.player2Guess = guess;
+
+        // to let the opponent know the player made a guess
+        if (!room.player1Guess)
+          socket.broadcast.to(roomId).emit("opponent guessed");
       }
 
       if (room.player1Guess && room.player2Guess) {
