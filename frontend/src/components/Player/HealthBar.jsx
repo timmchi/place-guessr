@@ -26,13 +26,13 @@ const HealthBar = ({ healthPoints, style = "default" }) => {
   }
 
   return (
-    <div className="relative w-96 h-14 bg-gray-500 rounded-lg">
-      <div className="absolute flex justify-center items-center text-gray-200 font-bold text-xl z-10 w-full h-full rounded-lg">
+    <div className="relative w-80 h-10 xl:h-14 bg-gray-500 rounded-lg">
+      <div className="absolute flex justify-center items-center text-gray-200 font-bold text-sm md:text-xl z-10 w-full h-full rounded-lg">
         {healthPoints}
       </div>
       <div
         style={{ width: `${healthPercentage}%`, transition: "all 1s" }}
-        className={`absolute h-14 ${computeHealthBarBG()} flex justify-center items-center rounded-lg`}
+        className={`absolute h-10 xl:h-14 ${computeHealthBarBG()} flex justify-center items-center rounded-lg`}
       ></div>
     </div>
   );

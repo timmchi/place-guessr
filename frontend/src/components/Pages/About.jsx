@@ -14,7 +14,7 @@ const About = () => {
   return (
     <div className="bg-indigo-200 h-screen py-20 text-white">
       <Typography variant="h2" className="text-center">
-        This is the about section
+        This is the about section (Work In Progress)
       </Typography>
       <Accordion open={openIndex === 1}>
         <AccordionHeader
