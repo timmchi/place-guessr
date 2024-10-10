@@ -185,9 +185,18 @@ function App() {
       setGeonamesError(error);
     };
 
-    // const onRoomDoesntExist = (roomCode) => {
-    //   displayNotification("error", `Room "${roomCode}" does not exist.`);
-    // };
+    const onOpponentGuessed = () => {
+      // I dont know if I want to keep it like this or do it in a different way
+      // it feels like just a simple info notification is not enough, and there
+      // should be a different styled message in the street view instead
+      // however, notification here does fit pretty well in terms of using
+      // what i've already built... We will see, but for now, this will stay
+      // tbh, it depends on how important I want to make this detail for the game
+      // if its just a message, then a notification is enough, but if I want to
+      // set up like a 30 sec timer for the other player, then this implementation
+      // will be changed to use redux, etc...
+      displayNotification("info", "Your opponent just submitted their guess!");
+    };
 
     socket.on("users", onUsers);
     socket.on("submit answer", onAnswer);
@@ -204,7 +213,7 @@ function App() {
     socket.on("player joined", onPlayerJoined);
     socket.on("geonames error", onGeonamesError);
     socket.on("playerId set", onPlayerIdSet);
-    // socket.on("room doesnt exist", onRoomDoesntExist);
+    socket.on("opponent guessed", onOpponentGuessed);
 
     return () => {
       socket.off("users", onUsers);
@@ -222,7 +231,7 @@ function App() {
       socket.off("player joined", onPlayerJoined);
       socket.off("geonames error", onGeonamesError);
       socket.off("playerId set", onPlayerIdSet);
-      //   socket.off("room doesnt exist", onRoomDoesntExist);
+      socket.off("opponent guessed", onOpponentGuessed);
     };
   }, []);
 
