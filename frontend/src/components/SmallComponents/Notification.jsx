@@ -12,7 +12,7 @@ const Notification = () => {
   };
 
   return (
-    <div className="fixed top-32 left-0 z-10 w-80">
+    <div className="fixed top-20 left-0 z-10 w-80">
       <Alert
         open={notification.open}
         onClose={closeNotification}

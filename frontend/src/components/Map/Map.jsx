@@ -29,7 +29,7 @@ const MapElement = ({
   const roundDistances = useSelector((state) => state.roundDistance);
   const gameWinner = useSelector((state) => state.vsGame.vsGameWinner);
   const playersInRoom = useSelector((state) => state.roomPlayers);
-  //   const [guessSubmitted, setGuessSubmitted] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
 
   //   const handleLocationGuess = () => {
   //     if (!guessSubmitted) {
@@ -116,65 +116,73 @@ const MapElement = ({
   }
 
   return (
-    <div
-      style={{ transition: "all 0.5s" }}
-      className="h-72 w-96 absolute opacity-50 z-10 bottom-32 left-8 hover:h-[27rem] hover:w-[36rem] active:h-[27rem] active:w-[36rem] hover:opacity-100 active:opacity-100 border-8 border-solid border-white rounded-lg shadow-xl"
-    >
-      <Map
-        defaultZoom={2}
-        defaultCenter={{ lat: 0, lng: 0 }}
-        disableDefaultUI={true}
-        clickableIcons={false}
-        onClick={!guessSubmitted ? placeGuessMarker : undefined}
-        reuseMaps={true}
-        mapId={MAP_ID}
-      >
-        {gameType === "SINGLE" && (
-          <>
-            {guessLocation && (
-              <AdvancedMarker
-                position={guessLocation}
-                draggable={true}
-                onDragEnd={placeGuessMarker}
-                title="Your guess"
-              />
-            )}
-            {answerLocation && (
-              <AdvancedMarker
-                position={answerLocation}
-                title="Correct location"
-              />
-            )}
-            {guessLocation && answerLocation && (
-              <Polyline path={[guessLocation, answerLocation]} />
-            )}
-          </>
-        )}
-        {gameType === "VS" && (
-          <>
-            {guessLocation && (
-              <AdvancedMarker
-                position={guessLocation}
-                draggable={!guessSubmitted}
-                onDragEnd={placeGuessMarker}
-                title="Your guess"
-              />
-            )}
-          </>
-        )}
-      </Map>
+    <div className="absolute z-10 bottom-32 left-0.5 md:left-8">
       <Button
-        color="green"
-        className="rounded-full mt-4 w-full"
-        onClick={!guessSubmitted ? submitGuess : undefined}
-        disabled={guessLocation && !guessSubmitted ? false : true}
+        onClick={() => setMapOpen(!mapOpen)}
+        className="bg-indigo-400 hover:bg-indigo-500 mb-2"
       >
-        {guessLocation
-          ? guessSubmitted
-            ? "Waiting for the other player"
-            : "Submit Guess"
-          : "Place your pin on the map"}
+        {!mapOpen ? "Open map" : "Close map"}
       </Button>
+      <div
+        style={{ transition: "all 0.5s", display: mapOpen ? "" : "none" }}
+        className="h-72 w-96 opacity-50 hover:h-[27rem] hover:w-[24rem] md:hover:w-[36rem] active:h-[27rem] active:w-[24rem] md:active:w-[36rem] hover:opacity-100 active:opacity-100 border-8 border-solid border-white rounded-lg shadow-xl"
+      >
+        <Map
+          defaultZoom={2}
+          defaultCenter={{ lat: 0, lng: 0 }}
+          disableDefaultUI={true}
+          clickableIcons={false}
+          onClick={!guessSubmitted ? placeGuessMarker : undefined}
+          reuseMaps={true}
+          mapId={MAP_ID}
+        >
+          {gameType === "SINGLE" && (
+            <>
+              {guessLocation && (
+                <AdvancedMarker
+                  position={guessLocation}
+                  draggable={true}
+                  onDragEnd={placeGuessMarker}
+                  title="Your guess"
+                />
+              )}
+              {answerLocation && (
+                <AdvancedMarker
+                  position={answerLocation}
+                  title="Correct location"
+                />
+              )}
+              {guessLocation && answerLocation && (
+                <Polyline path={[guessLocation, answerLocation]} />
+              )}
+            </>
+          )}
+          {gameType === "VS" && (
+            <>
+              {guessLocation && (
+                <AdvancedMarker
+                  position={guessLocation}
+                  draggable={!guessSubmitted}
+                  onDragEnd={placeGuessMarker}
+                  title="Your guess"
+                />
+              )}
+            </>
+          )}
+        </Map>
+        <Button
+          color="green"
+          className="rounded-full mt-4 w-full"
+          onClick={!guessSubmitted ? submitGuess : undefined}
+          disabled={guessLocation && !guessSubmitted ? false : true}
+        >
+          {guessLocation
+            ? guessSubmitted
+              ? "Waiting for the other player"
+              : "Submit Guess"
+            : "Place your pin on the map"}
+        </Button>
+      </div>
     </div>
   );
 };
