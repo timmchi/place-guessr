@@ -184,48 +184,52 @@ const socketHandler = (server) => {
     });
 
     socket.on("join room", (playerSocket, roomId, playerObject) => {
-      if (io.sockets.adapter.rooms.get(roomId)) {
-        const room = rooms.find((r) => r.roomId === roomId);
-
-        let playerId;
-
-        if (!playerObject) playerId = uuidv4();
-
-        if (playerObject) playerId = playerObject.id;
-
-        // playerObject is the actual player data
-        if (room) {
-          if (!room.player2) {
-            // room.player2 = socket.id;
-            room.player2 = playerId;
-            room.player2Object = playerObject;
-            console.log(`${playerSocket} joining ${roomId} as player2`);
-          } else {
-            console.log(`Room ${roomId} already has two players`);
-            return;
-          }
-        }
-
-        socket.join(roomId);
-
-        console.log("room region in join room", room.region);
-
-        // maybe we should have a separate event with the player object emitted here
-        io.to(roomId).emit(
-          "player joined",
-          "p2",
-          room.player1Object,
-          room.player2Object
-          //   playerId
-        );
-
-        socket.emit("playerId set", playerId);
-
-        console.log("player1 id, player2 id", room.player1, room.player2);
-
-        // this controls state on the frontend which is used to render proper room
-        io.to(roomId).emit("room joined", socket.id, roomId, room.region);
+      if (!io.sockets.adapter.rooms.get(roomId)) {
+        console.log("room doesnt exist");
+        socket.emit("room doesnt exist", roomId);
+        return;
       }
+
+      const room = rooms.find((r) => r.roomId === roomId);
+
+      let playerId;
+
+      if (!playerObject) playerId = uuidv4();
+
+      if (playerObject) playerId = playerObject.id;
+
+      // playerObject is the actual player data
+      if (room) {
+        if (!room.player2) {
+          // room.player2 = socket.id;
+          room.player2 = playerId;
+          room.player2Object = playerObject;
+          console.log(`${playerSocket} joining ${roomId} as player2`);
+        } else {
+          console.log(`Room ${roomId} already has two players`);
+          return;
+        }
+      }
+
+      socket.join(roomId);
+
+      console.log("room region in join room", room.region);
+
+      // maybe we should have a separate event with the player object emitted here
+      io.to(roomId).emit(
+        "player joined",
+        "p2",
+        room.player1Object,
+        room.player2Object
+        //   playerId
+      );
+
+      socket.emit("playerId set", playerId);
+
+      console.log("player1 id, player2 id", room.player1, room.player2);
+
+      // this controls state on the frontend which is used to render proper room
+      io.to(roomId).emit("room joined", socket.id, roomId, room.region);
     });
 
     socket.on("start game", (roomId, roomMapSize) => {
