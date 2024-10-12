@@ -10,7 +10,8 @@ const SingleGame = ({ room }) => {
 
     // in country maps, single player is allowed to play 5 rounds before the game ends
     if (room.region !== "random" && round > 5) {
-      setGameEnded(true);
+      setTimeout(() => setGameEnded(true), 5000);
+      //   setGameEnded(true);
     }
   };
 

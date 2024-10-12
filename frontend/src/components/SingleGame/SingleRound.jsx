@@ -75,7 +75,6 @@ const SingleRound = ({
     displayNotification("success", "Game ended successfully");
   };
 
-  //   if (roomMapType !== "world" && round > 5)
   if (gameEnded)
     return (
       <SingleGameEndScreen
