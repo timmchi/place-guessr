@@ -9,7 +9,14 @@ import SingleGameEndScreen from "./SingleGameEndScreen";
 import LoadingScreen from "../Screens/LoadingScreen";
 import useNotification from "../../hooks/useNotification";
 
-const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
+const SingleRound = ({
+  round,
+  handleRoundChange,
+  roomMapType,
+  room,
+  gameEnded,
+  setGameEnded,
+}) => {
   const [totalScore, setTotalScore] = useState(0);
   const [roundScore, setRoundScore] = useState(0);
   const [isEnded, setIsEnded] = useState(false);
@@ -61,18 +68,21 @@ const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
   // then if the type is not random, we proceed
   // when the round reaches more than 5, which will happen once we start the round after seeing the result, (also could be done automatically/change button text dynamically based on round #), render a end game screen with the score out of maximum score, player avatar and player name, button to go to room selection/main page and reset some relevant state
 
-  const handleSingleGameEnd = () => {
+  const handleSingleGameExit = () => {
+    setGameEnded(false);
     navigate("/");
     // will be used later to record game in user profile
     displayNotification("success", "Game ended successfully");
   };
 
-  if (roomMapType !== "world" && round > 5)
+  //   if (roomMapType !== "world" && round > 5)
+  if (gameEnded)
     return (
       <SingleGameEndScreen
         room={room}
         totalScore={totalScore}
-        handleGameEnd={handleSingleGameEnd}
+        handleGameExit={handleSingleGameExit}
+        round={round - 1}
       />
     );
 
@@ -97,6 +107,7 @@ const SingleRound = ({ round, handleRoundChange, roomMapType, room }) => {
                 name={room.title}
                 round={round}
                 score={totalScore}
+                handleGameEnd={() => setGameEnded(true)}
               />
             )}
           </>

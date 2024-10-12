@@ -19,16 +19,6 @@ const Room = ({
   if (!room) return <div>This room does not exist</div>;
 
   // these 3 functions need to be changed, especially the backtohomepage and handlendgame - as end game event no longer controls the game state
-  const goBackToRoomList = () => {
-    console.log("navigating back to room list...");
-    navigate("/rooms");
-  };
-
-  const goBackToHomePage = () => {
-    console.log("navigating back to home page...");
-    socket.emit("end game", roomCode);
-    navigate("/");
-  };
 
   const handleEndGame = () => {
     navigate("/lobby");
@@ -36,23 +26,7 @@ const Room = ({
   };
 
   return (
-    <div className="relative text-2xl font-bold text-white">
-      <div className="absolute z-20 right-5 top-36">
-        <div className="flex flex-col gap-2">
-          <Button
-            onClick={goBackToRoomList}
-            className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
-          >
-            Back to room selection
-          </Button>
-          <Button
-            onClick={goBackToHomePage}
-            className="bg-green-600 opacity-50 hover:opacity-100 active:opacity-100"
-          >
-            Back to home page
-          </Button>
-        </div>
-      </div>
+    <div className="text-2xl font-bold text-white">
       {gameType === "VS" ? (
         <RoomLobby
           room={room}
