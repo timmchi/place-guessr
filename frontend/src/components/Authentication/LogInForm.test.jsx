@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import LogInForm from "./LogInForm";
-import ReCAPTCHA from "react-google-recaptcha";
 import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { expect, test } from "vitest";
