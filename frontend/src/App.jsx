@@ -323,9 +323,9 @@ function App() {
   return (
     <div>
       {/* keep in prod but no need in dev */}
-      {/* {pageShielded && (
+      {pageShielded && (
         <MainPageShield handlePageUnshield={() => setPageShielded(false)} />
-      )} */}
+      )}
 
       <APIProvider apiKey={API_KEY}>
         <NavBar handleLogout={handleLogout} />
