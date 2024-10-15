@@ -20,7 +20,7 @@ const SingleGameEndScreen = ({ room, totalScore, handleGameExit, round }) => {
         </Typography>
         <Button
           onClick={handleGameExit}
-          className="mt-4 w-full p-4 text-lg font-bold bg-amber-200 hover:bg-amber-400 text-indigo-500"
+          className="mt-4 md:w-full p-4 text-lg font-bold bg-amber-200 hover:bg-amber-400 text-indigo-500"
         >
           Back to main page
         </Button>

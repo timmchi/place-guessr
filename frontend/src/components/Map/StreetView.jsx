@@ -28,6 +28,19 @@ const StreetView = ({
     width: "100vw",
   };
 
+  const handlePovChange = () => {
+    if (streetViewRef.current) {
+      const newPov = streetViewRef.current.getPov();
+      if (
+        newPov.heading !== pov.heading ||
+        newPov.pitch !== pov.pitch ||
+        newPov.zoom !== pov.zoom
+      ) {
+        setPov(newPov);
+      }
+    }
+  };
+
   // unmount cleanup
   useEffect(() => {
     return () => {

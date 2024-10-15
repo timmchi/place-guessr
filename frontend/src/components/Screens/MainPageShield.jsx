@@ -12,10 +12,7 @@ const MainPageShield = ({ handlePageUnshield }) => {
   };
 
   return (
-    <div
-      className="fixed inset-0 bg-indigo-200 bg-opacity-100 z-50 flex items-center justify-center"
-      style={{ zIndex: 9999 }}
-    >
+    <div className="fixed inset-0 bg-indigo-200 bg-opacity-100 z-50 flex items-center justify-center z-1000">
       <div className="bg-indigo-400 p-8 rounded-lg shadow-lg flex flex-col gap-4 items-center">
         <Typography variant="h5" className="-mb-3 text-amber-200">
           Prove you are not a robot to access Placeguessr
