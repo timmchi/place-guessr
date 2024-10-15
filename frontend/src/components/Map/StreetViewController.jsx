@@ -10,6 +10,7 @@ import {
   newLocationFetched,
 } from "../../reducers/panoramaErrorReducer";
 import StreetView from "./StreetView";
+import CountUp from "react-countup";
 
 const MAX_RADIUS = 10000;
 
@@ -203,7 +204,10 @@ const StreetViewController = ({
         {distance && gameType !== "VS" && (
           <div className="absolute z-20 text-white-200 bottom-5 md:bottom-0 left-1/2 transform -translate-x-1/2 md:pb-8 font-bold flex flex-col md:flex-row items-center md:gap-8 text-white">
             <div className="order-1 flex items-center gap-2 md:flex-col">
-              <p className="text-2xl md:text-4xl">{distance}</p>
+              <p className="text-2xl md:text-4xl">
+                {/* <CountUp end={distance} /> */}
+                <CountUp end={distance} duration={3} />
+              </p>
               <p className="text-sm">km from location</p>
             </div>
 
@@ -215,7 +219,7 @@ const StreetViewController = ({
             </Button>
             <div className="text-xl font-bold order-2 md:order-3 flex items-center gap-2 md:flex-col">
               <p className="text-yellow-700 text-2xl md:text-4xl">
-                {Math.trunc(score)}
+                <CountUp end={Math.trunc(score)} duration={3} />
               </p>
               <p className="text-sm">out of 5000 points</p>
             </div>

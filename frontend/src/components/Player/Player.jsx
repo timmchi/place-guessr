@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import HealthBar from "./HealthBar";
 import Avatar from "./Avatar";
+import CountUp from "react-countup";
 
 const Player = ({
   player,
@@ -25,8 +26,12 @@ const Player = ({
       <div className="text-center flex flex-col gap-1 text-lg xl:text-xl">
         <HealthBar healthPoints={healthPoints} />
         <div className="xl:pt-12">
-          <div>Score: {score}</div>
-          <div>Distance from location: {distance} km</div>
+          <div>
+            Score: <CountUp end={score} duration={3} />
+          </div>
+          <div>
+            Distance from location: <CountUp end={distance} duration={3} /> km
+          </div>
         </div>
       </div>
     </div>
