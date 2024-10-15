@@ -37,7 +37,7 @@ const NavBar = ({ handleLogout }) => {
         <div className="flex items-center justify-between text-amber-300">
           <Typography
             variant="h5"
-            className="mr-4 cursor-pointer py-1.5 text-3xl"
+            className="mr-4 cursor-pointer py-1.5 text-2xl md:text-3xl"
           >
             <Link to="/">Place Guesser</Link>
           </Typography>

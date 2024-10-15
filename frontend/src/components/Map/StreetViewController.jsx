@@ -201,20 +201,22 @@ const StreetViewController = ({
       <div className="relative">
         {/* here are the controls for the single game, in the case of the single game here is also where the score is rendered */}
         {distance && gameType !== "VS" && (
-          <div className="absolute z-20 text-white-200 bottom-0 left-1/2 transform -translate-x-1/2 pb-8 font-bold flex items-center gap-4 text-white">
-            <div>
-              <p className="text-4xl">{distance} km</p>
-              <p className="text-sm">from location</p>
+          <div className="absolute z-20 text-white-200 bottom-5 md:bottom-0 left-1/2 transform -translate-x-1/2 md:pb-8 font-bold flex flex-col md:flex-row items-center md:gap-8 text-white">
+            <div className="order-1 flex items-center gap-2 md:flex-col">
+              <p className="text-2xl md:text-4xl">{distance}</p>
+              <p className="text-sm">km from location</p>
             </div>
 
             <Button
-              className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
+              className="bg-green-700 hover:bg-green-900 rounded-full text-sm md:text-lg order-3 md:order-2"
               onClick={handleStartRound}
             >
               Start Next Round
             </Button>
-            <div className="text-xl font-bold">
-              <p className="text-yellow-700 text-4xl">{Math.trunc(score)}</p>
+            <div className="text-xl font-bold order-2 md:order-3 flex items-center gap-2 md:flex-col">
+              <p className="text-yellow-700 text-2xl md:text-4xl">
+                {Math.trunc(score)}
+              </p>
               <p className="text-sm">out of 5000 points</p>
             </div>
           </div>
