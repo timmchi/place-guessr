@@ -89,9 +89,8 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
 
   return (
     <div className="flex flex-col min-h-screen bg-indigo-200">
-      {/* <NavBar /> */}
       <div className="flex justify-center items-center flex-grow pb-12">
-        <div className="flex bg-indigo-400 w-[48rem] container justify-between divide-x-2 divide-dashed divide-indigo-200 rounded-lg shadow-md h-[38rem]">
+        <div className="flex bg-indigo-400 w-[48rem] container justify-between divide-x-2 divide-dashed divide-indigo-200 rounded-lg shadow-md h-[38rem] mx-2 md:mx-0">
           <div className="p-4 basis-1/2 flex justify-center text-center h-full">
             <Button
               onClick={createRoom}
@@ -100,7 +99,7 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
               Create a room
             </Button>
           </div>
-          <div className="p-4 basis-1/2 flex flex-col justify-center h-full ">
+          <div className="p-2 md:p-4 basis-1/2 flex flex-col justify-center h-full ">
             <form onSubmit={joinRoom}>
               <Input
                 size="lg"
@@ -114,7 +113,7 @@ const RoomControls = ({ rooms, joiningUserRoomRegion, vsGameLocation }) => {
               <Button
                 className="w-full mt-2 bg-amber-200 hover:bg-amber-400 text-indigo-500 text-md"
                 type="submit"
-                // ok for now, but a better validation is needed. What happens if the room with the room code is not found on the backend? Currently it's gonna be a loading screen forever
+                // ok for now, but a better validation is needed.
                 disabled={roomCode.length !== 4}
               >
                 Join a room

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Button, Typography, Avatar } from "@material-tailwind/react";
 import VsGame from "../VsGame/VsGame";
 import PlayerInLobby from "../Player/PlayerInLobby";
@@ -29,13 +28,12 @@ const RoomLobby = ({ room, vsGameLocation, handleGoingBack, roomCode }) => {
     );
   };
 
-  // add styling here
   if (!room) return <LoadingScreen />;
 
   if (!gameStarted) {
     return (
       <div className="flex bg-indigo-200 min-h-screen justify-center items-center">
-        <div className="self-start w-[50%] bg-indigo-400 mx-auto rounded-lg shadow-md my-auto text-white">
+        <div className="self-start mx-4 md:w-[50%] bg-indigo-400 md:mx-auto rounded-lg shadow-md my-auto text-white">
           <div className="flex gap-4 justify-center pt-12">
             <Typography variant="h1" className="text-center pt-2">
               {room.title}

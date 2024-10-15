@@ -19,7 +19,7 @@ const VsGameEndRoundScreen = ({ guessLocation, answerLocation }) => {
       style={{ transition: "all 0.5s" }}
       className="h-[100%] w-[100%] absolute z-10 top-0 bg-indigo-300 bg-opacity-80 flex flex-col xl:flex-row items-center xl:items-start pb-36 xl:py-48"
     >
-      <div className="pt-12 xl:pt-36 px-12 order-2 xl:order-1">
+      <div className="pt-4 xl:pt-36 px-12 order-2 xl:order-1">
         <Player
           key="player1"
           playerVariant="p1"
@@ -42,7 +42,7 @@ const VsGameEndRoundScreen = ({ guessLocation, answerLocation }) => {
         />
       </div>
 
-      <div className="pt-12 xl:pt-36 px-12 order-3 xl:order-3">
+      <div className="pt-4 xl:pt-36 px-12 order-3 xl:order-3">
         <Player
           key="player2"
           playerVariant="p2"

@@ -15,13 +15,13 @@ const Hero = ({ playSingleGame, playVsGame }) => {
         <div className="backdrop-blur-xs rounded-3xl">
           <Typography
             variant="h1"
-            className="text-7xl mb-1 p-2 text-center drop-shadow-text"
+            className="text-5xl md:text-7xl mb-1 p-2 text-center drop-shadow-text"
           >
             Welcome to Place Guesser
           </Typography>
           <Typography
             variant="h3"
-            className="p-2 text-2xl drop-shadow-text text-center"
+            className="p-2 text-xl md:text-2xl drop-shadow-text text-center"
           >
             Appear in a random place and try your best to guess where you are
           </Typography>

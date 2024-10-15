@@ -102,10 +102,6 @@ const StreetViewController = ({
     };
   }, []);
 
-  //   if (!isLoaded) return null;
-
-  //   console.log("panoPosition outside", panoPosition);
-
   const placeGuessMarker = (e) => {
     console.log(e.detail);
     const { latLng } = e.detail;
@@ -226,7 +222,7 @@ const StreetViewController = ({
         {roundEnded && !gameWinner && (
           <div className="absolute z-20 text-white-200 bottom-0 left-1/2 transform -translate-x-1/2 pb-16 font-bold flex items-center text-white">
             <Button
-              className="bg-green-700 hover:bg-green-900 rounded-full text-lg"
+              className="bg-green-700 hover:bg-green-900 rounded-full text-sm md:text-lg"
               onClick={handleStartRound}
             >
               Start Next Round
