@@ -104,6 +104,7 @@ const StreetViewController = ({
 
   const placeGuessMarker = (e) => {
     console.log(e.detail);
+
     const { latLng } = e.detail;
     setGuessLocation(latLng);
     console.log(latLng);
