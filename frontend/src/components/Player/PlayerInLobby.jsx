@@ -6,7 +6,7 @@ const PlayerInLobby = ({ player, placeholderAvatarSrc, playerVariant }) => {
   const playerVariantChecker = useSelector((state) => state.player.player);
 
   return (
-    <div className="border border-gray-400 p-4 rounded-lg flex gap-4 items-center bg-indigo-300 shadow-md">
+    <div className="border border-gray-400 mx-2 p-2 md:p-4 rounded-lg flex gap-2 md:gap-4 items-center bg-indigo-300 shadow-md font-bold w-44 text-lg md:text-xl">
       <Avatar
         src={player && player.avatar ? player.avatar : placeholderAvatarSrc}
         alt="your guess location"

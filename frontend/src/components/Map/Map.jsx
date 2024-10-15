@@ -44,7 +44,6 @@ const MapElement = ({
     );
   }
 
-  // i dont use the round end screen anymore, this is what gets rendered
   if (isEnded && gameType === "VS" && !gameWinner)
     return (
       <VsGameEndRoundScreen
