@@ -28,6 +28,50 @@ router.post(
   }
 );
 
+// router.get("/:id", async (req, res) => {
+//   const { id } = req.params;
+
+//   // Reserved Guest user which will be used to account for anonymous players in duel mode
+//   if (Number(id) === 1)
+//     return res.status(400).json({ error: "not authorized" });
+
+//   try {
+//     const user = await User.findByPk(id, {
+//       include: [
+//         {
+//           model: Game,
+//           as: "gamesAsPlayer1",
+//         },
+//         {
+//           model: Game,
+//           as: "gamesAsPlayer2",
+//         },
+//         {
+//           model: Game,
+//           as: "gamesAsWinner",
+//         },
+//       ],
+//     });
+
+//     console.log("sending user back", user);
+
+//     if (user) {
+//       // remove hash, email, also will need to add profile pic
+//       res.json({
+//         id: user.id,
+//         username: user.username,
+//         games: user.gamesAsPlayer1,
+//       });
+//     } else {
+//       res.status(404).end();
+//     }
+//   } catch (error) {
+//     console.error("Error fetching user:", error);
+//     res
+//       .status(500)
+//       .json({ error: "An error occurred while fetching user data." });
+//   }
+// });
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -40,15 +84,14 @@ router.get("/:id", async (req, res) => {
       include: [
         {
           model: Game,
-          as: "gamesAsPlayer1",
-        },
-        {
-          model: Game,
-          as: "gamesAsPlayer2",
-        },
-        {
-          model: Game,
           as: "gamesAsWinner",
+        },
+        {
+          model: Game,
+          as: "games_played",
+          through: {
+            attributes: [],
+          },
         },
       ],
     });
@@ -60,9 +103,8 @@ router.get("/:id", async (req, res) => {
       res.json({
         id: user.id,
         username: user.username,
-        gamesAsPlayer1: user.gamesAsPlayer1,
-        gamesAsPlayer2: user.gamesAsPlayer2,
-        gamesAsWinner: user.gamesAsWinner,
+        wonGames: user.gamesAsWinner,
+        playedGames: user.games_played,
       });
     } else {
       res.status(404).end();

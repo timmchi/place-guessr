@@ -1,18 +1,16 @@
 const User = require("./user");
 const Game = require("./game");
+const UserGames = require("./user_games");
 
-// User.sync({ alter: true });
-// Game.belongsTo(User);
-// User.hasMany(Game);
-User.hasMany(Game, { foreignKey: "player1_id", as: "gamesAsPlayer1" });
-User.hasMany(Game, { foreignKey: "player2_id", as: "gamesAsPlayer2" });
 User.hasMany(Game, { foreignKey: "winner_id", as: "gamesAsWinner" });
 
-Game.belongsTo(User, { foreignKey: "player1_id", as: "player1" });
-Game.belongsTo(User, { foreignKey: "player2_id", as: "player2" });
 Game.belongsTo(User, { foreignKey: "winner_id", as: "winner" });
+
+User.belongsToMany(Game, { through: UserGames, as: "games_played" });
+Game.belongsToMany(User, { through: UserGames, as: "game_players" });
 
 module.exports = {
   User,
   Game,
+  UserGames,
 };
