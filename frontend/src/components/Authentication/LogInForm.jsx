@@ -15,7 +15,7 @@ const LogInForm = ({ handleLogin }) => {
 
     if (!captchaValue) return;
 
-    console.log(email, password);
+    // console.log(email, password);
     await handleLogin({ email, password });
     setEmail("");
     setPassword("");
@@ -76,7 +76,7 @@ const LogInForm = ({ handleLogin }) => {
         </Button>
         <Typography className="mt-4 text-center font-normal text-amber-200">
           Don't have an account?{" "}
-          <Link to="/signup" className="font-medium text-amber-500">
+          <Link to="/register" className="font-medium text-amber-500">
             Sign Up
           </Link>
         </Typography>
