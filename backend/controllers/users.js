@@ -33,7 +33,9 @@ router.get("/:id", async (req, res) => {
 
   const user = await User.findByPk(id);
 
-  if (user) res.json(user);
+  console.log("sending user back", user);
+  // remove hash, email, also will need to add profile pic, game history
+  if (user) res.json({ id: user.id, username: user.username });
 
   res.status(404).end();
 });

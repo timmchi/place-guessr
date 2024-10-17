@@ -345,7 +345,7 @@ function App() {
           <Route path="/register" element={<Registration />} />
           <Route path="/about" element={<About />} />
           <Route path="/test" element={<Test />} />
-          <Route path="/users/:id" element={<UserProfile />} />
+          <Route path="/users/:userId" element={<UserProfile />} />
           <Route
             path="/lobby"
             element={
