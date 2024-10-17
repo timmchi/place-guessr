@@ -21,7 +21,7 @@ module.exports = {
           isEmail: true,
         },
       },
-      passwordHash: {
+      password_hash: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -37,21 +37,17 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      gameType: {
+      game_type: {
         type: DataTypes.ENUM("SINGLE", "DUEL"),
         allowNull: false,
       },
-      player1Score: {
+      player1_score: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      player2Score: {
+      player2_score: {
         type: DataTypes.INTEGER,
         allowNull: true, // will not exist in single player game
-      },
-      // or should this be a foreign key?...
-      winnerId: {
-        type: DataTypes.INTEGER,
       },
     });
 

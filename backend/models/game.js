@@ -37,6 +37,7 @@ Game.init(
     sequelize,
     underscored: true,
     modelName: "game",
+    timestamps: false,
   }
 );
 
