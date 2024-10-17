@@ -17,29 +17,29 @@ const StreetView = ({
 }) => {
   const mapRef = useRef(null);
   const streetViewRef = useRef(null);
-  const [pov, setPov] = useState({
-    heading: 34,
-    pitch: 10,
-    zoom: 1,
-  });
+  //   const [pov, setPov] = useState({
+  //     heading: 34,
+  //     pitch: 10,
+  //     zoom: 1,
+  //   });
 
   const containerStyle = {
     height: "100vh",
     width: "100vw",
   };
 
-  const handlePovChange = () => {
-    if (streetViewRef.current) {
-      const newPov = streetViewRef.current.getPov();
-      if (
-        newPov.heading !== pov.heading ||
-        newPov.pitch !== pov.pitch ||
-        newPov.zoom !== pov.zoom
-      ) {
-        setPov(newPov);
-      }
-    }
-  };
+  //   const handlePovChange = () => {
+  //     if (streetViewRef.current) {
+  //       const newPov = streetViewRef.current.getPov();
+  //       if (
+  //         newPov.heading !== pov.heading ||
+  //         newPov.pitch !== pov.pitch ||
+  //         newPov.zoom !== pov.zoom
+  //       ) {
+  //         setPov(newPov);
+  //       }
+  //     }
+  //   };
 
   // unmount cleanup
   useEffect(() => {
@@ -64,7 +64,11 @@ const StreetView = ({
           position={panoPosition}
           visible={true}
           options={{
-            pov: pov,
+            // pov: pov,
+            pov: {
+              heading: 34,
+              pitch: 10,
+            },
             showRoadLabels: false,
             addressControl: false,
             enableCloseButton: false,
@@ -73,7 +77,7 @@ const StreetView = ({
           }}
           onLoad={(streetView) => (streetViewRef.current = streetView)}
           onUnmount={() => (streetViewRef.current = null)}
-          onPovChanged={handlePovChange}
+          //   onPovChanged={handlePovChange}
         />
       </GoogleMap>
       <MapElement

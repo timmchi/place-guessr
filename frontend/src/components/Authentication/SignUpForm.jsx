@@ -17,7 +17,6 @@ const SignUpForm = ({ handleUserCreation }) => {
 
     if (!captchaValue) return;
 
-    console.log(username, email, password, repeatPassword);
     await handleUserCreation({
       username,
       email,

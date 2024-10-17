@@ -15,7 +15,7 @@ const LogInForm = ({ handleLogin }) => {
 
     if (!captchaValue) return;
 
-    console.log(email, password);
+    // console.log(email, password);
     await handleLogin({ email, password });
     setEmail("");
     setPassword("");
