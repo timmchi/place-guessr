@@ -31,12 +31,6 @@ module.exports = {
       allowNull: true,
       references: { model: "users", key: "id" },
     });
-
-    // await queryInterface.removeColumn("games", "winner_id", {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   references: { model: "users", key: "id" },
-    // });
   },
   down: async ({ context: queryInterface }) => {
     await queryInterface.dropTable("user_games");
@@ -52,11 +46,5 @@ module.exports = {
       allowNull: true,
       references: { model: "users", key: "id" },
     });
-
-    // await queryInterface.addColumn("games", "winner_id", {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   references: { model: "users", key: "id" },
-    // });
   },
 };

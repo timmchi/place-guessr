@@ -28,6 +28,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    avatarName: {
+      type: DataTypes.STRING,
+      defaultValue: "cartoon-shibu",
+    },
   },
   {
     sequelize,

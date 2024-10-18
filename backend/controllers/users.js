@@ -53,6 +53,7 @@ router.get("/:id", async (req, res) => {
     });
 
     console.log("sending user back", user);
+    console.log(user.avatarName);
 
     if (user) {
       // remove hash, email, also will need to add profile pic
@@ -61,6 +62,7 @@ router.get("/:id", async (req, res) => {
         username: user.username,
         wonGames: user.gamesAsWinner,
         playedGames: user.games_played,
+        avatar: user.avatarName,
       });
     } else {
       res.status(404).end();
