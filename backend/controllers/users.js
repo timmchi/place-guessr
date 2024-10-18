@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const router = require("express").Router();
 const validationMiddleware = require("../utils/validationMiddleware");
+const { tokenExtractor } = require("../middleware/middleware");
 
 const { User, Game } = require("../models");
 
@@ -52,9 +53,6 @@ router.get("/:id", async (req, res) => {
       ],
     });
 
-    console.log("sending user back", user);
-    console.log(user.avatarName);
-
     if (user) {
       // remove hash, email, also will need to add profile pic
       res.json({
@@ -73,6 +71,25 @@ router.get("/:id", async (req, res) => {
       .status(500)
       .json({ error: "An error occurred while fetching user data." });
   }
+});
+
+// this will need to be fixed so that everyhting else can be updated as well
+router.put("/:id", tokenExtractor, async (req, res) => {
+  const user = await User.findByPk(req.params.id);
+
+  const { avatarName } = req.body;
+
+  if (user) {
+    // user.username = req.body.username;
+    // await user.save();
+    // res.json(user);
+    user.avatarName = avatarName;
+    await user.save();
+
+    return res.json(user);
+  }
+
+  res.status(404).end();
 });
 
 module.exports = router;

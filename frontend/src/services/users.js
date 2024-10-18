@@ -17,12 +17,18 @@ const getUser = async (userId) => {
   return response.data;
 };
 
-const updateUser = async (id, userData) => {
+const updateUser = async (userData) => {
   const config = {
     headers: { Authorization: token },
   };
 
-  const response = await axios.put(`${baseUrl}/${id}`, userData, config);
+  const { id, selectedImage } = userData;
+
+  const response = await axios.put(
+    `${baseUrl}/${id}`,
+    { avatarName: selectedImage },
+    config
+  );
   return response.data;
 };
 
