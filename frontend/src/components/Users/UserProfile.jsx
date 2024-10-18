@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import AvatarSelectionList from "../AvatarSelectionList";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useNotification from "../../hooks/useNotification";
+import { createAvatarUrl } from "../../utils/playerUtils";
 
 const AWS_CONST =
   "https://placeguessr-avatar-bucket.s3.eu-north-1.amazonaws.com";
@@ -58,7 +59,8 @@ const UserProfile = () => {
       <div className="text-white flex gap-4 bg-indigo-400 mb-20 mt-32 w-full mx-40 rounded-xl shadow-2xl">
         <div className="mx-20 mb-20">
           <img
-            src={`${AWS_CONST}/${data.avatar}`}
+            // src={`${AWS_CONST}/${data.avatar}`}
+            src={createAvatarUrl(data.avatar)}
             className="h-80 w-80 object-cover object-center border-8 border-white mt-20 rounded-lg"
           />
           {user && user.username === data.username && (

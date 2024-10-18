@@ -23,7 +23,14 @@ loginRouter.post("/", validationMiddleware.validateLogin, async (req, res) => {
 
   const token = jwt.sign(userForToken, config.SECRET, { expiresIn: 60 * 60 });
 
-  res.status(200).send({ token, username: user.username, id: user.id });
+  res
+    .status(200)
+    .send({
+      token,
+      username: user.username,
+      id: user.id,
+      avatarName: user.avatarName,
+    });
 });
 
 module.exports = loginRouter;

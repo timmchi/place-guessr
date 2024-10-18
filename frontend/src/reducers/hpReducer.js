@@ -2,7 +2,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 import { gameEnded } from "./vsGameReducer";
 
 // 1k for testing, 6k for the real thing
-const hpValue = 6000;
+const hpValue = 1000;
 
 let initialState = { player1HP: hpValue, player2HP: hpValue };
 
