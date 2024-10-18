@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { socket } from "../../sockets/socket";
 import { gameEnded } from "../../reducers/vsGameReducer";
-import avatar from "../../../test/vavatar.jpg";
-import avatar2 from "../../../test/avatar2.jpg";
 import { createAvatarUrl } from "../../utils/playerUtils";
 
 const WinnerScreen = ({ player }) => {
@@ -17,9 +15,10 @@ const WinnerScreen = ({ player }) => {
 
   // maybe this could then have something like "user left" notification
   const handleGameFinish = () => {
-    console.log("finish the game");
+    console.log("finishing the game", roomCode);
 
-    // this event is used to clean up the room from the backend
+    // this event is used to clean up the room from the backend and save the game to the db
+    // now i just need the room region here
     socket.emit("end game", roomCode);
     dispatch(gameEnded());
     navigate("/");

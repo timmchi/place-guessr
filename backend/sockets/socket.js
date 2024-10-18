@@ -5,6 +5,9 @@ const { generateRoomCode } = require("../utils/utils");
 const geolist = "./geolist.txt";
 const { haversine_distance, calculateScore } = require("../utils/scoreUtils");
 const { v4: uuidv4 } = require("uuid");
+const User = require("../models/user");
+const Game = require("../models/game");
+const UserGames = require("../models/user_games");
 
 const apiURL = "https://api.3geonames.org/?randomland";
 
@@ -46,6 +49,45 @@ const getLocation = async (apiType, region) => {
       throw error;
     }
   }
+};
+
+const saveDuelGame = async (gameData) => {
+  const gameType = "DUEL";
+
+  // if both users are anonymous, the game is not saved
+  if (!gameData.firstUserId && !gameData.secondUserId) return;
+
+  // can get these from player1Object and player2Object
+  const user1Id = gameData.firstUserId ? gameData.firstUserId : 1;
+  const user2Id = gameData.secondUserId ? gameData.secondUserId : 1;
+
+  // we will need map, player1Score, player2Score and winner
+  // the problem is that I currently dont keep score of the player scores
+  const createdGame = await Game.create({
+    // easy
+    map: gameData.map,
+    // already have
+    gameType,
+    // already have
+    player1Score: Math.floor(gameData.player1Score),
+    // already have
+    player2Score: Math.floor(gameData.player2Score),
+    // not yet have
+    winnerId: gameData.winnerId,
+  });
+
+  const firstUserGame = await UserGames.create({
+    userId: user1Id,
+    gameId: createdGame.id,
+  });
+
+  const secondUserGame = await UserGames.create({
+    userId: user2Id,
+    gameId: createdGame.id,
+  });
+
+  console.log("duel gamed saved successfully");
+  // dont know yet if I will need to return anything here
 };
 
 const users = [];
@@ -108,10 +150,13 @@ const socketHandler = (server) => {
           player2ReadyToStart: false,
           player1RoundScore: 0,
           player2RoundScore: 0,
+          player1TotalScore: 0,
+          player2TotalScore: 0,
           player1Guess: null,
           player2Guess: null,
           player1Distance: null,
           player2Distance: null,
+          region: null,
         },
       ];
       console.log("room created by", playerSocket, roomId);
@@ -153,11 +198,13 @@ const socketHandler = (server) => {
       if (room.player1 === senderId) {
         room.player1Distance = distanceFromAnswerLocation;
         room.player1RoundScore = roundScore;
+        room.player1TotalScore += roundScore;
       }
 
       if (room.player2 === senderId) {
         room.player2Distance = distanceFromAnswerLocation;
         room.player2RoundScore = roundScore;
+        room.player2TotalScore += roundScore;
       }
 
       if (room.player1RoundScore && room.player2RoundScore) {
@@ -232,18 +279,41 @@ const socketHandler = (server) => {
       io.to(roomId).emit("room joined", socket.id, roomId, room.region);
     });
 
-    socket.on("start game", (roomId, roomMapSize) => {
+    // we can send out the room region here
+    socket.on("start game", (roomId, roomMapSize, roomRegion) => {
       //   console.log("starting game in", roomId);
       const room = rooms.find((r) => r.roomId === roomId);
       room.mapSize = roomMapSize;
+      room.region = roomRegion;
 
       if (room.player1 && room.player2) io.to(roomId).emit("start game");
     });
 
-    socket.on("end game", (roomId) => {
+    socket.on("end game", async (roomId) => {
       // this event is now only used for backend cleanup instead of contrlling frontend
+      // I will also use this to record the game to the backend!
+      console.log("ending game in backend");
 
-      if (!rooms.find((r) => r.id === roomId)) return;
+      const room = rooms.find((r) => r.roomId === roomId);
+      console.log("room in end game", room);
+
+      if (!room) return;
+
+      console.log("log after return");
+
+      const gameData = {
+        firstUserId: room.player1Object?.id,
+        secondUserId: room.player2Object?.id,
+        player1Score: room.player1TotalScore,
+        player2Score: room.player2TotalScore,
+        winnerId: room.winner,
+        map: room.region,
+        // now we only need map
+      };
+
+      console.log("duel game data", gameData);
+
+      await saveDuelGame(gameData);
 
       rooms = rooms.filter((room) => room.roomId === roomId);
       console.log("room removed successfully");
@@ -373,6 +443,8 @@ const socketHandler = (server) => {
       if (player1HP === 0) {
         if (!room.hasWinner) {
           io.to(roomId).emit("game won", "p2");
+          // WINNER IS SET HERE, if the player is not logged in, winner is set to id 1, which is a reserved Guest profile
+          room.winner = room.player2Object ? room.player2Object.id : 1;
           room.hasWinner = true;
         }
       }
@@ -380,6 +452,8 @@ const socketHandler = (server) => {
       if (player2HP === 0) {
         if (!room.hasWinner) {
           io.to(roomId).emit("game won", "p1");
+          // WINNER IS SET HERE
+          room.winner = room.player1Object ? room.player1Object.id : 1;
           room.hasWinner = true;
         }
       }
