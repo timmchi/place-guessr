@@ -176,7 +176,7 @@ function App() {
       console.log("game won event", winner);
 
       // so that we see the results of the last round
-      setTimeout(() => dispatch(gameWon(winner)), 3000);
+      setTimeout(() => dispatch(gameWon(winner)), 5000);
     };
 
     // we could for example set some state based on this event, and based on that state, we render an error component

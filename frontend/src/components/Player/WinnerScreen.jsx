@@ -6,6 +6,7 @@ import { socket } from "../../sockets/socket";
 import { gameEnded } from "../../reducers/vsGameReducer";
 import avatar from "../../../test/vavatar.jpg";
 import avatar2 from "../../../test/avatar2.jpg";
+import { createAvatarUrl } from "../../utils/playerUtils";
 
 const WinnerScreen = ({ player }) => {
   const dispatch = useDispatch();
@@ -30,7 +31,11 @@ const WinnerScreen = ({ player }) => {
         <Avatar
           gameType="vs"
           playerName={player && player.username ? player.username : "Guest"}
-          imgLink={gameWinner === "p1" ? avatar : avatar2}
+          imgLink={
+            player && player.avatarName
+              ? createAvatarUrl(player.avatarName)
+              : createAvatarUrl()
+          }
         />
         <div className="py-6">
           <h1 className="text-4xl font-bold ">
