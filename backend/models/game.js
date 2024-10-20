@@ -33,17 +33,17 @@ Game.init(
       //   field: "winner_id",
       allowNull: true,
     },
-    // player1: foreign key to user, allownull false - how to account for the fact that a player can be anonymous?
-    // player2: foreign key to user, allownull true as there can be - how to account for the fact that a player can be anonymous?
-    // player1 score
-    // player2 score - optional for vs game only
-    // winner - optional for vs game
+    // matters for single game only, hence why it will be null in vs game and not shown
+    rounds: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   {
     sequelize,
     underscored: true,
     modelName: "game",
-    timestamps: false,
+    timestamps: true,
   }
 );
 

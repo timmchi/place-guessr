@@ -1,5 +1,6 @@
 import { Avatar } from "@material-tailwind/react";
 import { rooms } from "../../data/rooms";
+import { formatDate } from "../../utils/utils";
 
 const SingleGameHistoryElement = ({ game }) => {
   return (
@@ -11,7 +12,8 @@ const SingleGameHistoryElement = ({ game }) => {
         src={rooms.find((room) => room.region === game.map).flag}
       />
       <p className="font-bold">Score: {game.player1Score}</p>
-      <p>Rounds: 3</p>
+      <p>Rounds: {game.rounds}</p>
+      <p>{formatDate(game.date)}</p>
     </div>
   );
 };

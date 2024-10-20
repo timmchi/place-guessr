@@ -77,6 +77,8 @@ router.get("/:id", async (req, res) => {
             id: game.winner?.id, // Check if winner is available
             username: game.winner?.username, // Get the username of the winner
           },
+          rounds: game.rounds,
+          date: game.createdAt,
         })),
         avatar: user.avatarName,
       });

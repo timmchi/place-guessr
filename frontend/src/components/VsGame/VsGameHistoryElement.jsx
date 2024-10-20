@@ -1,6 +1,7 @@
 import { Avatar } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { rooms } from "../../data/rooms";
+import { formatDate } from "../../utils/utils";
 
 const VsGameHistoryElement = ({ game }) => {
   return (
@@ -26,6 +27,7 @@ const VsGameHistoryElement = ({ game }) => {
           "No Winner"
         )}
       </p>
+      <p>{formatDate(game.date)}</p>
     </div>
   );
 };
