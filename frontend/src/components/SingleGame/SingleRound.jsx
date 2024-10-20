@@ -87,6 +87,7 @@ const SingleRound = ({
         map: room.region,
         score: totalScore,
         user,
+        rounds: round - 1,
       });
 
     displayNotification("success", "Game ended successfully");

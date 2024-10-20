@@ -11,7 +11,7 @@ gamesRouter.post("/", async (req, res) => {
 
   console.log("request body", req.body);
 
-  const { gameType, map, score, user: userData } = req.body.gameData;
+  const { gameType, map, score, rounds, user: userData } = req.body.gameData;
 
   console.log(gameType, map, score, userData);
   if (!userData)
@@ -25,6 +25,7 @@ gamesRouter.post("/", async (req, res) => {
     map,
     gameType,
     player1Score: Math.floor(score),
+    rounds,
   });
   const createdUserGame = await UserGames.create({
     userId: user.id,
