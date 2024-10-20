@@ -49,6 +49,13 @@ router.get("/:id", async (req, res) => {
           through: {
             attributes: [],
           },
+          include: [
+            {
+              model: User,
+              as: "winner",
+              attributes: ["id", "username"],
+            },
+          ],
         },
       ],
     });
@@ -59,7 +66,18 @@ router.get("/:id", async (req, res) => {
         id: user.id,
         username: user.username,
         wonGames: user.gamesAsWinner,
-        playedGames: user.games_played,
+        // playedGames: user.games_played,
+        playedGames: user.games_played.map((game) => ({
+          id: game.id,
+          gameType: game.gameType,
+          map: game.map,
+          player1Score: game.player1Score,
+          player2Score: game.player2Score,
+          winner: {
+            id: game.winner?.id, // Check if winner is available
+            username: game.winner?.username, // Get the username of the winner
+          },
+        })),
         avatar: user.avatarName,
       });
     } else {
