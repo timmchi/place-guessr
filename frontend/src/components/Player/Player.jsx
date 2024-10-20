@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import HealthBar from "./HealthBar";
 import Avatar from "./Avatar";
 import CountUp from "react-countup";
+import { createAvatarUrl } from "../../utils/playerUtils";
 
 const Player = ({
   player,
@@ -20,7 +21,13 @@ const Player = ({
           {player && player.username ? player.username : "Guest"}{" "}
           {playerVariant === playerVariantChecker && " (You)"}
         </h1>
-        <Avatar imgLink={placeholderAvatarSrc} />
+        <Avatar
+          imgLink={
+            player && player.avatarName
+              ? createAvatarUrl(player.avatarName)
+              : createAvatarUrl()
+          }
+        />
       </div>
 
       <div className="text-center flex flex-col gap-1 text-lg xl:text-xl">
