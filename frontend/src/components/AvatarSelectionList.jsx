@@ -45,7 +45,7 @@ const AvatarSelectionList = ({ userId, changeAvatarMutation }) => {
   return (
     <>
       <Button
-        className="mt-2 bg-deep-purple-300 hover:bg-deep-purple-400"
+        className="mt-2 bg-deep-purple-300 hover:bg-deep-purple-400 w-full"
         onClick={handleOpen}
       >
         Change avatar

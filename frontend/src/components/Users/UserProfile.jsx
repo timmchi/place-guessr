@@ -55,9 +55,9 @@ const UserProfile = () => {
   console.log("user data in frontend", data);
 
   return (
-    <div className="h-screen bg-indigo-200 flex">
-      <div className="text-white flex gap-4 bg-indigo-400 mb-20 mt-32 w-full mx-40 rounded-xl shadow-2xl">
-        <div className="mx-20 mb-20">
+    <div className="min-h-screen bg-indigo-200 flex px-4">
+      <div className="text-white flex flex-col lg:flex-row gap-4 bg-indigo-400 mb-8 md:mb-20 mt-20 md:mt-32 w-full lg:mx-40 rounded-xl shadow-2xl">
+        <div className="mx-20 md:mb-20">
           <img
             src={createAvatarUrl(data.avatar)}
             className="h-80 w-80 object-cover object-center border-8 border-white mt-20 rounded-lg"
@@ -68,7 +68,9 @@ const UserProfile = () => {
               changeAvatarMutation={changeAvatarMutation}
             />
           )}
-          <h1 className="text-4xl font-bold pt-4">{data.username}</h1>
+          <h1 className="text-4xl font-bold pt-4 text-center">
+            {data.username}
+          </h1>
           <UserStats wonGames={data.wonGames} gamesPlayed={data.playedGames} />
         </div>
         <UserMatchHistory games={data.playedGames} />
