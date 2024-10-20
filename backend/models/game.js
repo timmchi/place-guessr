@@ -29,7 +29,8 @@ Game.init(
     },
     winnerId: {
       type: DataTypes.INTEGER,
-      field: "winner_id",
+      // //   ???
+      //   field: "winner_id",
       allowNull: true,
     },
     // player1: foreign key to user, allownull false - how to account for the fact that a player can be anonymous?

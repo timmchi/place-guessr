@@ -1,4 +1,5 @@
 import SingleGameHistoryElement from "../SingleGame/SingleGameHistoryElement";
+import VsGameHistoryElement from "../VsGame/VsGameHistoryElement";
 
 const UserGamesList = ({ games, type }) => {
   if (type === "SINGLE")
@@ -16,8 +17,12 @@ const UserGamesList = ({ games, type }) => {
   if (type === "DUEL")
     return (
       <div>
-        <h4 className="text-3xl font-bold py-10">Duel Games</h4>
-        <div className="h-96 overflow-y-scroll no-scrollbar"></div>
+        <h4 className="text-3xl font-bold py-8">Duel Games</h4>
+        <div className="h-96 overflow-y-scroll no-scrollbar">
+          {games.map((game) => (
+            <VsGameHistoryElement game={game} key={game.id} />
+          ))}
+        </div>
       </div>
     );
 };

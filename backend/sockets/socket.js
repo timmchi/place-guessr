@@ -315,7 +315,7 @@ const socketHandler = (server) => {
 
       await saveDuelGame(gameData);
 
-      rooms = rooms.filter((room) => room.roomId === roomId);
+      rooms = rooms.filter((room) => room.roomId !== roomId);
       console.log("room removed successfully");
       //   io.to(roomId).emit("end game");
     });
