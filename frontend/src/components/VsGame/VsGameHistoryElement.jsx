@@ -12,9 +12,6 @@ const VsGameHistoryElement = ({ game }) => {
         className="border-2 border-indigo-700"
         src={rooms.find((room) => room.region === game.map).flag}
       />
-      {/* <p className="font-bold text-lg">
-        Score: {game.player1Score} vs {game.player2Score}
-      </p> */}
       <div className="flex flex-col text-lg w-48 font-bold">
         <p className="opacity-70">Score</p>
         <p className="text-base md:text-xl">

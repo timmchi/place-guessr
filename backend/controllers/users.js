@@ -2,8 +2,9 @@ const bcrypt = require("bcrypt");
 const router = require("express").Router();
 const validationMiddleware = require("../utils/validationMiddleware");
 const { tokenExtractor } = require("../middleware/middleware");
+const { Op } = require("sequelize");
 
-const { User, Game } = require("../models");
+const { User, Game, UserGames } = require("../models");
 
 router.get("/", async (req, res) => {
   const users = await User.findAll();
@@ -32,59 +33,145 @@ router.post(
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
+  console.log("body in get user", req.query);
+
   // Reserved Guest user which will be used to account for anonymous players in duel mode
   if (Number(id) === 1)
     return res.status(400).json({ error: "not authorized" });
 
+  const singleGamesPage = parseInt(req.query.singlePage) || 1;
+  const limit = 5;
+  const singleGamesOffset = (singleGamesPage - 1) * limit;
+
+  const duelGamesPage = parseInt(req.query.duelPage) || 1;
+  const duelGamesOffset = (duelGamesPage - 1) * limit;
+
+  console.log(
+    "singlePage, duelPage in backend",
+    singleGamesPage,
+    duelGamesPage
+  );
+
+  // seems like all of this is too large, a refactor is in order
   try {
+    const totalGames = await UserGames.count({
+      where: { userId: id },
+    });
+
+    // We do separate queries here instead of join because sequelize doesnt properly support limiting and offseting many to many relationships
     const user = await User.findByPk(id, {
       include: [
         {
           model: Game,
           as: "gamesAsWinner",
         },
-        {
-          model: Game,
-          as: "games_played",
-          through: {
-            attributes: [],
-          },
-          include: [
-            {
-              model: User,
-              as: "winner",
-              attributes: ["id", "username"],
-            },
-          ],
-        },
       ],
     });
 
-    if (user) {
-      // remove hash, email, also will need to add profile pic
-      res.json({
-        id: user.id,
-        username: user.username,
-        wonGames: user.gamesAsWinner,
-        // playedGames: user.games_played,
-        playedGames: user.games_played.map((game) => ({
-          id: game.id,
-          gameType: game.gameType,
-          map: game.map,
-          player1Score: game.player1Score,
-          player2Score: game.player2Score,
-          winner: {
-            id: game.winner?.id, // Check if winner is available
-            username: game.winner?.username, // Get the username of the winner
-          },
-          rounds: game.rounds,
-          date: game.createdAt,
-        })),
-        avatar: user.avatarName,
-      });
-    } else {
-      res.status(404).end();
-    }
+    if (!user) res.status(404).end();
+
+    const singleGames = await Game.findAll({
+      include: [
+        {
+          model: User,
+          as: "winner",
+          attributes: ["id", "username"],
+        },
+        {
+          model: User,
+          as: "game_players",
+          through: { attributes: [] },
+          where: { id },
+        },
+      ],
+      where: { gameType: "SINGLE" },
+      limit: limit,
+      offset: singleGamesOffset,
+      order: [["createdAt", "DESC"]],
+    });
+
+    const duelGames = await Game.findAll({
+      include: [
+        {
+          model: User,
+          as: "winner",
+          attributes: ["id", "username"],
+        },
+        {
+          model: User,
+          as: "game_players",
+          through: { attributes: [] },
+          where: { id },
+        },
+      ],
+      where: { gameType: "DUEL" },
+      limit: limit,
+      offset: duelGamesOffset,
+      order: [["createdAt", "DESC"]],
+    });
+
+    const totalSingleGames = await Game.count({
+      include: {
+        model: User,
+        as: "game_players",
+        through: { attributes: [] },
+        where: { id: id },
+      },
+      where: {
+        gameType: "SINGLE",
+      },
+    });
+
+    const totalDuelGames = await Game.count({
+      include: {
+        model: User,
+        as: "game_players",
+        through: { attributes: [] },
+        where: { id: id },
+      },
+      where: {
+        gameType: "DUEL",
+      },
+    });
+
+    // remove hash, email, also will need to add profile pic
+    res.json({
+      id: user.id,
+      username: user.username,
+      wonGames: user.gamesAsWinner,
+      totalGames,
+      singleGames: singleGames.map((game) => ({
+        id: game.id,
+        gameType: game.gameType,
+        map: game.map,
+        player1Score: game.player1Score,
+        player2Score: game.player2Score,
+        winner: {
+          id: game.winner?.id,
+          username: game.winner?.username,
+        },
+        rounds: game.rounds,
+        date: game.createdAt,
+      })),
+      duelGames: duelGames.map((game) => ({
+        id: game.id,
+        gameType: game.gameType,
+        map: game.map,
+        player1Score: game.player1Score,
+        player2Score: game.player2Score,
+        winner: {
+          id: game.winner?.id,
+          username: game.winner?.username,
+        },
+        rounds: game.rounds,
+        date: game.createdAt,
+      })),
+      avatar: user.avatarName,
+      singleGamesPage,
+      duelGamesPage,
+      totalSingleGames,
+      totalDuelGames,
+    });
   } catch (error) {
     console.error("Error fetching user:", error);
     res

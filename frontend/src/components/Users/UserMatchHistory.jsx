@@ -1,6 +1,16 @@
 import UserGamesList from "./UserGamesList";
+import Pagination from "../SmallComponents/Pagination";
 
-const UserMatchHistory = ({ games }) => {
+const UserMatchHistory = ({
+  singleGames,
+  duelGames,
+  singlePage,
+  duelPage,
+  setActiveSinglePage,
+  setActiveDuelPage,
+  totalSingleGames,
+  totalDuelGames,
+}) => {
   return (
     <div className="my-[1rem] lg:my-[4.6rem]">
       <h3 className="text-3xl md:text-4xl font-bold text-center">
@@ -8,14 +18,24 @@ const UserMatchHistory = ({ games }) => {
       </h3>
       <div className="flex flex-col lg:flex-row justify-between xl:w-[62rem] text-center">
         {/* for both single and duels, last 5(10?) games with functionality to load more and scroll */}
-        <UserGamesList
-          type="SINGLE"
-          games={games.filter((game) => game.gameType === "SINGLE")}
-        />
-        <UserGamesList
-          type="DUEL"
-          games={games.filter((game) => game.gameType === "DUEL")}
-        />
+        <div className="flex flex-col items-center">
+          <UserGamesList type="SINGLE" games={singleGames} />
+          <Pagination
+            // for pages here, we need total Math.ceil(totalSingleGames / 5)
+            pages={Math.ceil(totalSingleGames / 5)}
+            active={singlePage}
+            setActive={setActiveSinglePage}
+          />
+        </div>
+        <div className="flex flex-col items-center">
+          <UserGamesList type="DUEL" games={duelGames} />
+          <Pagination
+            // for pages here, we need total Math.ceil(totalDuelGames / 5)
+            pages={Math.ceil(totalDuelGames / 5)}
+            active={duelPage}
+            setActive={setActiveDuelPage}
+          />
+        </div>
       </div>
     </div>
   );

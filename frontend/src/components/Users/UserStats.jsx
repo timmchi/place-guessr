@@ -9,7 +9,7 @@ const UserStats = ({ wonGames, gamesPlayed }) => {
       </div>
       <div className="text-center font-bold">
         <h5 className="opacity-70">Games</h5>
-        <p className="text-2xl">{gamesPlayed.length}</p>
+        <p className="text-2xl">{gamesPlayed}</p>
       </div>
     </div>
   );
