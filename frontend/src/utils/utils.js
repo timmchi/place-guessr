@@ -1,5 +1,4 @@
 export const formatDate = (dateString) => {
-  console.log("datestring", dateString);
   const date = new Date(dateString);
 
   // Get day, month, year, hours, and minutes

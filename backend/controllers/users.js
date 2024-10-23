@@ -2,8 +2,9 @@ const bcrypt = require("bcrypt");
 const router = require("express").Router();
 const validationMiddleware = require("../utils/validationMiddleware");
 const { tokenExtractor } = require("../middleware/middleware");
+const { Op } = require("sequelize");
 
-const { User, Game } = require("../models");
+const { User, Game, UserGames } = require("../models");
 
 router.get("/", async (req, res) => {
   const users = await User.findAll();
@@ -36,28 +37,68 @@ router.get("/:id", async (req, res) => {
   if (Number(id) === 1)
     return res.status(400).json({ error: "not authorized" });
 
+  const singleGamesPage = parseInt(req.body.singlePage) || 1;
+  const limit = 5;
+  const singleGamesOffset = (singleGamesPage - 1) * limit;
+
+  const duelGamesPage = parseInt(req.body.duelPage) || 1;
+  const duelGamesOffset = (duelGamesPage - 1) * limit;
+
+  // seems like all of this is too large, a refactor is in order
   try {
+    // shows 5 here..
+    const totalGames = await UserGames.count({
+      where: { userId: id },
+    });
+
+    // We do separate queries here instead of join because sequelize doesnt properly support limiting and offseting many to many relationships
     const user = await User.findByPk(id, {
       include: [
         {
           model: Game,
           as: "gamesAsWinner",
         },
+      ],
+    });
+
+    const singleGames = await Game.findAll({
+      include: [
         {
-          model: Game,
-          as: "games_played",
-          through: {
-            attributes: [],
-          },
-          include: [
-            {
-              model: User,
-              as: "winner",
-              attributes: ["id", "username"],
-            },
-          ],
+          model: User,
+          as: "winner",
+          attributes: ["id", "username"],
+        },
+        {
+          model: User,
+          as: "game_players",
+          through: { attributes: [] },
+          where: { id },
         },
       ],
+      where: { gameType: "SINGLE" },
+      limit: limit,
+      offset: singleGamesOffset,
+      order: [["createdAt", "DESC"]],
+    });
+
+    const duelGames = await Game.findAll({
+      include: [
+        {
+          model: User,
+          as: "winner",
+          attributes: ["id", "username"],
+        },
+        {
+          model: User,
+          as: "game_players",
+          through: { attributes: [] },
+          where: { id },
+        },
+      ],
+      where: { gameType: "DUEL" },
+      limit: limit,
+      offset: duelGamesOffset,
+      order: [["createdAt", "DESC"]],
     });
 
     if (user) {
@@ -66,21 +107,37 @@ router.get("/:id", async (req, res) => {
         id: user.id,
         username: user.username,
         wonGames: user.gamesAsWinner,
-        // playedGames: user.games_played,
-        playedGames: user.games_played.map((game) => ({
+        // i think this is just gonna be 5, need a way to properly get # of total games
+        totalGames,
+        singleGames: singleGames.map((game) => ({
           id: game.id,
           gameType: game.gameType,
           map: game.map,
           player1Score: game.player1Score,
           player2Score: game.player2Score,
           winner: {
-            id: game.winner?.id, // Check if winner is available
-            username: game.winner?.username, // Get the username of the winner
+            id: game.winner?.id,
+            username: game.winner?.username,
+          },
+          rounds: game.rounds,
+          date: game.createdAt,
+        })),
+        duelGames: duelGames.map((game) => ({
+          id: game.id,
+          gameType: game.gameType,
+          map: game.map,
+          player1Score: game.player1Score,
+          player2Score: game.player2Score,
+          winner: {
+            id: game.winner?.id,
+            username: game.winner?.username,
           },
           rounds: game.rounds,
           date: game.createdAt,
         })),
         avatar: user.avatarName,
+        singleGamesPage,
+        duelGamesPage,
       });
     } else {
       res.status(404).end();

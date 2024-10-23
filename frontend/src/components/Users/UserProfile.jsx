@@ -71,9 +71,12 @@ const UserProfile = () => {
           <h1 className="text-4xl font-bold pt-4 text-center">
             {data.username}
           </h1>
-          <UserStats wonGames={data.wonGames} gamesPlayed={data.playedGames} />
+          <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
-        <UserMatchHistory games={data.playedGames} />
+        <UserMatchHistory
+          singleGames={data.singleGames}
+          duelGames={data.duelGames}
+        />
       </div>
     </div>
   );
