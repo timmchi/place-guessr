@@ -33,20 +33,27 @@ router.post(
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
+  console.log("body in get user", req.query);
+
   // Reserved Guest user which will be used to account for anonymous players in duel mode
   if (Number(id) === 1)
     return res.status(400).json({ error: "not authorized" });
 
-  const singleGamesPage = parseInt(req.body.singlePage) || 1;
+  const singleGamesPage = parseInt(req.query.singlePage) || 1;
   const limit = 5;
   const singleGamesOffset = (singleGamesPage - 1) * limit;
 
-  const duelGamesPage = parseInt(req.body.duelPage) || 1;
+  const duelGamesPage = parseInt(req.query.duelPage) || 1;
   const duelGamesOffset = (duelGamesPage - 1) * limit;
+
+  console.log(
+    "singlePage, duelPage in backend",
+    singleGamesPage,
+    duelGamesPage
+  );
 
   // seems like all of this is too large, a refactor is in order
   try {
-    // shows 5 here..
     const totalGames = await UserGames.count({
       where: { userId: id },
     });
@@ -60,6 +67,8 @@ router.get("/:id", async (req, res) => {
         },
       ],
     });
+
+    if (!user) res.status(404).end();
 
     const singleGames = await Game.findAll({
       include: [
@@ -101,47 +110,68 @@ router.get("/:id", async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
-    if (user) {
-      // remove hash, email, also will need to add profile pic
-      res.json({
-        id: user.id,
-        username: user.username,
-        wonGames: user.gamesAsWinner,
-        // i think this is just gonna be 5, need a way to properly get # of total games
-        totalGames,
-        singleGames: singleGames.map((game) => ({
-          id: game.id,
-          gameType: game.gameType,
-          map: game.map,
-          player1Score: game.player1Score,
-          player2Score: game.player2Score,
-          winner: {
-            id: game.winner?.id,
-            username: game.winner?.username,
-          },
-          rounds: game.rounds,
-          date: game.createdAt,
-        })),
-        duelGames: duelGames.map((game) => ({
-          id: game.id,
-          gameType: game.gameType,
-          map: game.map,
-          player1Score: game.player1Score,
-          player2Score: game.player2Score,
-          winner: {
-            id: game.winner?.id,
-            username: game.winner?.username,
-          },
-          rounds: game.rounds,
-          date: game.createdAt,
-        })),
-        avatar: user.avatarName,
-        singleGamesPage,
-        duelGamesPage,
-      });
-    } else {
-      res.status(404).end();
-    }
+    const totalSingleGames = await Game.count({
+      include: {
+        model: User,
+        as: "game_players",
+        through: { attributes: [] },
+        where: { id: id },
+      },
+      where: {
+        gameType: "SINGLE",
+      },
+    });
+
+    const totalDuelGames = await Game.count({
+      include: {
+        model: User,
+        as: "game_players",
+        through: { attributes: [] },
+        where: { id: id },
+      },
+      where: {
+        gameType: "DUEL",
+      },
+    });
+
+    // remove hash, email, also will need to add profile pic
+    res.json({
+      id: user.id,
+      username: user.username,
+      wonGames: user.gamesAsWinner,
+      totalGames,
+      singleGames: singleGames.map((game) => ({
+        id: game.id,
+        gameType: game.gameType,
+        map: game.map,
+        player1Score: game.player1Score,
+        player2Score: game.player2Score,
+        winner: {
+          id: game.winner?.id,
+          username: game.winner?.username,
+        },
+        rounds: game.rounds,
+        date: game.createdAt,
+      })),
+      duelGames: duelGames.map((game) => ({
+        id: game.id,
+        gameType: game.gameType,
+        map: game.map,
+        player1Score: game.player1Score,
+        player2Score: game.player2Score,
+        winner: {
+          id: game.winner?.id,
+          username: game.winner?.username,
+        },
+        rounds: game.rounds,
+        date: game.createdAt,
+      })),
+      avatar: user.avatarName,
+      singleGamesPage,
+      duelGamesPage,
+      totalSingleGames,
+      totalDuelGames,
+    });
   } catch (error) {
     console.error("Error fetching user:", error);
     res

@@ -3,12 +3,9 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import usersService from "../../services/users";
 import LoadingScreen from "../Screens/LoadingScreen";
-import { Avatar, Button } from "@material-tailwind/react";
-import { rooms } from "../../data/rooms";
 import { useSelector } from "react-redux";
 import AvatarSelectionList from "../AvatarSelectionList";
 import UserStats from "./UserStats";
-import UserGamesList from "./UserGamesList";
 import UserMatchHistory from "./UserMatchHistory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useNotification from "../../hooks/useNotification";
@@ -16,14 +13,26 @@ import { createAvatarUrl } from "../../utils/playerUtils";
 
 const UserProfile = () => {
   const { userId } = useParams();
+  const [activeSinglePage, setActiveSinglePage] = useState(1);
+  const [activeDuelPage, setActiveDuelPage] = useState(1);
   const user = useSelector((state) => state.user);
   const queryClient = useQueryClient();
   const { displayNotification } = useNotification();
 
   // maybe moving all of the user functionality read/update/delete to a useUser hook would be a good idea
+  //   const { isLoading, data, error, isError } = useQuery({
+  //     queryKey: ["user", userId],
+  //     queryFn: async () => await usersService.getUser(userId),
+  //   });
+
+  // I think a better way to do this would be to fetch games separately with a separate queryima
+  // I will definitely change it to use a separate user games query, but for now I just want to get
+  // it to work
   const { isLoading, data, error, isError } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: async () => await usersService.getUser(userId),
+    queryKey: ["user", userId, activeSinglePage, activeDuelPage],
+    queryFn: async () =>
+      await usersService.getUser(userId, activeSinglePage, activeDuelPage),
+    keepPreviousData: true,
   });
 
   // I suppose this can be changed to just a changeUserMutation and moved to a useUser hook
@@ -76,6 +85,12 @@ const UserProfile = () => {
         <UserMatchHistory
           singleGames={data.singleGames}
           duelGames={data.duelGames}
+          singlePage={activeSinglePage}
+          duelPage={activeDuelPage}
+          setActiveSinglePage={setActiveSinglePage}
+          setActiveDuelPage={setActiveDuelPage}
+          totalSingleGames={data.totalSingleGames}
+          totalDuelGames={data.totalDuelGames}
         />
       </div>
     </div>
