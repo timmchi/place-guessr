@@ -205,7 +205,6 @@ const StreetViewController = ({
           <div className="absolute z-20 text-white-200 bottom-5 md:bottom-0 left-1/2 transform -translate-x-1/2 md:pb-8 font-bold flex flex-col md:flex-row items-center md:gap-8 text-white">
             <div className="order-1 flex items-center gap-2 md:flex-col">
               <p className="text-2xl md:text-4xl">
-                {/* <CountUp end={distance} /> */}
                 <CountUp end={distance} duration={3} />
               </p>
               <p className="text-sm">km from location</p>
