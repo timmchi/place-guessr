@@ -11,6 +11,7 @@ import LoadingScreen from "../Screens/LoadingScreen";
 import useNotification from "../../hooks/useNotification";
 import { useMutation } from "@tanstack/react-query";
 import gamesService from "../../services/games";
+import useGames from "../../hooks/useGames";
 
 const SingleRound = ({
   round,
@@ -26,27 +27,12 @@ const SingleRound = ({
   const { displayNotification } = useNotification();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  const { saveSingleGameMutation } = useGames();
 
   const { isLoading, data, error, isError, refetch } = useRandomLocation(
     roomMapType === "world" ? "geolist" : "geonames",
     room.region && room.region
   );
-
-  // maybe this will go in the separate useGames hook
-  const saveSingleGameMutation = useMutation({
-    mutationFn: gamesService.saveSingleGame,
-    onSuccess: (data) => {
-      console.log("successfully saved the game", data);
-      displayNotification("success", "Game saved successfully");
-    },
-    onError: (error) => {
-      displayNotification(
-        "error",
-        "Something went wrong when saving the game",
-        error.message
-      );
-    },
-  });
 
   if (isLoading) return <LoadingScreen />;
 
