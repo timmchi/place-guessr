@@ -10,12 +10,18 @@ import UserMatchHistory from "./UserMatchHistory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useNotification from "../../hooks/useNotification";
 import { createAvatarUrl } from "../../utils/playerUtils";
+import { Input, Button } from "@material-tailwind/react";
+import { userUpdated } from "../../reducers/userReducer";
+import { useDispatch } from "react-redux";
 
 const UserProfile = () => {
   const { userId } = useParams();
   const user = useSelector((state) => state.user);
   const queryClient = useQueryClient();
   const { displayNotification } = useNotification();
+  const dispatch = useDispatch();
+  const [editingUsername, setEditingUsername] = useState(false);
+  const [username, setUsername] = useState("");
 
   // maybe moving all of the user functionality read/update/delete to a useUser hook would be a good idea
   const { isLoading, data, error, isError } = useQuery({
@@ -25,19 +31,17 @@ const UserProfile = () => {
   });
 
   // I suppose this can be changed to just a changeUserMutation and moved to a useUser hook
-  const changeAvatarMutation = useMutation({
+  // this should change to changeUserDataMutation
+  const changeUserDataMutation = useMutation({
     mutationFn: usersService.updateUser,
     onSuccess: (data) => {
-      console.log("successfully updated avatar", data);
+      console.log("successfully updated user", data);
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
-      displayNotification("success", "Avatar successfully updated.");
+      displayNotification("success", "User successfully updated.");
     },
     onError: (error) => {
-      displayNotification(
-        "error",
-        "Something went wrong when updating avatar.",
-        error.message
-      );
+      console.log(error.message);
+      displayNotification("error", "Something went wrong when updating user.");
     },
   });
 
@@ -50,7 +54,32 @@ const UserProfile = () => {
     return <div>User not found...</div>;
   }
 
-  console.log("user data in frontend", data);
+  //   console.log("user data in frontend", data);
+  const handleUsernameChange = () => {
+    console.log(username);
+    if (username !== data.username) {
+      changeUserDataMutation.mutate(
+        { id: userId, username },
+        {
+          onSuccess: () => {
+            setEditingUsername(false);
+          },
+          onError: () => {
+            setEditingUsername(false);
+          },
+        }
+      );
+      // need to change redux user state as well, but what about the avatar in the user redux state? How does that change?
+      // DOESNT GET DISPATCHED - NEED TO FIX!
+      dispatch(userUpdated({ username }));
+    }
+    // setEditingUsername(false);
+  };
+
+  const handleUsernameEditing = () => {
+    setUsername(data.username);
+    setEditingUsername(true);
+  };
 
   return (
     <div className="min-h-screen bg-indigo-200 flex px-4">
@@ -60,15 +89,48 @@ const UserProfile = () => {
             src={createAvatarUrl(data.avatar)}
             className="h-80 w-80 object-cover object-center border-8 border-white mt-20 rounded-lg"
           />
-          {user && user.username === data.username && (
+          {user && user.id === data.id && (
             <AvatarSelectionList
               userId={data.id}
-              changeAvatarMutation={changeAvatarMutation}
+              changeAvatarMutation={changeUserDataMutation}
             />
           )}
-          <h1 className="text-4xl font-bold pt-4 text-center">
-            {data.username}
-          </h1>
+          {/* also to separate component */}
+          <div
+            className={`flex flex-col text-center ${
+              editingUsername ? "gap-8" : "gap-4"
+            }`}
+          >
+            {!editingUsername ? (
+              <h1 className="text-4xl font-bold pt-4 text-center">
+                {data.username}
+              </h1>
+            ) : (
+              <Input
+                size="lg"
+                value={username}
+                className="!text-white focus:!border-amber-400 !border-t-blue-gray-200 mt-4"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            )}
+            <Button
+              size="sm"
+              variant="outlined"
+              className={`text-center self-center ${
+                editingUsername
+                  ? "border-green-300 text-green-300"
+                  : "border-white text-white"
+              }`}
+              onClick={
+                editingUsername ? handleUsernameChange : handleUsernameEditing
+              }
+            >
+              {editingUsername ? "Save Username" : "Edit Username"}
+            </Button>
+          </div>
           <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
         <UserMatchHistory userId={userId} />

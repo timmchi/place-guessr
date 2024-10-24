@@ -76,13 +76,14 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", tokenExtractor, async (req, res) => {
   const user = await User.findByPk(req.params.id);
 
-  const { avatarName } = req.body;
+  const { avatarName, username } = req.body;
 
   if (user) {
     // user.username = req.body.username;
     // await user.save();
     // res.json(user);
-    user.avatarName = avatarName;
+    if (username) user.username = username;
+    if (avatarName) user.avatarName = avatarName;
     await user.save();
 
     return res.json(user);
