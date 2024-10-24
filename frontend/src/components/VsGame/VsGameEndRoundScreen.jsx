@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import avatar from "../../../test/vavatar.jpg";
 import avatar2 from "../../../test/avatar2.jpg";
 
+// NEED TO CHANGE AVATARS HERE!!!!
 const VsGameEndRoundScreen = ({ guessLocation, answerLocation }) => {
   const gameType = useSelector((state) => state.gameType);
   const { player1Guess, player2Guess } = useSelector(
