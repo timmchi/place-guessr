@@ -13,25 +13,14 @@ import { createAvatarUrl } from "../../utils/playerUtils";
 
 const UserProfile = () => {
   const { userId } = useParams();
-  const [activeSinglePage, setActiveSinglePage] = useState(1);
-  const [activeDuelPage, setActiveDuelPage] = useState(1);
   const user = useSelector((state) => state.user);
   const queryClient = useQueryClient();
   const { displayNotification } = useNotification();
 
   // maybe moving all of the user functionality read/update/delete to a useUser hook would be a good idea
-  //   const { isLoading, data, error, isError } = useQuery({
-  //     queryKey: ["user", userId],
-  //     queryFn: async () => await usersService.getUser(userId),
-  //   });
-
-  // I think a better way to do this would be to fetch games separately with a separate queryima
-  // I will definitely change it to use a separate user games query, but for now I just want to get
-  // it to work
   const { isLoading, data, error, isError } = useQuery({
-    queryKey: ["user", userId, activeSinglePage, activeDuelPage],
-    queryFn: async () =>
-      await usersService.getUser(userId, activeSinglePage, activeDuelPage),
+    queryKey: ["user", userId],
+    queryFn: async () => await usersService.getUser(userId),
     keepPreviousData: true,
   });
 
@@ -82,16 +71,7 @@ const UserProfile = () => {
           </h1>
           <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
-        <UserMatchHistory
-          singleGames={data.singleGames}
-          duelGames={data.duelGames}
-          singlePage={activeSinglePage}
-          duelPage={activeDuelPage}
-          setActiveSinglePage={setActiveSinglePage}
-          setActiveDuelPage={setActiveDuelPage}
-          totalSingleGames={data.totalSingleGames}
-          totalDuelGames={data.totalDuelGames}
-        />
+        <UserMatchHistory userId={userId} />
       </div>
     </div>
   );

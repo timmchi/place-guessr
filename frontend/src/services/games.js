@@ -7,4 +7,14 @@ const saveSingleGame = async (gameData) => {
   return response.data;
 };
 
-export default { saveSingleGame };
+const getUsersGames = async (userId, singlePage, duelPage) => {
+  const params = {
+    singlePage,
+    duelPage,
+  };
+
+  const response = await axios.get(`${baseUrl}/${userId}`, { params });
+  return response.data;
+};
+
+export default { saveSingleGame, getUsersGames };

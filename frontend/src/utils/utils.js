@@ -1,12 +1,18 @@
+// EEST is fine for now, but time needs to be according to the users timezone
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
 
-  // Get day, month, year, hours, and minutes
-  const day = date.getUTCDate();
-  const month = date.toLocaleString("en-US", { month: "long" });
-  const year = date.getUTCFullYear();
-  const hours = date.getUTCHours().toString().padStart(2, "0");
-  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+  const options = {
+    timeZone: "Europe/Athens", // EEST time zone
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
 
-  return `${day} ${month} ${year} ${hours}:${minutes}`;
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+
+  return formattedDate;
 };
