@@ -116,20 +116,22 @@ const UserProfile = () => {
                 onChange={(e) => setUsername(e.target.value)}
               />
             )}
-            <Button
-              size="sm"
-              variant="outlined"
-              className={`text-center self-center ${
-                editingUsername
-                  ? "border-green-300 text-green-300"
-                  : "border-white text-white"
-              }`}
-              onClick={
-                editingUsername ? handleUsernameChange : handleUsernameEditing
-              }
-            >
-              {editingUsername ? "Save Username" : "Edit Username"}
-            </Button>
+            {user && user.id === data.id && (
+              <Button
+                size="sm"
+                variant="outlined"
+                className={`text-center self-center ${
+                  editingUsername
+                    ? "border-green-300 text-green-300"
+                    : "border-white text-white"
+                }`}
+                onClick={
+                  editingUsername ? handleUsernameChange : handleUsernameEditing
+                }
+              >
+                {editingUsername ? "Save Username" : "Edit Username"}
+              </Button>
+            )}
           </div>
           <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
