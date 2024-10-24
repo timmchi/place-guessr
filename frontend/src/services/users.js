@@ -22,11 +22,12 @@ const updateUser = async (userData) => {
     headers: { Authorization: token },
   };
 
-  const { id, selectedImage } = userData;
+  // we can put the username here as well
+  const { id, selectedImage, username } = userData;
 
   const response = await axios.put(
     `${baseUrl}/${id}`,
-    { avatarName: selectedImage },
+    { avatarName: selectedImage, username },
     config
   );
   return response.data;

@@ -11,10 +11,14 @@ const userSlice = createSlice({
     userLoggedOut() {
       return null;
     },
+    userUpdated(state, action) {
+      const { username } = action.payload;
+      state.user.username = username;
+    },
   },
 });
 
-export const { userSet, userLoggedOut } = userSlice.actions;
+export const { userSet, userLoggedOut, userUpdated } = userSlice.actions;
 
 export const initializeUser = (user) => {
   return async (dispatch) => {
