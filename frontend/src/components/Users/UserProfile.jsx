@@ -11,9 +11,12 @@ import UserEditingControls from "./UserEditingControls";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useNotification from "../../hooks/useNotification";
 import { createAvatarUrl } from "../../utils/playerUtils";
-import { Input, Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { userUpdated } from "../../reducers/userReducer";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { removeUser } from "../../utils/localStorageUtils";
+import { userLoggedOut } from "../../reducers/userReducer";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -21,6 +24,7 @@ const UserProfile = () => {
   const queryClient = useQueryClient();
   const { displayNotification } = useNotification();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [editingUsername, setEditingUsername] = useState(false);
   const [username, setUsername] = useState("");
 
@@ -44,6 +48,16 @@ const UserProfile = () => {
     onError: (error) => {
       console.log(error.message);
       displayNotification("error", "Something went wrong when updating user.");
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: usersService.deleteUser,
+    // i wonder what should I put there?
+    onSuccess: () => console.log("user successfully deleted"),
+    onError: (error) => {
+      console.log(error.message);
+      displayNotification("error", "Something went wrong when deleting user.");
     },
   });
 
@@ -88,6 +102,26 @@ const UserProfile = () => {
     setUsername("");
   };
 
+  const handleUserDeletion = (userId) => {
+    if (confirm("Please confirm that you want to delete your profile")) {
+      console.log("deleting...");
+
+      // we want a delete mutation here, as well as a redirect to the main page, clearing redux state, clearing local storage and a notification that user was successfully deleted
+      deleteUserMutation.mutate(userId);
+
+      dispatch(userLoggedOut());
+      removeUser();
+
+      navigate("/");
+
+      displayNotification("success", "User successfully deleted.");
+
+      return;
+    }
+
+    console.log("profile deletion cancelled");
+  };
+
   return (
     <div className="min-h-screen bg-indigo-200 flex px-4">
       <div className="text-white flex flex-col lg:flex-row gap-4 bg-indigo-400 mb-8 md:mb-20 mt-20 md:mt-32 w-full lg:mx-40 rounded-xl shadow-2xl">
@@ -112,6 +146,15 @@ const UserProfile = () => {
             handleUsernameChange={handleUsernameChange}
             handleUsernameEditing={handleUsernameEditing}
           />
+          {user && user.id === data.id && (
+            <Button
+              size="sm"
+              className="text-center bg-red-500 bg-opacity-80 text-white w-full my-2"
+              onClick={() => handleUserDeletion(userId)}
+            >
+              Delete User
+            </Button>
+          )}
           <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
         <UserMatchHistory userId={userId} />
