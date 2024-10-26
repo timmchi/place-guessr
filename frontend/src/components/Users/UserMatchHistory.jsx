@@ -21,34 +21,42 @@ const UserMatchHistory = ({ userId }) => {
   if (isError) displayNotification("error", error.message);
 
   return (
-    <div className="my-4 lg:my-[4.6rem]">
+    <div className="my-4 lg:my-[4.6rem] mx-auto">
       <h3 className="text-3xl md:text-4xl font-bold text-center">
         Match History
       </h3>
       {isLoading && <UserMatchHistoryLoadingElement />}
       {!isLoading && (
-        <div className="flex flex-col 2xl:flex-row justify-between xl:w-[62rem] text-center">
-          <div className="flex flex-col items-center">
-            <UserGamesList type="SINGLE" games={data.singleGames} />
-            {data.totalSingleGames && (
-              <Pagination
-                pages={Math.ceil(data.totalSingleGames / 5)}
-                active={activeSinglePage}
-                setActive={setActiveSinglePage}
-              />
-            )}
-          </div>
-          <div className="flex flex-col items-center">
-            <UserGamesList type="DUEL" games={data.duelGames} />
-            {data.totalDuelGames !== 0 && (
-              <Pagination
-                pages={Math.ceil(data.totalDuelGames / 5)}
-                active={activeDuelPage}
-                setActive={setActiveDuelPage}
-              />
-            )}
-          </div>
-        </div>
+        <>
+          {data.totalSingleGames !== 0 && data.totalDuelGames !== 0 ? (
+            <div className="flex flex-col 2xl:flex-row justify-between xl:w-[62rem] text-center">
+              <div className="flex flex-col items-center">
+                <UserGamesList type="SINGLE" games={data.singleGames} />
+                {data.totalSingleGames !== 0 && (
+                  <Pagination
+                    pages={Math.ceil(data.totalSingleGames / 5)}
+                    active={activeSinglePage}
+                    setActive={setActiveSinglePage}
+                  />
+                )}
+              </div>
+              <div className="flex flex-col items-center">
+                <UserGamesList type="DUEL" games={data.duelGames} />
+                {data.totalDuelGames !== 0 && (
+                  <Pagination
+                    pages={Math.ceil(data.totalDuelGames / 5)}
+                    active={activeDuelPage}
+                    setActive={setActiveDuelPage}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <p className="text-center text-3xl pt-8 text-amber-200">
+              This user hasn't played in any games yet
+            </p>
+          )}
+        </>
       )}
     </div>
   );
