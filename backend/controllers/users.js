@@ -92,4 +92,14 @@ router.put("/:id", tokenExtractor, async (req, res) => {
   res.status(404).end();
 });
 
+router.delete("/:id", tokenExtractor, async (req, res) => {
+  const user = await User.findByPk(req.params.id);
+
+  if (!user) res.status(404).end();
+
+  await user.destroy();
+
+  return res.status(200).end();
+});
+
 module.exports = router;

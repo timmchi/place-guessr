@@ -7,12 +7,16 @@ import { useSelector } from "react-redux";
 import AvatarSelectionList from "../AvatarSelectionList";
 import UserStats from "./UserStats";
 import UserMatchHistory from "./UserMatchHistory";
+import UserEditingControls from "./UserEditingControls";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useNotification from "../../hooks/useNotification";
 import { createAvatarUrl } from "../../utils/playerUtils";
-import { Input, Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { userUpdated } from "../../reducers/userReducer";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { removeUser } from "../../utils/localStorageUtils";
+import { userLoggedOut } from "../../reducers/userReducer";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -20,6 +24,7 @@ const UserProfile = () => {
   const queryClient = useQueryClient();
   const { displayNotification } = useNotification();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [editingUsername, setEditingUsername] = useState(false);
   const [username, setUsername] = useState("");
 
@@ -37,11 +42,22 @@ const UserProfile = () => {
     onSuccess: (data) => {
       console.log("successfully updated user", data);
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
+      queryClient.invalidateQueries({ queryKey: ["games", userId] });
       displayNotification("success", "User successfully updated.");
     },
     onError: (error) => {
       console.log(error.message);
       displayNotification("error", "Something went wrong when updating user.");
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: usersService.deleteUser,
+    // i wonder what should I put there?
+    onSuccess: () => console.log("user successfully deleted"),
+    onError: (error) => {
+      console.log(error.message);
+      displayNotification("error", "Something went wrong when deleting user.");
     },
   });
 
@@ -81,6 +97,31 @@ const UserProfile = () => {
     setEditingUsername(true);
   };
 
+  const handleEditingCancel = () => {
+    setEditingUsername(false);
+    setUsername("");
+  };
+
+  const handleUserDeletion = (userId) => {
+    if (confirm("Please confirm that you want to delete your profile")) {
+      console.log("deleting...");
+
+      // we want a delete mutation here, as well as a redirect to the main page, clearing redux state, clearing local storage and a notification that user was successfully deleted
+      deleteUserMutation.mutate(userId);
+
+      dispatch(userLoggedOut());
+      removeUser();
+
+      navigate("/");
+
+      displayNotification("success", "User successfully deleted.");
+
+      return;
+    }
+
+    console.log("profile deletion cancelled");
+  };
+
   return (
     <div className="min-h-screen bg-indigo-200 flex px-4">
       <div className="text-white flex flex-col lg:flex-row gap-4 bg-indigo-400 mb-8 md:mb-20 mt-20 md:mt-32 w-full lg:mx-40 rounded-xl shadow-2xl">
@@ -95,44 +136,25 @@ const UserProfile = () => {
               changeAvatarMutation={changeUserDataMutation}
             />
           )}
-          {/* also to separate component */}
-          <div
-            className={`flex flex-col text-center ${
-              editingUsername ? "gap-8" : "gap-4"
-            }`}
-          >
-            {!editingUsername ? (
-              <h1 className="text-4xl font-bold pt-4 text-center">
-                {data.username}
-              </h1>
-            ) : (
-              <Input
-                size="lg"
-                value={username}
-                className="!text-white focus:!border-amber-400 !border-t-blue-gray-200 mt-4"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            )}
-            {user && user.id === data.id && (
-              <Button
-                size="sm"
-                variant="outlined"
-                className={`text-center self-center ${
-                  editingUsername
-                    ? "border-green-300 text-green-300"
-                    : "border-white text-white"
-                }`}
-                onClick={
-                  editingUsername ? handleUsernameChange : handleUsernameEditing
-                }
-              >
-                {editingUsername ? "Save Username" : "Edit Username"}
-              </Button>
-            )}
-          </div>
+          <UserEditingControls
+            editingUsername={editingUsername}
+            handleEditingCancel={handleEditingCancel}
+            username={username}
+            setUsername={setUsername}
+            user={user}
+            data={data}
+            handleUsernameChange={handleUsernameChange}
+            handleUsernameEditing={handleUsernameEditing}
+          />
+          {user && user.id === data.id && (
+            <Button
+              size="sm"
+              className="text-center bg-red-500 bg-opacity-80 text-white w-full my-2"
+              onClick={() => handleUserDeletion(userId)}
+            >
+              Delete User
+            </Button>
+          )}
           <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
         <UserMatchHistory userId={userId} />
