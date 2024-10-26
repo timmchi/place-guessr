@@ -2,6 +2,7 @@ import { Input, Button } from "@material-tailwind/react";
 
 const UserEditingControls = ({
   editingUsername,
+  handleEditingCancel,
   username,
   user,
   data,
@@ -31,20 +32,32 @@ const UserEditingControls = ({
         />
       )}
       {user && user.id === data?.id && (
-        <Button
-          size="sm"
-          variant="outlined"
-          className={`text-center self-center ${
-            editingUsername
-              ? "border-green-300 text-green-300"
-              : "border-white text-white"
-          }`}
-          onClick={
-            editingUsername ? handleUsernameChange : handleUsernameEditing
-          }
-        >
-          {editingUsername ? "Save Username" : "Edit Username"}
-        </Button>
+        <div className="flex gap-4 ">
+          <Button
+            size="sm"
+            variant="outlined"
+            className={`text-center w-full ${
+              editingUsername
+                ? "border-green-300 text-green-300"
+                : "border-white text-white"
+            }`}
+            onClick={
+              editingUsername ? handleUsernameChange : handleUsernameEditing
+            }
+          >
+            {editingUsername ? "Save Username" : "Edit Username"}
+          </Button>
+          {editingUsername && (
+            <Button
+              size="sm"
+              variant="outlined"
+              className="text-center border-red-400 text-red-400 w-full"
+              onClick={handleEditingCancel}
+            >
+              Cancel
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );

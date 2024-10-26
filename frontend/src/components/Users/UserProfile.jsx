@@ -83,6 +83,11 @@ const UserProfile = () => {
     setEditingUsername(true);
   };
 
+  const handleEditingCancel = () => {
+    setEditingUsername(false);
+    setUsername("");
+  };
+
   return (
     <div className="min-h-screen bg-indigo-200 flex px-4">
       <div className="text-white flex flex-col lg:flex-row gap-4 bg-indigo-400 mb-8 md:mb-20 mt-20 md:mt-32 w-full lg:mx-40 rounded-xl shadow-2xl">
@@ -99,6 +104,7 @@ const UserProfile = () => {
           )}
           <UserEditingControls
             editingUsername={editingUsername}
+            handleEditingCancel={handleEditingCancel}
             username={username}
             setUsername={setUsername}
             user={user}
