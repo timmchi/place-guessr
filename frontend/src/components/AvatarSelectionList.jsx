@@ -46,15 +46,13 @@ const AvatarSelectionList = ({ userId, changeAvatarMutation }) => {
     <>
       <Button
         size="sm"
-        className="mt-2 bg-deep-purple-300 hover:bg-deep-purple-400 w-full"
+        className="mt-2 bg-deep-purple-300 hover:bg-deep-purple-400 w-80"
         onClick={handleOpen}
       >
         Change avatar
       </Button>
       <Dialog open={open} handler={handleOpen} className="bg-indigo-200">
-        <DialogHeader className="text-white text-center">
-          Avatar Selection
-        </DialogHeader>
+        <DialogHeader className="text-white">Avatar Selection</DialogHeader>
         <DialogBody className="h-[30rem] md:h-[42rem] overflow-y-scroll">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {avatarNames.map((name) => (

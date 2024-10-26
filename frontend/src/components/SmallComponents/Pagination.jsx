@@ -15,7 +15,7 @@ const Pagination = ({ pages, active, setActive }) => {
   };
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center gap-8 pt-2">
       <IconButton
         size="sm"
         variant="outlined"

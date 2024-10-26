@@ -21,31 +21,32 @@ const UserMatchHistory = ({ userId }) => {
   if (isError) displayNotification("error", error.message);
 
   return (
-    <div className="my-[1rem] lg:my-[4.6rem]">
+    <div className="my-4 lg:my-[4.6rem]">
       <h3 className="text-3xl md:text-4xl font-bold text-center">
         Match History
       </h3>
       {isLoading && <UserMatchHistoryLoadingElement />}
       {!isLoading && (
         <div className="flex flex-col lg:flex-row justify-between xl:w-[62rem] text-center">
-          {/* for both single and duels, last 5(10?) games with functionality to load more and scroll */}
           <div className="flex flex-col items-center">
             <UserGamesList type="SINGLE" games={data.singleGames} />
-            <Pagination
-              // for pages here, we need total Math.ceil(totalSingleGames / 5)
-              pages={Math.ceil(data.totalSingleGames / 5)}
-              active={activeSinglePage}
-              setActive={setActiveSinglePage}
-            />
+            {data.totalSingleGames && (
+              <Pagination
+                pages={Math.ceil(data.totalSingleGames / 5)}
+                active={activeSinglePage}
+                setActive={setActiveSinglePage}
+              />
+            )}
           </div>
           <div className="flex flex-col items-center">
             <UserGamesList type="DUEL" games={data.duelGames} />
-            <Pagination
-              // for pages here, we need total Math.ceil(totalDuelGames / 5)
-              pages={Math.ceil(data.totalDuelGames / 5)}
-              active={activeDuelPage}
-              setActive={setActiveDuelPage}
-            />
+            {data.totalDuelGames !== 0 && (
+              <Pagination
+                pages={Math.ceil(data.totalDuelGames / 5)}
+                active={activeDuelPage}
+                setActive={setActiveDuelPage}
+              />
+            )}
           </div>
         </div>
       )}
