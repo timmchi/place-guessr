@@ -124,8 +124,8 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-screen bg-indigo-200 flex px-4">
-      <div className="text-white flex flex-col lg:flex-row gap-4 bg-indigo-400 mb-8 md:mb-20 mt-20 md:mt-32 w-full lg:mx-40 rounded-xl shadow-2xl">
-        <div className="mx-5 md:mx-20 md:mb-20 flex flex-col items-center">
+      <div className="text-white flex flex-col xl:flex-row gap-4 bg-indigo-400 mb-8 2xl:mb-20 mt-20 md:mt-32 w-full 2xl:mx-40 rounded-xl shadow-2xl">
+        <div className="mx-5 md:mx-20 2xl:mb-20 flex flex-col items-center">
           <img
             src={createAvatarUrl(data.avatar)}
             className="h-80 w-80 object-cover object-center border-8 border-white mt-20 rounded-lg"

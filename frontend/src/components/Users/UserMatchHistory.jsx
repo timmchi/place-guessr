@@ -27,7 +27,7 @@ const UserMatchHistory = ({ userId }) => {
       </h3>
       {isLoading && <UserMatchHistoryLoadingElement />}
       {!isLoading && (
-        <div className="flex flex-col lg:flex-row justify-between xl:w-[62rem] text-center">
+        <div className="flex flex-col 2xl:flex-row justify-between xl:w-[62rem] text-center">
           <div className="flex flex-col items-center">
             <UserGamesList type="SINGLE" games={data.singleGames} />
             {data.totalSingleGames && (
