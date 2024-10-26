@@ -46,21 +46,21 @@ const AvatarSelectionList = ({ userId, changeAvatarMutation }) => {
     <>
       <Button
         size="sm"
-        className="mt-2 bg-deep-purple-300 hover:bg-deep-purple-400 w-full"
+        className="mt-2 bg-deep-purple-300 hover:bg-deep-purple-400 w-80"
         onClick={handleOpen}
       >
         Change avatar
       </Button>
       <Dialog open={open} handler={handleOpen} className="bg-indigo-200">
         <DialogHeader className="text-white">Avatar Selection</DialogHeader>
-        <DialogBody className="h-[42rem] overflow-y-scroll">
-          <div className="grid grid-cols-3 gap-4">
+        <DialogBody className="h-[30rem] md:h-[42rem] overflow-y-scroll">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {avatarNames.map((name) => (
               <img
                 key={name}
                 src={`${AWS_CONST}/${name}`}
                 alt={`${name} avatar`}
-                className={`h-64 w-64 object-cover object-center hover:border-green-300 shadow-lg rounded-lg ${
+                className={`h-48 w-48 md:h-64 md:w-64 object-cover object-center hover:border-green-300 shadow-lg rounded-lg ${
                   selectedImage === name
                     ? "border-amber-400 border-8"
                     : "border-white border-4"

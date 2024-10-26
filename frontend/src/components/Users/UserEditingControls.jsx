@@ -12,7 +12,7 @@ const UserEditingControls = ({
 }) => {
   return (
     <div
-      className={`flex flex-col text-center ${
+      className={`flex flex-col text-center w-80 ${
         editingUsername ? "gap-8" : "gap-4"
       }`}
     >
