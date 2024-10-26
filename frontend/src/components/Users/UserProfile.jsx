@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import AvatarSelectionList from "../AvatarSelectionList";
 import UserStats from "./UserStats";
 import UserMatchHistory from "./UserMatchHistory";
+import UserEditingControls from "./UserEditingControls";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useNotification from "../../hooks/useNotification";
 import { createAvatarUrl } from "../../utils/playerUtils";
@@ -37,6 +38,7 @@ const UserProfile = () => {
     onSuccess: (data) => {
       console.log("successfully updated user", data);
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
+      queryClient.invalidateQueries({ queryKey: ["games", userId] });
       displayNotification("success", "User successfully updated.");
     },
     onError: (error) => {
@@ -95,44 +97,15 @@ const UserProfile = () => {
               changeAvatarMutation={changeUserDataMutation}
             />
           )}
-          {/* also to separate component */}
-          <div
-            className={`flex flex-col text-center ${
-              editingUsername ? "gap-8" : "gap-4"
-            }`}
-          >
-            {!editingUsername ? (
-              <h1 className="text-4xl font-bold pt-4 text-center">
-                {data.username}
-              </h1>
-            ) : (
-              <Input
-                size="lg"
-                value={username}
-                className="!text-white focus:!border-amber-400 !border-t-blue-gray-200 mt-4"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            )}
-            {user && user.id === data.id && (
-              <Button
-                size="sm"
-                variant="outlined"
-                className={`text-center self-center ${
-                  editingUsername
-                    ? "border-green-300 text-green-300"
-                    : "border-white text-white"
-                }`}
-                onClick={
-                  editingUsername ? handleUsernameChange : handleUsernameEditing
-                }
-              >
-                {editingUsername ? "Save Username" : "Edit Username"}
-              </Button>
-            )}
-          </div>
+          <UserEditingControls
+            editingUsername={editingUsername}
+            username={username}
+            setUsername={setUsername}
+            user={user}
+            data={data}
+            handleUsernameChange={handleUsernameChange}
+            handleUsernameEditing={handleUsernameEditing}
+          />
           <UserStats wonGames={data.wonGames} gamesPlayed={data.totalGames} />
         </div>
         <UserMatchHistory userId={userId} />
